@@ -1,0 +1,17 @@
+[project]
+name = "vfms"
+version = "0.1.0"
+description = "The vfms project is a tui and cli program writted in python - using the oriented object programming paradigm - that allows organizations to manage they vehicle fleet."
+readme = "README.md"
+authors = [
+    { name = "wesley", email = "wesley.develop@proton.me" }
+]
+requires-python = ">=3.14"
+dependencies = []
+
+[project.scripts]
+vfms = "vfms:main"
+
+[build-system]
+requires = ["uv_build>=0.12.17,<0.13.0"]
+build-backend = "uv_build"
