@@ -44,7 +44,7 @@ classDiagram
         +experience: int
         +availability: bool
         +trip_history: list~Trip~
-        +register_trip(trip: Trip): None
+        +register_trip(trip: Trip) None
     }
 
     class Vehicle {
@@ -62,13 +62,13 @@ classDiagram
         +mileage: float
         +average_consumption: float
         +status: VehicleStatus
-        +update_mileage(distance: float): None
-        +change_status(status: VehicleStatus): None
-        +__str__(): str
-        +__repr__(): str
-        +__eq__(other: object): bool
-        +__lt__(other: object): bool
-        +__iter__(): Iterator~Maintenance~
+        +update_mileage(distance: float) None
+        +change_status(status: VehicleStatus) None
+        +__str__() str
+        +__repr__() str
+        +__eq__(other: object) bool
+        +__lt__(other: object) bool
+        +__iter__() Iterator~Maintenance~
     }
 
     class Car {
@@ -82,12 +82,12 @@ classDiagram
 
     class FuelableMixin {
         -_refueling_history: list~Refueling~
-        +refuel(refueling: Refueling): None
+        +refuel(refueling: Refueling) None
     }
 
     class MaintainableMixin {
         -_maintenance_history: list~Maintenance~
-        +register_maintenance(maintenance: Maintenance): None
+        +register_maintenance(maintenance: Maintenance) None
     }
 
     class Maintenance {
