@@ -7,7 +7,9 @@ authors = [
     { name = "wesley", email = "wesley.develop@proton.me" }
 ]
 requires-python = ">=3.14"
-dependencies = []
+dependencies = [
+    "questionary>=2.1.1",
+]
 
 [project.scripts]
 vfms = "vfms:main"
