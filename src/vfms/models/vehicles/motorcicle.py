@@ -1,7 +1,7 @@
 from vfms.models.maintenance import Maintenance
 from vfms.models.vehicles.vehicle import Vehicle
 from vfms.enums.vehicle_status import VehicleStatus
-from vfms.enums.license_type import VehicleLicense
+from vfms.enums.vehicle_license import VehicleLicense
 
 class Motorcicle(Vehicle):
     def __init__(
@@ -13,12 +13,13 @@ class Motorcicle(Vehicle):
         mileage             : float,
         average_consumption : float,
         status              : VehicleStatus,
-        license_category    : VehicleLicense,
         maintenance_h       : list[Maintenance] | [],
-        cc                  : int
+        cc                  : int,
+        license_category    = VehicleLicense.A,
     ):
-        super().__init__(plate, model, brand, year, mileage, average_consumption, status, license_category, maintenance_h)
+        super().__init__(plate, model, brand, year, mileage, average_consumption, status, maintenance_h)
         self.cc = cc
+        self.license_category = license_category
 
     """
     cc encapsulation
@@ -46,7 +47,8 @@ class Motorcicle(Vehicle):
         text = super().__str__()
         text = text.replace(")", "")
         return f"""{text}
-cc: {self.cc})"""
+license category: {self.license_category.name}
+cc: {self.cc}"""
     
     """
     Special method to uses with print(repr(v)), where v is a Motorcile class
@@ -54,4 +56,4 @@ cc: {self.cc})"""
     def __repr__(self) -> str:
         text = super().__repr__()
         text = text.replace(")", "")
-        return f"{text}, cc={self.cc})"
+        return f"{text}, license_category={self.license_category.name}, cc={self.cc})"
