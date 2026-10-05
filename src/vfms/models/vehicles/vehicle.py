@@ -1,3 +1,4 @@
+from ast import Break
 from vfms.models.maintenance import Maintenance
 from vfms.enums.vehicle_status import VehicleStatus
 from vfms.enums.license_type import VehicleLicense
@@ -13,7 +14,7 @@ class Vehicle:
         average_consumption : float,
         status              : VehicleStatus,
         license_category    : VehicleLicense,
-        maintenance_h       : list[Maintenance] | None
+        maintenance_h       : list[Maintenance] | []
     ):
         self.plate = plate
         self.model = model
@@ -25,18 +26,157 @@ class Vehicle:
         self.license_category = license_category
         self.maintenance_h = maintenance_h
 
-    def __str__(self) -> str:
-        return f"Plate: {self.plate}\nModel: {self.model}\nBrand: {self.brand}\nYear: {self.year}\nMileage: {self.mileage}\nAverage Consumption: {self.average_consumption}\nStatus: {self.status.name}\nLicense Category: {self.license_category.name}\nMaintenances: {self.maintenance_h}"
+    """
+    Plate encapsulation
+    """
+    @property
+    def plate(self):
+        return self._plate
     
-    def __repr__(self) -> str:
-        return f"Vehicle(plate={self.plate}, model={self.model}, brand={self.brand}, year={self.year}, mileage={self.mileage}, average_consumption={self.average_consumption}, status={self.status.name}, license_category={self.license_category.name}), maintenances={self.maintenance_h}"
+    @plate.setter
+    def plate(self, p):
+        if not p[3] == "-":
+            raise ValueError("Not a valid plate")
+        self._plate = p
 
+    """
+    Mileage encapsulation
+    """
+    @property
+    def mileage(self):
+        return self._mileage
+
+    @mileage.setter
+    def mileage(self, value):
+        new_value = value
+
+        if not isinstance(new_value, float):
+            try:
+                new_value = float(new_value)
+            except:
+                raise ValueError("Not a float")
+        
+        self._mileage = new_value
+
+    """
+    Year encapsulation
+    """
+    @property
+    def year(self):
+        return self._mileage
+
+    @year.setter
+    def year(self, value):
+        new_value = value
+
+        if not isinstance(new_value, int):
+            try:
+                new_value = int(new_value)
+            except:
+                raise ValueError("Not a int")
+        
+        self._year= new_value
+    
+    """
+    Average consumption encapsulation
+    """
+    @property
+    def average_consumption(self):
+        return self._average_consumption
+
+    @average_consumption.setter
+    def average_consumption(self, value):
+        new_value = value
+
+        if not isinstance(new_value, float):
+            try:
+                new_value = float(new_value)
+            except:
+                raise ValueError("Not a float")
+        
+        self._average_consumption= new_value
+
+    """
+    Vehicle status encapsulation
+    """
+    @property
+    def status(self):
+        return self._status
+
+    @status.setter
+    def status(self, value):
+        if not isinstance(value, VehicleStatus):
+            raise ValueError("Not a Vehicle Status")
+        
+        self._status = value
+    
+    """
+    Vehicle license category encapsulation
+    """
+    @property
+    def license_category(self):
+        return self._license_category
+
+    @license_category.setter
+    def license_category(self, value):
+        if not isinstance(value, VehicleLicense):
+            raise ValueError("Not a Vehicle License")
+        
+        self._license_category = value
+
+    """
+    Vehicle maintenance history
+    """
+    @property
+    def maintenance_h(self):
+        return self._maintenance_h
+        
+    @maintenance_h.setter
+    def maintenance_h(self, value):
+        if not isinstance(value, list):
+            raise ValueError("It's not a list")
+        
+        for m in value:
+            if not isinstance(m, Maintenance):
+                raise ValueError("The list of maintenances has one or more objects that are not from Maintenance class")
+
+        self._maintenance_h = value
+
+    """
+    Special method to uses with print(v), where v is a Vehicle class
+    """
+    def __str__(self) -> str:
+        return f"""Plate: {self.plate}
+Model: {self.model}
+Brand: {self.brand}
+Year: {self.year}
+Mileage: {self.mileage} km
+Average Consumption: {self.average_consumption} l/km
+Status: {self.status.name}
+License Category: {self.license_category.name}
+Maintenances: {self.maintenance_h}"""
+    
+    """
+    Special method to uses with print(repr(v)), where v is a Vehicle class
+    """
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}(plate={self.plate}, model={self.model}, brand={self.brand}, year={self.year}, mileage={self.mileage}km, average_consumption={self.average_consumption}l/km, status={self.status.name}, license_category={self.license_category.name}, maintenances={self.maintenance_h})"
+
+    """
+    Special method to compare objects using the plate (Ex: v1 == v2 -> v1.plate == v2.plate, where v1 and v2 are from Vehicle class)
+    """
     def __eq__(self, other : Vehicle) -> bool:
         return self.plate == other.plate
 
+    """
+    special method to sort vehicles by mileage
+    """
     def __lt__(self, other : Vehicle) -> bool:
         return self.mileage < other.mileage
 
-    # def __iter__(self):
-        # return iter(self.maintenance_history)
+    """
+    Special method to iterate the vehicle maintenances
+    """
+    def __iter__(self) -> list[Maintenance]:
+        return iter(self.maintenance_h)
             

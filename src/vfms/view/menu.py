@@ -7,11 +7,9 @@ class Menu:
         self, 
         master_controller       : list,
         running                 : bool,
-        message                 : str = "",
     ):
         self.master_controller  = master_controller
         self.running            = running
-        self.message            = message
 
         while self.running:        
             page_home(self)
@@ -28,8 +26,8 @@ class Menu:
 
         self.master_controller["vehicle_controller"].create_vehicle(request)
 
-    def add_maintenance(self):
-        self.master_controller["vehicle_controller"].add_maintenance(request)
+    # def add_maintenance(self):
+    #     self.master_controller["vehicle_controller"].add_maintenance()
 
     def show_all_vehicles(self):
         self.controller_type.show_all_vehicles()

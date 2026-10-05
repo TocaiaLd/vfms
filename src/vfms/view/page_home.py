@@ -7,7 +7,7 @@ def page_home(menu):
     options = [
         questionary.Choice("New vehicle", value=menu.create_vehicle), 
         questionary.Choice("Print all vehicles", value=menu.show_all_vehicles), 
-        questionary.Choice("Add a maintenance to one vehicle", value=menu.add_maintenance), 
+        # questionary.Choice("Add a maintenance to one vehicle", value=menu.add_maintenance), 
         questionary.Choice("Close Program", value=0), 
     ]
             
