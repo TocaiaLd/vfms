@@ -55,11 +55,8 @@ class Vehicle:
                 if not letter == "-":
                     raise ValueError("Not a valid plate")
             else:
-                try:
-                    if isinstance(int(letter), int):
-                        raise ValueError(f"position {i} must be a char")
-                except:
-                    pass
+                if letter.isdigit():
+                    raise ValueError(f"position {i} must be a char")
 
         self._plate = p
 
@@ -93,16 +90,25 @@ class Vehicle:
         return self._year
 
     @year.setter
-    def year(self, value):
-        new_value = value
-
-        if not isinstance(new_value, int):
+    def year(self, value):    
+        if not isinstance(value, int):
             try:
-                new_value = int(new_value)
+                n_value = float(value)
+                value = int(value)
+                
+                r = n_value - value
+
+                if r != 0:
+                    raise ValueError("Not a int")
+                                
             except:
                 raise ValueError("Not a int")
         
-        self._year= new_value
+        # the firts car was created at 1888
+        if value < 1888:
+            raise ValueError("the year of the car must be >= 1888")
+
+        self._year = value
     
     """
     Average consumption encapsulation

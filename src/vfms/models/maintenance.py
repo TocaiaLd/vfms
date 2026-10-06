@@ -4,12 +4,12 @@ import datetime
 class Maintenance:
     def __init__(
         self, 
-        date  : datetime.date,
         type  : EnumMaintenance,
         coast : float,
         description : str,
+        date  = datetime.datetime.now(),
     ):
-        self.date = datetime.datetime.now()
         self.type = type
         self.coast = coast
         self.description = description
+

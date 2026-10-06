@@ -8,6 +8,10 @@ from vfms.models.vehicles.motorcicle import Motorcicle
 from vfms.enums import VehicleLicense
 from vfms.enums import VehicleStatus
 
+
+"""
+Creation of vehicle, Car, Truck and Motorcicle objects
+"""
 def test_vehicle_cannot_be_instantiated_directly():
     with pytest.raises(TypeError):
         Vehicle(
@@ -144,3 +148,46 @@ def test_mileage_setter_invalid(car, value):
 def test_plate_setter_invalid(car, value):
     with pytest.raises((ValueError, IndexError)):
         car.plate = value
+
+@pytest.mark.parametrize(
+    "value", 
+    [
+        "ABC-2C34",
+        "XYZ-1A43",
+        "ABC-1C34",
+        "AAA-1L11",
+        "BRC-2E26",
+    ],
+)
+def test_plate_setter_valid(car, value):
+    car.plate = value
+
+    assert car.plate == value
+
+@pytest.mark.parametrize(
+    "value, expected", 
+    [
+        ("1888", 1888),
+        ("2000", 2000),
+        (2026, 2026),
+    ],
+)
+def test_year_setter_valid(car, value, expected):
+    car.year = value
+
+    assert car.year == expected
+
+@pytest.mark.parametrize(
+    "value", 
+    [
+        1887,
+        -1000,
+        0,
+        1888.1,
+        25,
+        2026.5
+    ],
+)
+def test_year_setter_invalid(car, value):
+    with pytest.raises(ValueError):
+        car.year = value
