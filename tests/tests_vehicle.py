@@ -130,3 +130,17 @@ def test_mileage_setter_valid(car, value, expected):
 def test_mileage_setter_invalid(car, value):
     with pytest.raises(ValueError):
         car.mileage = value
+
+@pytest.mark.parametrize(
+    "value",
+    [
+        "AB1-2C34",
+        "XYZ-A1BC",
+        "ABC-1234",
+        "AAAA-111",
+        "BR-2E26",
+    ],
+)
+def test_plate_setter_invalid(car, value):
+    with pytest.raises((ValueError, IndexError)):
+        car.plate = value

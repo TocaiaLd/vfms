@@ -1,3 +1,4 @@
+import enum
 from vfms.models.maintenance import Maintenance
 from vfms.enums.vehicle_status import VehicleStatus
 from vfms.enums.vehicle_license import VehicleLicense
@@ -37,8 +38,29 @@ class Vehicle:
     
     @plate.setter
     def plate(self, p):
-        if not p[3] == "-":
-            raise ValueError("Not a valid plate")
+        l = len(p)
+        number_positions = [4, 6, 7]
+
+        if l < 8 or l > 8:
+            raise IndexError(f"Wrong size of string")
+        
+
+        for i, letter in enumerate(p):
+            if i in number_positions:
+                try:
+                    letter = int(letter)
+                except:
+                    raise ValueError(f"position {i} must be a integer")
+            elif i == 3:
+                if not letter == "-":
+                    raise ValueError("Not a valid plate")
+            else:
+                try:
+                    if isinstance(int(letter), int):
+                        raise ValueError(f"position {i} must be a char")
+                except:
+                    pass
+
         self._plate = p
 
     """
