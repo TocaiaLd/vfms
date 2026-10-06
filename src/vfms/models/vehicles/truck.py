@@ -16,8 +16,9 @@ class Truck(Vehicle):
         maintenance_h       : list[Maintenance] | [],
         max_weight          : float,
         license_category    = VehicleLicense.D,
+        fuel                = 0.0
     ):
-        super().__init__(plate, model, brand, year, mileage, average_consumption, status, maintenance_h)
+        super().__init__(plate, model, brand, year, mileage, average_consumption, status, maintenance_h, fuel)
         self.max_weight = max_weight
         self.license_category = license_category
 

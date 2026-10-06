@@ -58,7 +58,7 @@ class Vehicle:
             except:
                 raise ValueError("Not a float")
         
-        if value < 0:
+        if new_value < 0:
             raise ValueError("Mileage cannot be less than zero!")
         
         self._mileage = new_value
@@ -68,7 +68,7 @@ class Vehicle:
     """
     @property
     def year(self):
-        return self._mileage
+        return self._year
 
     @year.setter
     def year(self, value):
@@ -118,6 +118,9 @@ class Vehicle:
             except:
                 raise ValueError("Not a float")
         
+        if value < 0:
+            raise Exception("Cannot be less than 0")
+
         self._fuel= new_value
 
 

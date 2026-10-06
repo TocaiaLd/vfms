@@ -16,8 +16,9 @@ class Motorcicle(Vehicle):
         maintenance_h       : list[Maintenance] | [],
         cc                  : int,
         license_category    = VehicleLicense.A,
+        fuel                = 0.0,
     ):
-        super().__init__(plate, model, brand, year, mileage, average_consumption, status, maintenance_h)
+        super().__init__(plate, model, brand, year, mileage, average_consumption, status, maintenance_h, fuel)
         self.cc = cc
         self.license_category = license_category
 

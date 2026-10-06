@@ -16,8 +16,9 @@ class Car(Vehicle):
         maintenance_h       : list[Maintenance] | [],
         ports               : int,
         license_category    = VehicleLicense.B,
+        fuel                = 0.0,
     ):
-        super().__init__(plate, model, brand, year, mileage, average_consumption, status, maintenance_h)
+        super().__init__(plate, model, brand, year, mileage, average_consumption, status, maintenance_h, fuel)
         self.ports = ports
         self.license_category = license_category
 
