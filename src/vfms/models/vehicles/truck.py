@@ -1,4 +1,4 @@
-from vfms.models.maintenance import Maintenance
+from vfms.models.maintenance_mixin import MaintenanceMixin
 from vfms.models.vehicles.vehicle import Vehicle
 from vfms.enums.vehicle_status import VehicleStatus
 from vfms.enums.vehicle_license import VehicleLicense
@@ -13,7 +13,7 @@ class Truck(Vehicle):
         mileage             : float,
         average_consumption : float,
         status              : VehicleStatus,
-        maintenance_h       : list[Maintenance] | [],
+        maintenance_h       : list[MaintenanceMixin] | [],
         max_weight          : float,
         license_category    = VehicleLicense.D,
         fuel                = 0.0

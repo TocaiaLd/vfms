@@ -1,7 +1,5 @@
-import enum
-from vfms.models.maintenance import Maintenance
+from vfms.models.maintenance_mixin import MaintenanceMixin
 from vfms.enums.vehicle_status import VehicleStatus
-from vfms.enums.vehicle_license import VehicleLicense
 
 class Vehicle:
     def __init__(
@@ -13,7 +11,7 @@ class Vehicle:
         mileage             : float,
         average_consumption : float,
         status              : VehicleStatus,
-        maintenance_h       : list[Maintenance] | [],
+        maintenance_h       : list[MaintenanceMixin] | [],
         fuel                = 0.0
     ):
         if type(self) is Vehicle:
@@ -179,7 +177,7 @@ class Vehicle:
             raise ValueError("It's not a list")
         
         for m in value:
-            if not isinstance(m, Maintenance):
+            if not isinstance(m, MaintenanceMixin):
                 raise ValueError("The list of maintenances has one or more objects that are not from Maintenance class")
 
         self._maintenance_h = value
@@ -219,6 +217,6 @@ Fuel: {self.fuel}"""
     """
     Special method to iterate the vehicle maintenances
     """
-    def __iter__(self) -> list[Maintenance]:
+    def __iter__(self) -> list[MaintenanceMixin]:
         return iter(self.maintenance_h)
             

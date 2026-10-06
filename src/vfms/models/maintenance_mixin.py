@@ -1,15 +1,15 @@
 from vfms.enums.enum_maintenance import EnumMaintenance
 import datetime
 
-class Maintenance:
+class MaintenanceMixin:
     def __init__(
         self, 
         type  : EnumMaintenance,
-        coast : float,
+        price : float,
         description : str,
         date  = datetime.datetime.now(),
     ):
         self.type = type
-        self.coast = coast
+        self.price = price
         self.description = description
 

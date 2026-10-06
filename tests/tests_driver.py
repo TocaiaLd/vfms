@@ -28,7 +28,6 @@ def test_driver_creation(driver):
     assert driver.status == DriverStatus.AVAILABLE
     assert driver.trip_history == []
 
-
 """
 Testing the Person class
 """
