@@ -1,6 +1,6 @@
 import questionary
 
-from vfms.enums.license_type import VehicleLicense
+from vfms.enums.vehicle_license import VehicleLicense
 from vfms.enums import VehicleStatus
 
 from vfms.view.page_close import page_close

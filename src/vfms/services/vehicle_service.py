@@ -2,9 +2,9 @@ from vfms.models.vehicles.truck import Truck
 from vfms.models.vehicles.motorcicle import Motorcicle
 from vfms.models.vehicles.car import Car
 
-from vfms.models.maintenance import Maintenance
+from vfms.models.maintenance_mixin import MaintenanceMixin
 
-from vfms.enums.license_type import VehicleLicense
+from vfms.enums.vehicle_license import VehicleLicense
 from vfms.enums.vehicle_status import VehicleStatus
 
 
@@ -23,7 +23,7 @@ class VehicleService:
         average_consumption     : float,
         status                  : VehicleStatus,
         license_category        : VehicleLicense,
-        maintenance_h           : list[Maintenance] | None,
+        maintenance_h           : list[MaintenanceMixin] | None,
         ports                   : int 
     ):
         

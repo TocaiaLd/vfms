@@ -1,7 +1,5 @@
-from ast import Break
-from vfms.models.maintenance import Maintenance
+from vfms.models.maintenance_mixin import MaintenanceMixin
 from vfms.enums.vehicle_status import VehicleStatus
-from vfms.enums.license_type import VehicleLicense
 
 class Vehicle:
     def __init__(
@@ -13,9 +11,12 @@ class Vehicle:
         mileage             : float,
         average_consumption : float,
         status              : VehicleStatus,
-        license_category    : VehicleLicense,
-        maintenance_h       : list[Maintenance] | []
+        maintenance_h       : list[MaintenanceMixin] | [],
+        fuel                = 0.0
     ):
+        if type(self) is Vehicle:
+            raise TypeError("You cannot create a Vehicle object directly")
+
         self.plate = plate
         self.model = model
         self.brand = brand
@@ -23,8 +24,8 @@ class Vehicle:
         self.mileage = mileage
         self.average_consumption = average_consumption
         self.status = status
-        self.license_category = license_category
         self.maintenance_h = maintenance_h
+        self.fuel = fuel
 
     """
     Plate encapsulation
@@ -35,8 +36,26 @@ class Vehicle:
     
     @plate.setter
     def plate(self, p):
-        if not p[3] == "-":
-            raise ValueError("Not a valid plate")
+        l = len(p)
+        number_positions = [4, 6, 7]
+
+        if l < 8 or l > 8:
+            raise IndexError(f"Wrong size of string")
+        
+
+        for i, letter in enumerate(p):
+            if i in number_positions:
+                try:
+                    letter = int(letter)
+                except:
+                    raise ValueError(f"position {i} must be a integer")
+            elif i == 3:
+                if not letter == "-":
+                    raise ValueError("Not a valid plate")
+            else:
+                if letter.isdigit():
+                    raise ValueError(f"position {i} must be a char")
+
         self._plate = p
 
     """
@@ -56,6 +75,9 @@ class Vehicle:
             except:
                 raise ValueError("Not a float")
         
+        if new_value < 0:
+            raise ValueError("Mileage cannot be less than zero!")
+        
         self._mileage = new_value
 
     """
@@ -63,19 +85,28 @@ class Vehicle:
     """
     @property
     def year(self):
-        return self._mileage
+        return self._year
 
     @year.setter
-    def year(self, value):
-        new_value = value
-
-        if not isinstance(new_value, int):
+    def year(self, value):    
+        if not isinstance(value, int):
             try:
-                new_value = int(new_value)
+                n_value = float(value)
+                value = int(value)
+                
+                r = n_value - value
+
+                if r != 0:
+                    raise ValueError("Not a int")
+                                
             except:
                 raise ValueError("Not a int")
         
-        self._year= new_value
+        # the firts car was created at 1888
+        if value < 1888:
+            raise ValueError("the year of the car must be >= 1888")
+
+        self._year = value
     
     """
     Average consumption encapsulation
@@ -97,6 +128,29 @@ class Vehicle:
         self._average_consumption= new_value
 
     """
+    fuel encapsulation
+    """
+    @property
+    def fuel(self):
+        return self._fuel
+
+    @fuel.setter
+    def fuel(self, value):
+        new_value = value
+
+        if not isinstance(new_value, float):
+            try:
+                new_value = float(new_value)
+            except:
+                raise ValueError("Not a float")
+        
+        if value < 0:
+            raise Exception("Cannot be less than 0")
+
+        self._fuel= new_value
+
+
+    """
     Vehicle status encapsulation
     """
     @property
@@ -111,20 +165,6 @@ class Vehicle:
         self._status = value
     
     """
-    Vehicle license category encapsulation
-    """
-    @property
-    def license_category(self):
-        return self._license_category
-
-    @license_category.setter
-    def license_category(self, value):
-        if not isinstance(value, VehicleLicense):
-            raise ValueError("Not a Vehicle License")
-        
-        self._license_category = value
-
-    """
     Vehicle maintenance history
     """
     @property
@@ -137,7 +177,7 @@ class Vehicle:
             raise ValueError("It's not a list")
         
         for m in value:
-            if not isinstance(m, Maintenance):
+            if not isinstance(m, MaintenanceMixin):
                 raise ValueError("The list of maintenances has one or more objects that are not from Maintenance class")
 
         self._maintenance_h = value
@@ -153,14 +193,14 @@ Year: {self.year}
 Mileage: {self.mileage} km
 Average Consumption: {self.average_consumption} l/km
 Status: {self.status.name}
-License Category: {self.license_category.name}
-Maintenances: {self.maintenance_h}"""
+Maintenances: {self.maintenance_h}
+Fuel: {self.fuel}"""
     
     """
     Special method to uses with print(repr(v)), where v is a Vehicle class
     """
     def __repr__(self) -> str:
-        return f"{self.__class__.__name__}(plate={self.plate}, model={self.model}, brand={self.brand}, year={self.year}, mileage={self.mileage}km, average_consumption={self.average_consumption}l/km, status={self.status.name}, license_category={self.license_category.name}, maintenances={self.maintenance_h})"
+        return f"{self.__class__.__name__}(plate={self.plate}, model={self.model}, brand={self.brand}, year={self.year}, mileage={self.mileage}km, average_consumption={self.average_consumption}l/km, status={self.status.name}, maintenances={self.maintenance_h}, fuel={self.fuel}l)"
 
     """
     Special method to compare objects using the plate (Ex: v1 == v2 -> v1.plate == v2.plate, where v1 and v2 are from Vehicle class)
@@ -177,6 +217,6 @@ Maintenances: {self.maintenance_h}"""
     """
     Special method to iterate the vehicle maintenances
     """
-    def __iter__(self) -> list[Maintenance]:
+    def __iter__(self) -> list[MaintenanceMixin]:
         return iter(self.maintenance_h)
             
