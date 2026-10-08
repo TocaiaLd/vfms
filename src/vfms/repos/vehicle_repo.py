@@ -1,10 +1,11 @@
 import json
 
+from vfms.repos.repo import Repo
 from vfms.models.vehicles.motorcicle import Motorcicle
 from vfms.models.vehicles.truck import Truck
 from vfms.models.vehicles.car import Car
 
-class VehicleRepo:
+class VehicleRepo(Repo):
     def specific_atributtes(self, vehicle) -> dict:
         
         if isinstance(vehicle, Car):
@@ -28,34 +29,44 @@ class VehicleRepo:
             vehicle : Car | Truck | Motorcicle,
             type    : str
         ):
-
-        with open("database.json", "r", encoding="utf-8") as f:
-            database = json.load(f)
-
-            new_item = {
-                "model": vehicle.model,
-                "brand": vehicle.brand,
-                "year": vehicle.year,
-                "mileage": vehicle.mileage,
-                "average_compsumption": vehicle.average_consumption,
-                "status": vehicle.status.name,
-                "license_category": vehicle.license_category.name,
-                "maintenance_h" : vehicle.maintenance_h
-            }
-
-            new_item.update(self.specific_atributtes(vehicle))
-
-            database["vehicles"][type][vehicle.plate] = new_item
-            f.close()
-
-        with open("database.json", "w", encoding="utf-8") as f:
-            json.dump(database, f, indent=4, ensure_ascii=False)
-            f.close()
         
-        print("Vehicle saved!")
+        if self.database_type == "json":
+            self.save_vehicle_json(vehicle, type)
+        else:
+            self.save_vehicle_sql(vehicle, type)
+
+    def save_vehicle_json(self, vehicle, type):
+            with open(self.db_path, "r", encoding="utf-8") as f:
+                database = json.load(f)
+
+                new_item = {
+                    "model": vehicle.model,
+                    "brand": vehicle.brand,
+                    "year": vehicle.year,
+                    "mileage": vehicle.mileage,
+                    "average_compsumption": vehicle.average_consumption,
+                    "status": vehicle.status.name,
+                    "license_category": vehicle.license_category.name,
+                    "maintenance_h" : vehicle.maintenance_h
+                }
+
+                new_item.update(self.specific_atributtes(vehicle))
+
+                database["vehicles"][type][vehicle.plate] = new_item
+                f.close()
+
+            with open("database.json", "w", encoding="utf-8") as f:
+                json.dump(database, f, indent=4, ensure_ascii=False)
+                f.close()
+            
+            print("Vehicle saved!")
+
+    def save_vehicle_sql(self, vehicl, type):
+        print("sql")
+        
 
     def show_all_vehicles(self):
-        with open("database.json", "r", encoding="utf-8") as f:
+        with open(self.db_path, "r", encoding="utf-8") as f:
             database = json.load(f)
 
         for title, data in database.items():

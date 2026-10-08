@@ -1,11 +1,12 @@
+from vfms.depedencies import MasterController
+
 from vfms.view.page_vehicle import page_create_vehicle
 from vfms.view.page_home import page_home
-import os
 
 class Menu:
     def __init__(
         self, 
-        master_controller       : list,
+        master_controller       : MasterController,
         running                 : bool,
     ):
         self.master_controller  = master_controller
@@ -13,8 +14,6 @@ class Menu:
 
         while self.running:        
             page_home(self)
-            
-            # os.name == 'nt' and os.system('cls') or os.system('clear')
 
     def create_vehicle(self):
         request = page_create_vehicle()
@@ -24,7 +23,7 @@ class Menu:
         elif request == True:
             return self.create_vehicle()
 
-        self.master_controller["vehicle_controller"].create_vehicle(request)
+        self.master_controller.VEHICLE_CONTROLLER.create_vehicle(request)
 
     # def add_maintenance(self):
     #     self.master_controller["vehicle_controller"].add_maintenance()

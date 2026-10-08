@@ -92,12 +92,14 @@ name = "vfms"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
+    { name = "prompt-toolkit" },
     { name = "pytest" },
     { name = "questionary" },
 ]
 
 [package.metadata]
 requires-dist = [
+    { name = "prompt-toolkit", specifier = ">=3.0.53" },
     { name = "pytest", specifier = ">=9.1.1" },
     { name = "questionary", specifier = ">=2.1.1" },
 ]

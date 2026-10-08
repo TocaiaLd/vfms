@@ -4,8 +4,8 @@
             "ABC-1D34": {
                 "model": "123",
                 "brand": "123",
-                "year": 2020,
-                "mileage": 7000.0,
+                "year": 2000,
+                "mileage": 2000.0,
                 "average_compsumption": 0.0,
                 "status": "AVAILABLE",
                 "license_category": "B",

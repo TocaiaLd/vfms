@@ -40,7 +40,7 @@ def page_create_vehicle() -> dict:
     mileage = questionary.text("Mileage: ").ask()
     average_consumption = 0.0
     status = VehicleStatus.AVAILABLE
-    maintenance_h = None
+    maintenance_h = []
 
     request = {
         "type" : None,

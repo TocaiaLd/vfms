@@ -23,7 +23,7 @@ class VehicleService:
         average_consumption     : float,
         status                  : VehicleStatus,
         license_category        : VehicleLicense,
-        maintenance_h           : list[MaintenanceMixin] | None,
+        maintenance_h           : list[MaintenanceMixin] | [],
         ports                   : int 
     ):
         
@@ -36,9 +36,9 @@ class VehicleService:
                 mileage,                 
                 average_consumption,
                 status,
-                license_category,
                 maintenance_h,
-                ports
+                ports,
+                license_category,
             )
 
         self.repo.save_vehicle(vehicle, type)
