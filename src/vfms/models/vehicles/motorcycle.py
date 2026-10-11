@@ -1,9 +1,10 @@
+from vfms.models.trip import Trip
 from vfms.models.maintenance_mixin import MaintenanceMixin
 from vfms.models.vehicles.vehicle import Vehicle
 from vfms.enums.vehicle_status import VehicleStatus
 from vfms.enums.vehicle_license import VehicleLicense
 
-class Motorcicle(Vehicle):
+class Motorcycle(Vehicle):
     def __init__(
         self,
         plate               : str | None,
@@ -14,11 +15,11 @@ class Motorcicle(Vehicle):
         average_consumption : float,
         status              : VehicleStatus,
         maintenance_h       : list[MaintenanceMixin] | [],
+        trips               : list[Trip] | [],
         cc                  : int,
         license_category    = VehicleLicense.A,
-        fuel                = 0.0,
     ):
-        super().__init__(plate, model, brand, year, mileage, average_consumption, status, maintenance_h, fuel)
+        super().__init__(plate, model, brand, year, mileage, average_consumption, status, maintenance_h, trips)
         self.cc = cc
         self.license_category = license_category
 

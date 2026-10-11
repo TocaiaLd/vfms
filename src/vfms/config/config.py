@@ -1,6 +1,9 @@
-import json
-import questionary as q
+# standard libs
 from pathlib import Path
+import json
+
+# external libs
+import questionary as q
 
 file_path = "src/vfms/config/settings.json"
 
@@ -22,6 +25,9 @@ def first_inicialization():
 
     settings_dict["settings"]["repository"] = database
 
+    if database == "json":
+        settings_dict["settings"]["last_id_trip"] = 0
+        
     with open(file_path, "w", encoding="utf-8") as f:
         json.dump(settings_dict, f, indent=4, ensure_ascii=False)
         f.close()
@@ -33,7 +39,7 @@ def verify_integrity() -> bool:
         for item in databases_choices:
             settings_dict["settings"]["repository"] = item
 
-            if settings == settings_dict:
+            if settings["settings"]["repository"] == settings_dict["settings"]["repository"]:
                 return True
 
         q.print("settings.json is in a wrong format, recreating settings...")

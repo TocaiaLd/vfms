@@ -1,10 +1,11 @@
+from vfms.models.trip import Trip
 from vfms.models.maintenance_mixin import MaintenanceMixin
 from vfms.enums.vehicle_status import VehicleStatus
 
 class Vehicle:
     def __init__(
         self,
-        plate               : str | None,
+        plate               : str,
         model               : str,
         brand               : str,
         year                : int,
@@ -12,6 +13,7 @@ class Vehicle:
         average_consumption : float,
         status              : VehicleStatus,
         maintenance_h       : list[MaintenanceMixin] | [],
+        trips               : list[Trip] | [],
         fuel                = 0.0
     ):
         if type(self) is Vehicle:
@@ -26,6 +28,7 @@ class Vehicle:
         self.status = status
         self.maintenance_h = maintenance_h
         self.fuel = fuel
+        self.trips = trips
 
     """
     Plate encapsulation
@@ -159,10 +162,21 @@ class Vehicle:
 
     @status.setter
     def status(self, value):
-        if not isinstance(value, VehicleStatus):
-            raise ValueError("Not a Vehicle Status")
+        new_value = value
         
-        self._status = value
+        if not isinstance(new_value, VehicleStatus):
+            if new_value == VehicleStatus.AVAILABLE.name:
+                new_value = VehicleStatus.AVAILABLE
+            elif new_value == VehicleStatus.INACTIVE.name:
+                new_value = VehicleStatus.INACTIVE
+            elif new_value == VehicleStatus.MAINTENANCE.name:
+                new_value = VehicleStatus.MAINTENANCE
+            elif new_value == VehicleStatus.ON_TRIP.name:
+                new_value = VehicleStatus.ON_TRIP
+            else:
+                raise ValueError("Not a Vehicle Status")
+        
+        self._status = new_value
     
     """
     Vehicle maintenance history

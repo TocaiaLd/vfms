@@ -3,8 +3,8 @@ import pytest
 from vfms.models.users.driver import Driver
 from vfms.models.users.person import Person
 
-from vfms.enums import DriverStatus
-from vfms.enums import VehicleLicense
+from vfms.enums.driver_status import DriverStatus
+from vfms.enums.vehicle_license import VehicleLicense
 
 """
 Testing the Driver class

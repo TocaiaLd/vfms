@@ -1,3 +1,4 @@
+from vfms.models.trip import Trip
 from vfms.models.maintenance_mixin import MaintenanceMixin
 from vfms.models.vehicles.vehicle import Vehicle
 from vfms.enums.vehicle_status import VehicleStatus
@@ -14,11 +15,11 @@ class Truck(Vehicle):
         average_consumption : float,
         status              : VehicleStatus,
         maintenance_h       : list[MaintenanceMixin] | [],
+        trips               : list[Trip] | [],
         max_weight          : float,
         license_category    = VehicleLicense.D,
-        fuel                = 0.0
     ):
-        super().__init__(plate, model, brand, year, mileage, average_consumption, status, maintenance_h, fuel)
+        super().__init__(plate, model, brand, year, mileage, average_consumption, status, maintenance_h, trips)
         self.max_weight = max_weight
         self.license_category = license_category
 

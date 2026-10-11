@@ -1,0 +1,11 @@
+{
+    "drivers": {
+        "62853765300": {
+            "name": "Pedim",
+            "license": "AB",
+            "xp": 20,
+            "status": "AVAILABLE",
+            "trip_history": []
+        }
+    }
+}

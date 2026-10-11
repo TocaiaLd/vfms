@@ -2,15 +2,60 @@
     "vehicles": {
         "Car": {
             "ABC-1D34": {
-                "model": "123",
-                "brand": "123",
-                "year": 2000,
-                "mileage": 2000.0,
-                "average_compsumption": 0.0,
+                "model": "onix",
+                "brand": "chevrolet",
+                "year": 2020,
+                "mileage": 1000.0,
+                "average_consumption": 0.0,
                 "status": "AVAILABLE",
                 "license_category": "B",
                 "maintenance_h": [],
+                "trips": [],
+                "fuel": 0.0,
                 "ports": 4
+            },
+            "ABC-1C34": {
+                "model": "teste",
+                "brand": "teste",
+                "year": 1990,
+                "mileage": 1990.0,
+                "average_consumption": 0.0,
+                "status": "AVAILABLE",
+                "license_category": "B",
+                "maintenance_h": [],
+                "trips": [],
+                "fuel": 0.0,
+                "ports": 4
+            }
+        },
+        "Truck": {
+            "XYZ-4E65": {
+                "model": "Accelo",
+                "brand": "Mercedes-Benz",
+                "year": 2020,
+                "mileage": 4800.0,
+                "average_consumption": 0.0,
+                "status": "AVAILABLE",
+                "license_category": "D",
+                "maintenance_h": [],
+                "trips": [],
+                "fuel": 0.0,
+                "max_weight": 15.5
+            }
+        },
+        "Motorcycle": {
+            "OSU-1E23": {
+                "model": "Factor 150",
+                "brand": "Yamaha",
+                "year": 2016,
+                "mileage": 42345213.0,
+                "average_consumption": 0.0,
+                "status": "AVAILABLE",
+                "license_category": "A",
+                "maintenance_h": [],
+                "trips": [],
+                "fuel": 0.0,
+                "cc": 150
             }
         }
     }
