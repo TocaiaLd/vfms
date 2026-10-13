@@ -1,6 +1,6 @@
 from vfms.enums.driver_status import DriverStatus
 from vfms.models.trip import Trip
-from vfms.enums import VehicleLicense
+from vfms.enums.vehicle_license import VehicleLicense
 from vfms.models.users.person import Person
 
 """represents a driver signed on system"""
@@ -27,10 +27,23 @@ class Driver(Person):
 
     @license.setter
     def license(self, value):
-        if not isinstance(value, VehicleLicense):
-            raise TypeError("the license is not from VehicleLicense type")
+        new_value = value
         
-        self._license = value
+        if not isinstance(new_value, VehicleLicense):
+            if new_value == "A":
+                new_value = VehicleLicense.A
+            elif new_value == "B":
+                new_value = VehicleLicense.B
+            elif new_value == "D":
+                new_value = VehicleLicense.D
+            elif new_value == "AB":
+                new_value = VehicleLicense.AB
+            elif new_value == "AD":
+                new_value = VehicleLicense.AD
+            else:
+                raise TypeError("the license is not from VehicleLicense type")
+        
+        self._license = new_value
 
     @property
     def xp(self):
@@ -63,10 +76,17 @@ class Driver(Person):
 
     @status.setter
     def status(self, value):
-        if not isinstance(value, DriverStatus):
-            raise TypeError("the status is not from DriverStatus type")
+        new_value = value
         
-        self._status = value
+        if not isinstance(new_value, DriverStatus):
+            if new_value == "AVAILABLE":
+                new_value = DriverStatus.AVAILABLE
+            elif new_value == "ON_TRIP":
+                new_value = DriverStatus.ON_TRIP
+            else:
+                raise TypeError("the status is not from DriverStatus type")
+        
+        self._status = new_value
 
     """
     Special method to uses with print(d), where d is a Driver class
@@ -86,7 +106,7 @@ trip_history: {self.trip_history}"""
     def __repr__(self) -> str:
         text = super().__repr__()
         text = text.replace(")", "")
-        return f"{text}, license={self.license}, xp={self.xp}), status={self.status}, trip_history={self.trip_history})"
+        return f"{text}, license={self.license}, xp={self.xp}, status={self.status}, trip_history={self.trip_history})"
 
     """
     special method to sort drivers by xp

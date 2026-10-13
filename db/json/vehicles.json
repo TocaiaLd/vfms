@@ -1,0 +1,35 @@
+{
+    "Car": {
+        "ABC-1D34": {
+            "model": "teste",
+            "brand": "teste",
+            "year": 2000,
+            "mileage": 2000.0,
+            "average_consumption": 0.0,
+            "status": "AVAILABLE",
+            "license_category": "B",
+            "maintenance_h": [],
+            "trips": [
+                0
+            ],
+            "fuel": 0.0,
+            "ports": 4
+        }
+    },
+    "Truck": {
+        "XYZ-4E65": {
+            "model": "Accelo",
+            "brand": "Mercedez-benz",
+            "year": 2024,
+            "mileage": 4800.0,
+            "average_consumption": 0.0,
+            "status": "INACTIVE",
+            "license_category": "D",
+            "maintenance_h": [],
+            "trips": [],
+            "fuel": 0.0,
+            "max_weight": 15.5
+        }
+    },
+    "Motorcycle": {}
+}

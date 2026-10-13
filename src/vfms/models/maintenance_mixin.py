@@ -1,5 +1,7 @@
-from vfms.enums.enum_maintenance import EnumMaintenance
+# standard libs
 import datetime
+
+from vfms.enums.enum_maintenance import EnumMaintenance
 
 class MaintenanceMixin:
     def __init__(
