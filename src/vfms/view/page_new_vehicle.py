@@ -42,6 +42,24 @@ def vehicle_asks() -> dict:
     year                            = q.text("Year: ").ask()
     mileage                         = q.text("Mileage: ").ask()
 
+    status = q.select(
+        "Choose a vehicle type:",
+        choices = [
+            q.Choice(
+                title   = "Available", 
+                value   = VehicleStatus.AVAILABLE
+            ), 
+            q.Choice(
+                title   = "Inactive", 
+                value   = VehicleStatus.INACTIVE
+            ), 
+            q.Choice(
+                title   = "Maintenance", 
+                value   = VehicleStatus.MAINTENANCE
+            ), 
+        ]
+    ).ask()
+
     request = {
         "plate"                 : plate,
         "model"                 : model,
@@ -49,7 +67,7 @@ def vehicle_asks() -> dict:
         "year"                  : year,
         "mileage"               : mileage,
         "average_consumption"   : 0.0,
-        "status"                : VehicleStatus.AVAILABLE,
+        "status"                : status,
         "maintenance_h"         : [],
         "trips"                 : []
     }

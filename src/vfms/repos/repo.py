@@ -1,5 +1,5 @@
 import json
-from vfms.config.config import file_path
+from vfms.config.settings import file_path
 
 class Repo():
     def __init__(

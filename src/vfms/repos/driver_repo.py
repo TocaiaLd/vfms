@@ -33,7 +33,7 @@ class DriverRepo(Repo):
                 "trip_history"    : driver.trip_history
             }
 
-            database["drivers"][driver.cpf] = new_item
+            database[driver.cpf] = new_item
             f.close()
 
         with open(self.db_driver_path, "w", encoding="utf-8") as f:
@@ -51,9 +51,9 @@ class DriverRepo(Repo):
 
         list_drivers = {}
 
-        for db_title, data in database.items():
-            for cpf, data in data.items():
-                list_drivers[cpf] = data
+    
+        for cpf, data in database.items():
+            list_drivers[cpf] = data
 
         return list_drivers
 
@@ -63,10 +63,10 @@ class DriverRepo(Repo):
 
         searched_driver = {}
 
-        for db_title, data in database.items():
-            for cpf, data in data.items():
-                if cpf == search_cpf:
-                    searched_driver[cpf] = data
+
+        for cpf, data in database.items():
+            if cpf == search_cpf:
+                searched_driver[cpf] = data
 
         return searched_driver
 

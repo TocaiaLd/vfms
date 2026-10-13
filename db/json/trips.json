@@ -2,22 +2,8 @@
     "0": {
         "driver_cpf": "62853765300",
         "vehicle_plate": "ABC-1D34",
-        "origin": "teste",
-        "destiny": "teste",
-        "distance": "123"
-    },
-    "1": {
-        "driver_cpf": "62853765300",
-        "vehicle_plate": "XYZ-4E65",
-        "origin": "paraiba",
-        "destiny": "pernambuco",
-        "distance": "520km"
-    },
-    "2": {
-        "driver_cpf": "62853765300",
-        "vehicle_plate": "XYZ-4E65",
-        "origin": "teste2",
-        "destiny": "teste2",
-        "distance": "teste2"
+        "origin": "crato",
+        "destiny": "barbalha",
+        "distance": "15"
     }
 }

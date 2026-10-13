@@ -1,6 +1,3 @@
-# Standard libs
-import os
-
 # External libs
 import questionary as q
 
@@ -11,6 +8,7 @@ from vfms.view.page_new_driver import page_new_driver
 from vfms.view.page_show_driver_by_cpf import page_show_driver_by_cpf
 from vfms.view.page_show_drivers import page_show_drivers
 from vfms.view.page_add_trip import add_trip
+from vfms.view.page_reports import page_reports
 
 RUNNING = True
 
@@ -51,6 +49,10 @@ def menu():
                 q.Choice(
                     title   = "Add trip",
                     value   = add_trip
+                ),
+                q.Choice(
+                    title   = "Reports",
+                    value   = page_reports
                 ), 
                 q.Choice(
                     title   = "Close Program", 
