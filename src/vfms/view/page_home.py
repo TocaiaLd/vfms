@@ -1,3 +1,6 @@
+# Standard libs
+import os
+
 # External libs
 import questionary as q
 
@@ -63,6 +66,6 @@ def menu():
 
         input()
 
-        # os.system('cls' if os.name == 'nt' else 'clear')
+        os.system('cls' if os.name == 'nt' else 'clear')
 
 

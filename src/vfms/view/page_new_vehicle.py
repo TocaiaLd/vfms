@@ -75,7 +75,7 @@ def vehicle_asks() -> dict:
     # Call specifics asks
     return request
 
-def page_create_vehicle():
+def page_create_vehicle() -> None:
     i = q.select(
         "Choose a vehicle type:",
         choices = [
@@ -104,4 +104,6 @@ def page_create_vehicle():
     request = vehicle_asks()
     request.update(i())
 
-    MasterController.VEHICLE_CONTROLLER.value.create_vehicle(request)
+    response = MasterController.VEHICLE_CONTROLLER.value.create_vehicle(request)
+
+    q.text(f"{response["message"]}. Press any key to return to main menu...").ask()

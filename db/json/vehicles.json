@@ -31,5 +31,19 @@
             "max_weight": 15.5
         }
     },
-    "Motorcycle": {}
+    "Motorcycle": {
+        "OSU-1E23": {
+            "model": "Yamaha",
+            "brand": "Factor 150",
+            "year": 2016,
+            "mileage": 141421421.0,
+            "average_consumption": 0.0,
+            "status": "AVAILABLE",
+            "license_category": "A",
+            "maintenance_h": [],
+            "trips": [],
+            "fuel": 0.0,
+            "cc": 150
+        }
+    }
 }

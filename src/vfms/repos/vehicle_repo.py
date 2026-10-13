@@ -28,10 +28,14 @@ class VehicleRepo(Repo):
             vehicle : Car | Truck | Motorcycle,
         ):
         
+        response = None
+
         if self.database_type == "json":
-            self.save_vehicle_json(vehicle)
+            response = self.save_vehicle_json(vehicle)
         else:
-            self.save_vehicle_sql(vehicle)
+            response = self.save_vehicle_sql(vehicle)
+        
+        return response
 
     def save_vehicle_json(self, vehicle):
         with open(self.db_vehicles_path, "r", encoding="utf-8") as f:
@@ -59,7 +63,12 @@ class VehicleRepo(Repo):
             json.dump(database, f, indent=4, ensure_ascii=False)
             f.close()
         
-        print(f"{vehicle.__class__.__name__} of plate {vehicle.plate} saved! Returning to menu...")
+        response = {
+            "sucess" : True,
+            "message": f"{vehicle.__class__.__name__} of plate {vehicle.plate} saved!",
+        }
+
+        return response
 
     def save_vehicle_sql(self, vehicl):
         print("sql")
@@ -76,15 +85,6 @@ class VehicleRepo(Repo):
                     list_vehicles[what] = vehicles
                 elif what == "vehicles":
                     list_vehicles[vehicle_type] = vehicles
-                
-
-        # for db_title, data in database.items():
-        #     if db_title == "vehicles":
-        #         for vehicle_type, data in data.items():
-        #             if what == vehicle_type:
-        #                 list_vehicles[what] = data
-        #             elif what == "vehicles":
-        #                 list_vehicles[vehicle_type] = data
 
         return list_vehicles
 

@@ -7,7 +7,7 @@ class VehicleController:
     def __init__(self, repo):
         self.repo = repo
     
-    def create_car(self, request):
+    def create_car(self, request) -> dict:
         car = Car(
             plate               = request["plate"],
             model               = request["model"],  
@@ -22,9 +22,10 @@ class VehicleController:
             ports               = request["ports"],
         )
        
-        self.repo.save_vehicle(car)
+        response = self.repo.save_vehicle(car)
+        return response
     
-    def create_truck(self, request):
+    def create_truck(self, request) -> dict:
         truck = Truck(
             plate               = request["plate"],
             model               = request["model"],  
@@ -40,9 +41,10 @@ class VehicleController:
             
         )
        
-        self.repo.save_vehicle(truck)
+        response = self.repo.save_vehicle(truck)
+        return response
     
-    def create_motorcycle(self, request):
+    def create_motorcycle(self, request) -> dict:
         motorcycle = Motorcycle(
             plate               = request["plate"],
             model               = request["model"],  
@@ -57,15 +59,27 @@ class VehicleController:
             cc                  = request["cc"],
         )
        
-        self.repo.save_vehicle(motorcycle)
+        response = self.repo.save_vehicle(motorcycle)
+        return response
 
-    def create_vehicle(self, request):
-        if request["type"] == "car":
-            self.create_car(request)
-        elif request["type"] == "truck":
-            self.create_truck(request)
-        elif request["type"] == "motorcycle":
-            self.create_motorcycle(request)
+
+    def create_vehicle(self, request) -> dict:
+        response = None
+
+        try:
+            if request["type"] == "car":
+                response = self.create_car(request)
+            elif request["type"] == "truck":
+                response = self.create_truck(request)
+            elif request["type"] == "motorcycle":
+                response = self.create_motorcycle(request)
+        except Exception as e:
+            response = {
+                "sucess": False,
+                "message": e
+            }
+
+        return response
 
     def show_vehicles(self, what):
         response = self.repo.show_vehicles_json(what)
