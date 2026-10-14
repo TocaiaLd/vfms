@@ -22,7 +22,7 @@ class VehicleController:
             ports               = request["ports"],
         )
        
-        response = self.repo.save_vehicle(car)
+        response = self.repo.save_vehicle(car.to_dict(), request["type"])
         return response
     
     def create_truck(self, request) -> dict:
@@ -41,7 +41,7 @@ class VehicleController:
             
         )
        
-        response = self.repo.save_vehicle(truck)
+        response = self.repo.save_vehicle(truck.to_dict(), request["type"])
         return response
     
     def create_motorcycle(self, request) -> dict:
@@ -59,25 +59,19 @@ class VehicleController:
             cc                  = request["cc"],
         )
        
-        response = self.repo.save_vehicle(motorcycle)
+        response = self.repo.save_vehicle(motorcycle.to_dict(), request["type"])
+        
         return response
-
 
     def create_vehicle(self, request) -> dict:
         response = None
 
-        try:
-            if request["type"] == "car":
-                response = self.create_car(request)
-            elif request["type"] == "truck":
-                response = self.create_truck(request)
-            elif request["type"] == "motorcycle":
-                response = self.create_motorcycle(request)
-        except Exception as e:
-            response = {
-                "sucess": False,
-                "message": e
-            }
+        if request["type"] == "Car":
+            response = self.create_car(request)
+        elif request["type"] == "Truck":
+            response = self.create_truck(request)
+        elif request["type"] == "Motorcycle":
+            response = self.create_motorcycle(request)
 
         return response
 

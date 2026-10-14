@@ -9,7 +9,7 @@ def motorcycle_asks() -> dict:
     ports = q.text("cc: ").ask() 
     
     d = {
-        "type"           : "motorcycle",
+        "type"           : "Motorcycle",
         "cc"             : ports,
     }
 
@@ -19,7 +19,7 @@ def truck_asks() -> dict:
     ports = q.text("Max weight: ").ask() 
     
     d = {
-        "type"                   : "truck",
+        "type"                   : "Truck",
         "max_weight"             : ports,
     }
 
@@ -29,7 +29,7 @@ def car_asks() -> dict:
     ports = q.text("Number of ports: ").ask() 
     
     d = {
-        "type"              : "car",
+        "type"              : "Car",
         "ports"             : ports,
     }
 
@@ -105,5 +105,4 @@ def page_create_vehicle() -> None:
     request.update(i())
 
     response = MasterController.VEHICLE_CONTROLLER.value.create_vehicle(request)
-
     q.text(f"{response["message"]}. Press any key to return to main menu...").ask()

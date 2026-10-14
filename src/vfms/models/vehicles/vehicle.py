@@ -196,6 +196,22 @@ class Vehicle:
 
         self._maintenance_h = value
 
+    def to_dict(self) -> dict:
+        return {
+            self.plate: {
+                "model"                 : self.model,
+                "brand"                 : self.brand,
+                "year"                  : self.year,
+                "mileage"               : self.mileage,
+                "average_consumption"   : self.average_consumption,
+                "status"                : self.status.name,
+                "license_category"      : self.license_category.name,
+                "maintenance_h"         : self.maintenance_h,
+                "trips"                 : self.trips,
+                "fuel"                  : self.fuel
+            }
+        }
+
     """
     Special method to uses with print(v), where v is a Vehicle class
     """

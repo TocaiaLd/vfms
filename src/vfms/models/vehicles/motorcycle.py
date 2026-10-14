@@ -42,6 +42,16 @@ class Motorcycle(Vehicle):
         
         self._cc= new_value
 
+    def to_dict(self) -> dict:
+        d = super().to_dict()
+    
+        for plate, data in d.items():
+            data.update({
+            "license_category"  : self.license_category.name,
+            "cc"                : self.cc
+            })
+
+        return d
     """
     Special method to uses with print(v), where v is a Motorcile class
     """

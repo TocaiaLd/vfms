@@ -6,57 +6,26 @@ from vfms.models.vehicles.truck import Truck
 from vfms.models.vehicles.car import Car
 
 class VehicleRepo(Repo):
-    def specific_atributtes(self, vehicle) -> dict:
-        
-        if isinstance(vehicle, Car):
-            d = {
-                "ports": vehicle.ports
-            }
-        elif isinstance(vehicle, Truck):
-            d = {
-                "max_weight": vehicle.max_weight
-            }
-        elif isinstance(vehicle, Motorcycle):
-            d = {
-                "cc":  vehicle.cc
-            }
-
-        return d
-    
     def save_vehicle(
             self, 
-            vehicle : Car | Truck | Motorcycle,
+            vehicle_dict : dict,
+            vehicle_type : str
         ):
         
         response = None
 
         if self.database_type == "json":
-            response = self.save_vehicle_json(vehicle)
+            response = self.save_vehicle_json(vehicle_dict, vehicle_type)
         else:
-            response = self.save_vehicle_sql(vehicle)
+            response = self.save_vehicle_sql(vehicle_dict, vehicle_type)
         
         return response
 
-    def save_vehicle_json(self, vehicle):
+    def save_vehicle_json(self, vehicle_dict, vehicle_type):
         with open(self.db_vehicles_path, "r", encoding="utf-8") as f:
             database = json.load(f)
 
-            new_item = {
-                "model"                 : vehicle.model,
-                "brand"                 : vehicle.brand,
-                "year"                  : vehicle.year,
-                "mileage"               : vehicle.mileage,
-                "average_consumption"   : vehicle.average_consumption,
-                "status"                : vehicle.status.name,
-                "license_category"      : vehicle.license_category.name,
-                "maintenance_h"         : vehicle.maintenance_h,
-                "trips"                 : vehicle.trips,
-                "fuel"                  : vehicle.fuel
-            }
-
-            new_item.update(self.specific_atributtes(vehicle))
-
-            database[vehicle.__class__.__name__][vehicle.plate] = new_item
+            database[vehicle_type].update(vehicle_dict) 
             f.close()
 
         with open(self.db_vehicles_path, "w", encoding="utf-8") as f:
@@ -65,12 +34,12 @@ class VehicleRepo(Repo):
         
         response = {
             "sucess" : True,
-            "message": f"{vehicle.__class__.__name__} of plate {vehicle.plate} saved!",
+            "message": f"{vehicle_type} saved in json!",
         }
 
         return response
 
-    def save_vehicle_sql(self, vehicl):
+    def save_vehicle_sql(self, vehicle, vehicle_type):
         print("sql")
 
     def show_vehicles_json(self, what):

@@ -43,6 +43,17 @@ class Car(Vehicle):
         
         self._ports= new_value
 
+    def to_dict(self) -> dict:
+        d = super().to_dict()
+        
+        for plate, data in d.items():
+            data.update({
+            "license_category"  : self.license_category.name,
+            "ports"             : self.ports
+            })
+
+        return d
+
     """
     Special method to uses with print(v), where v is a Car class
     """
