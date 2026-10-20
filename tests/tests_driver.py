@@ -112,6 +112,11 @@ def test_cpf_setter_invalid(driver, value):
         (VehicleLicense.D),
         (VehicleLicense.AB),
         (VehicleLicense.AD),
+        "A",
+        "B",
+        "D",
+        "AB",
+        "AD",
     ]
 )
 def test_license_setter_valid(driver, value):
@@ -122,11 +127,6 @@ def test_license_setter_valid(driver, value):
 @pytest.mark.parametrize(
     "value",
     [
-        "A",
-        "B",
-        "D",
-        "AB",
-        "AD",
         "Car",
         "Motorcicle",
         "Truck",
@@ -170,8 +170,10 @@ def test_xp_setter_invalid(driver, value):
 @pytest.mark.parametrize(
     "value",
     [
-        (DriverStatus.AVAILABLE),
-        (DriverStatus.ON_TRIP),
+        DriverStatus.AVAILABLE,
+        DriverStatus.ON_TRIP,
+        "AVAILABLE",
+        "ON_TRIP",
     ]
 )
 def test_status_setter_valid(driver, value):
@@ -182,8 +184,10 @@ def test_status_setter_valid(driver, value):
 @pytest.mark.parametrize(
     "value",
     [
-        "AVAILABLE",
-        "ON_TRIP",
+        "1",
+        "Teste",
+        2.5,
+        2,
     ]
 )
 def test_status_setter_invalid(driver, value):
