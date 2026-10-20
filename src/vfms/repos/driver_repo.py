@@ -8,7 +8,6 @@ class DriverRepo(Repo):
     def __init__(
         self, 
     ):
-        self.db_driver_path = "db/json/drivers.json"
         super().__init__()
     
     def save_driver(

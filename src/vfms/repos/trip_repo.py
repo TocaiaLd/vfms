@@ -6,13 +6,8 @@ from vfms.repos.repo import Repo
 from vfms.models.trip import Trip
 
 class TripRepo(Repo):
-    def __init__(
-        self, 
-    ):
+    def __init__(self):
         super().__init__()
-        with open("src/vfms/config/settings.json", "r", encoding="utf-8") as f:
-            self.id_trip = json.load(f)
-            f.close()
     
     def save_trip(self, trip):
         if self.database_type == "json":
