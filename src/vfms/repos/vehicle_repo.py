@@ -7,21 +7,13 @@ from vfms.models.vehicles.car import Car
 
 class VehicleRepo(Repo):
     def save_vehicle(
-            self, 
+            self         : VehicleRepo, 
             vehicle_dict : dict,
             vehicle_type : str
         ):
         
         response = None
 
-        if self.database_type == "json":
-            response = self.save_vehicle_json(vehicle_dict, vehicle_type)
-        else:
-            response = self.save_vehicle_sql(vehicle_dict, vehicle_type)
-        
-        return response
-
-    def save_vehicle_json(self, vehicle_dict, vehicle_type):
         with open(self.db_vehicles_path, "r", encoding="utf-8") as f:
             database = json.load(f)
 
@@ -39,10 +31,7 @@ class VehicleRepo(Repo):
 
         return response
 
-    def save_vehicle_sql(self, vehicle, vehicle_type):
-        print("sql")
-
-    def show_vehicles_json(self, what):
+    def show_vehicles(self, what):
         with open(self.db_vehicles_path, "r", encoding="utf-8") as f:
             database = json.load(f)
 

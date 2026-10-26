@@ -30,9 +30,8 @@ class Vehicle:
         self.fuel = fuel
         self.trips = trips
 
-    """
-    Plate encapsulation
-    """
+    
+    # Plate encapsulation
     @property
     def plate(self):
         return self._plate
@@ -61,9 +60,8 @@ class Vehicle:
 
         self._plate = p
 
-    """
-    Mileage encapsulation
-    """
+    
+    # Mileage encapsulation
     @property
     def mileage(self):
         return self._mileage
@@ -83,9 +81,7 @@ class Vehicle:
         
         self._mileage = new_value
 
-    """
-    Year encapsulation
-    """
+    # Year encapsulation
     @property
     def year(self):
         return self._year
@@ -111,9 +107,8 @@ class Vehicle:
 
         self._year = value
     
-    """
-    Average consumption encapsulation
-    """
+    
+    # Average consumption encapsulation
     @property
     def average_consumption(self):
         return self._average_consumption
@@ -130,9 +125,8 @@ class Vehicle:
         
         self._average_consumption= new_value
 
-    """
-    fuel encapsulation
-    """
+    
+    # fuel encapsulation
     @property
     def fuel(self):
         return self._fuel
@@ -153,9 +147,8 @@ class Vehicle:
         self._fuel= new_value
 
 
-    """
-    Vehicle status encapsulation
-    """
+    
+    # Vehicle status encapsulation
     @property
     def status(self):
         return self._status
@@ -178,9 +171,8 @@ class Vehicle:
         
         self._status = new_value
     
-    """
-    Vehicle maintenance history
-    """
+    
+    # Vehicle maintenance history
     @property
     def maintenance_h(self):
         return self._maintenance_h
@@ -212,9 +204,8 @@ class Vehicle:
             }
         }
 
-    """
-    Special method to uses with print(v), where v is a Vehicle class
-    """
+    
+    # Special method to uses with print(v), where v is a Vehicle class
     def __str__(self) -> str:
         return f"""Plate: {self.plate}
 Model: {self.model}
@@ -226,27 +217,22 @@ Status: {self.status.name}
 Maintenances: {self.maintenance_h}
 Fuel: {self.fuel}"""
     
-    """
-    Special method to uses with print(repr(v)), where v is a Vehicle class
-    """
+    # Special method to uses with print(repr(v)), where v is a Vehicle class
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}(plate={self.plate}, model={self.model}, brand={self.brand}, year={self.year}, mileage={self.mileage}km, average_consumption={self.average_consumption}l/km, status={self.status.name}, maintenances={self.maintenance_h}, fuel={self.fuel}l)"
 
-    """
-    Special method to compare objects using the plate (Ex: v1 == v2 -> v1.plate == v2.plate, where v1 and v2 are from Vehicle class)
-    """
+    
+    # Special method to compare objects using the plate (Ex: v1 == v2 -> v1.plate == v2.plate, where v1 and v2 are from Vehicle class)
     def __eq__(self, other : Vehicle) -> bool:
         return self.plate == other.plate
 
-    """
-    special method to sort vehicles by mileage
-    """
+    
+    # special method to sort vehicles by mileage
     def __lt__(self, other : Vehicle) -> bool:
         return self.mileage < other.mileage
 
-    """
-    Special method to iterate the vehicle maintenances
-    """
+    
+    # Special method to iterate the vehicle maintenances
     def __iter__(self) -> list[MaintenanceMixin]:
         return iter(self.maintenance_h)
             

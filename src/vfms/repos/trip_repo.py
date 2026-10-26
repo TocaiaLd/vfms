@@ -10,12 +10,6 @@ class TripRepo(Repo):
         super().__init__()
     
     def save_trip(self, trip):
-        if self.database_type == "json":
-            self.save_trip_json(trip)
-        else:
-            pass
-
-    def save_trip_json(self, trip):
         new_item = {
             "driver_cpf"    : trip.driver_cpf,       
             "vehicle_plate" : trip.vehicle_plate,
@@ -24,17 +18,16 @@ class TripRepo(Repo):
             "distance"      : trip.distance
         }
         
-        
-        self.save_only_trip_json(new_item)
-        self.save_trip_on_vehicle_json(trip.vehicle_plate)
-        self.save_trip_on_driver_json(trip.driver_cpf)
+        self.save_only_trip(new_item)
+        self.save_trip_on_vehicle(trip.vehicle_plate)
+        self.save_trip_on_driver(trip.driver_cpf)
 
         with open("src/vfms/config/settings.json", "w", encoding="utf-8") as f:
-            self.id_trip["settings"]["last_id_trip"] += 1
-            json.dump(self.id_trip, f, indent=4, ensure_ascii=False)
+            self.last_id_trip += 1
+            json.dump(self.last_id_trip, f, indent=4, ensure_ascii=False)
             f.close()
 
-    def save_only_trip_json(self, new_item):
+    def save_only_trip(self, new_item):
         with open(self.db_trips_path, "r", encoding="utf-8") as f:
             database = json.load(f)
             database[self.id_trip["settings"]["last_id_trip"]] = new_item
@@ -44,7 +37,7 @@ class TripRepo(Repo):
             json.dump(database, f, indent=4, ensure_ascii=False)
             f.close()
 
-    def save_trip_on_vehicle_json(self, plate):
+    def save_trip_on_vehicle(self, plate):
         with open(self.db_vehicles_path, "r", encoding="utf-8") as f:
             database = json.load(f)
 
@@ -59,7 +52,7 @@ class TripRepo(Repo):
             json.dump(database, f, indent=4, ensure_ascii=False)
             f.close()
 
-    def save_trip_on_driver_json(self, driver_cpf):
+    def save_trip_on_driver(self, driver_cpf):
         with open(self.db_driver_path, "r", encoding="utf-8") as f:
             drivers_db = json.load(f)
             f.close()
