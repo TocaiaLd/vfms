@@ -1,6 +1,4 @@
-from vfms.config.settings import check_config
-from vfms.view.page_home import menu
+from vfms.view.menu import menu
 
 def main() -> None:
-    check_config()
     menu()

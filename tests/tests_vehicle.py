@@ -9,9 +9,7 @@ from vfms.enums.vehicle_license import VehicleLicense
 from vfms.enums.vehicle_status import VehicleStatus
 
 
-"""
-Creation of vehicle, Car, Truck and Motorcycle objects
-"""
+# Creation of Vehicle, Car, Truck, and Motorcycle objects
 def test_vehicle_cannot_be_instantiated_directly():
     with pytest.raises(TypeError):
         Vehicle(
@@ -114,9 +112,7 @@ def test_motorcycle_creation(motorcycle):
     assert motorcycle.trips                 == []
 
 
-"""
-Setters tests
-"""
+# Setter tests
 @pytest.mark.parametrize(
     "value, expected",
     [

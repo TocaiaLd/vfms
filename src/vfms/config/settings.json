@@ -1,6 +1,13 @@
 {
     "settings": {
-        "repository": "json",
-        "last_id_trip": 1
+        "repository": {
+            "type": "json",
+            "files": [
+                "drivers.json",
+                "trips.json",
+                "vehicles.json"
+            ],
+            "last_id_trip": 1
+        }
     }
 }

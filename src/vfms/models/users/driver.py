@@ -3,10 +3,10 @@ from vfms.models.trip import Trip
 from vfms.enums.vehicle_license import VehicleLicense
 from vfms.models.users.person import Person
 
-"""represents a driver signed on system"""
+# represents a driver signed on system
 class Driver(Person):
     def __init__(
-        self,
+        self            : Driver,
         name            : str,
         cpf             : int,
         license         : VehicleLicense,
@@ -23,7 +23,7 @@ class Driver(Person):
 
     @property
     def license(self):
-        return self._license 
+        return self._license
 
     @license.setter
     def license(self, value):
@@ -83,14 +83,14 @@ class Driver(Person):
                 new_value = DriverStatus.AVAILABLE
             elif new_value == "ON_TRIP":
                 new_value = DriverStatus.ON_TRIP
+            elif new_value == "INACTIVE":
+                new_value = DriverStatus.INACTIVE
             else:
                 raise TypeError("the status is not from DriverStatus type")
         
         self._status = new_value
 
-    """
-    Special method to uses with print(d), where d is a Driver class
-    """
+    # Special method to uses with print(d), where d is a Driver class
     def __str__(self) -> str:
         text = super().__str__()
     
@@ -100,22 +100,16 @@ experience: {self.xp}
 status: {self.status.name}
 trip_history: {self.trip_history}"""
     
-    """
-    Special method to uses with print(repr(d)), where d is a Driver class
-    """
+    # Special method to uses with print(repr(d)), where d is a Driver class
     def __repr__(self) -> str:
         text = super().__repr__()
         text = text.replace(")", "")
         return f"{text}, license={self.license}, xp={self.xp}, status={self.status}, trip_history={self.trip_history})"
 
-    """
-    special method to sort drivers by xp
-    """
+    # Special method to sort drivers by xp
     def __lt__(self, other : Driver) -> bool:
         return self.xp < other.xp
 
-    """
-    Special method to iterate the driver trips
-    """
+    # Special method to iterate the driver trips
     def __iter__(self) -> list[Trip]:
         return iter(self.trip_history)

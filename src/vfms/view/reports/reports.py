@@ -2,29 +2,29 @@
 import questionary as q
 from tabulate import tabulate
 
-from vfms.view.page_add_trip import get_vehicles
+from vfms.view.trips.add_trip import get_vehicles
 
 def page_vehicle_status_report():
     vehicles = get_vehicles()
 
     if not vehicles:
         q.text("there are no vehicles, please add at least one to use the reports page. Press any key to go back to the menu").ask()
-    
 
-    collumns = ["Plate", "Model", "Status"]
+    collumns = ["Plate", "Model", "Brand", "Year", "Mileage", "Consumption", "Status", "Fuel", "Maintenances", "Trips"]
     data = []
 
+
     for v in vehicles:
-        data.append([v.plate, v.model, v.status.name])
+        data.append([v.plate, v.model, v.brand, v.year, v.mileage, v.average_consumption, v.status.name, v.fuel, v.maintenance_h, v.trips])
 
     return collumns, data
 
 def page_reports():
     i = q.select(
-        "Choose a vehicle type:",
+        "Choose a report type:",
         choices = [
             q.Choice(
-                title   = "Vehicles Status Report", 
+                title   = "Report - All vehicles", 
                 value   = page_vehicle_status_report
             ), 
             # q.Choice(

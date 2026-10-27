@@ -3,33 +3,34 @@
         "ABC-1D34": {
             "model": "teste",
             "brand": "teste",
-            "year": 2000,
-            "mileage": 2000.0,
+            "year": 2020,
+            "mileage": 200.0,
             "average_consumption": 0.0,
             "status": "AVAILABLE",
             "license_category": "B",
-            "maintenance_h": [],
+            "maintenance_h": [
+                {
+                    "type": "preventive",
+                    "price": 1000.0,
+                    "description": "teste",
+                    "date": "2026-10-27T16:30:59"
+                }
+            ],
             "trips": [
                 0
             ],
-            "fuel": 0.0,
-            "ports": 4
+            "fuel": 100.0,
+            "ports": 4,
+            "refuel_h": [
+                {
+                    "liters": 100.0,
+                    "price_per_liter": 5.85,
+                    "total": 585.0,
+                    "date": "2026-10-27T16:31:26"
+                }
+            ]
         }
     },
-    "Truck": {
-        "XYZ-4E65": {
-            "model": "Accelo",
-            "brand": "Mercedez-benz",
-            "year": 2024,
-            "mileage": 4800.0,
-            "average_consumption": 0.0,
-            "status": "INACTIVE",
-            "license_category": "D",
-            "maintenance_h": [],
-            "trips": [],
-            "fuel": 0.0,
-            "max_weight": 15.5
-        }
-    },
+    "Truck": {},
     "Motorcycle": {}
 }

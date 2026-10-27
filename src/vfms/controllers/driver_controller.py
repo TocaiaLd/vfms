@@ -18,7 +18,7 @@ class DriverController:
         self.repo.save_driver(driver)
 
     def show_drivers(self):
-        response = self.repo.read_drivers_json()
+        response = self.repo.read_drivers()
 
         list_of_drivers = []
 

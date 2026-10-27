@@ -23,9 +23,7 @@ class Truck(Vehicle):
         self.max_weight = max_weight
         self.license_category = license_category
 
-    """
-    cc encapsulation
-    """
+    # Max weight encapsulation
     @property
     def max_weight(self):
         return self._max_weight
@@ -42,9 +40,18 @@ class Truck(Vehicle):
         
         self._max_weight= new_value
 
-    """
-    Special method to uses with print(v), where v is a Motorcile class
-    """
+    def to_dict(self) -> dict:
+        d = super().to_dict()
+        
+        for plate, data in d.items():
+            data.update({
+            "license_category"  : self.license_category.name,
+            "max_weight"        : self.max_weight
+            })
+
+        return d
+
+    # Special method used by print(v), where v is a Truck object
     def __str__(self) -> str:
         text = super().__str__()
         text = text.replace(")", "")
@@ -52,9 +59,7 @@ class Truck(Vehicle):
 license category: {self.license_category.name}
 max_weight: {self.max_weight}t"""
     
-    """
-    Special method to uses with print(repr(v)), where v is a Motorcile class
-    """
+    # Special method used by repr(v), where v is a Truck object
     def __repr__(self) -> str:
         text = super().__repr__()
         text = text.replace(")", "")

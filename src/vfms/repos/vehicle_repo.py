@@ -6,65 +6,43 @@ from vfms.models.vehicles.truck import Truck
 from vfms.models.vehicles.car import Car
 
 class VehicleRepo(Repo):
-    def specific_atributtes(self, vehicle) -> dict:
-        
-        if isinstance(vehicle, Car):
-            d = {
-                "ports": vehicle.ports
-            }
-        elif isinstance(vehicle, Truck):
-            d = {
-                "max_weight": vehicle.max_weight
-            }
-        elif isinstance(vehicle, Motorcycle):
-            d = {
-                "cc":  vehicle.cc
-            }
+    def update_vehicle(self, plate, update):
+        with open(self.db_vehicles_path, "r", encoding="utf-8") as f:
+            database = json.load(f)
+        for vehicles in database.values():
+            if plate in vehicles:
+                vehicles[plate].update(update)
+                with open(self.db_vehicles_path, "w", encoding="utf-8") as f:
+                    json.dump(database, f, indent=4, ensure_ascii=False)
+                return vehicles[plate]
+        raise ValueError("Vehicle not found")
 
-        return d
-    
     def save_vehicle(
-            self, 
-            vehicle : Car | Truck | Motorcycle,
+            self         : VehicleRepo, 
+            vehicle_dict : dict,
+            vehicle_type : str
         ):
         
-        if self.database_type == "json":
-            self.save_vehicle_json(vehicle)
-        else:
-            self.save_vehicle_sql(vehicle)
+        response = None
 
-    def save_vehicle_json(self, vehicle):
         with open(self.db_vehicles_path, "r", encoding="utf-8") as f:
             database = json.load(f)
 
-            new_item = {
-                "model"                 : vehicle.model,
-                "brand"                 : vehicle.brand,
-                "year"                  : vehicle.year,
-                "mileage"               : vehicle.mileage,
-                "average_consumption"   : vehicle.average_consumption,
-                "status"                : vehicle.status.name,
-                "license_category"      : vehicle.license_category.name,
-                "maintenance_h"         : vehicle.maintenance_h,
-                "trips"                 : vehicle.trips,
-                "fuel"                  : vehicle.fuel
-            }
-
-            new_item.update(self.specific_atributtes(vehicle))
-
-            database[vehicle.__class__.__name__][vehicle.plate] = new_item
+            database[vehicle_type].update(vehicle_dict) 
             f.close()
 
         with open(self.db_vehicles_path, "w", encoding="utf-8") as f:
             json.dump(database, f, indent=4, ensure_ascii=False)
             f.close()
         
-        print(f"{vehicle.__class__.__name__} of plate {vehicle.plate} saved! Returning to menu...")
+        response = {
+            "sucess" : True,
+            "message": f"{vehicle_type} saved in json!",
+        }
 
-    def save_vehicle_sql(self, vehicl):
-        print("sql")
+        return response
 
-    def show_vehicles_json(self, what):
+    def show_vehicles(self, what):
         with open(self.db_vehicles_path, "r", encoding="utf-8") as f:
             database = json.load(f)
 

@@ -5,23 +5,10 @@ import json
 from vfms.repos.repo import Repo
 
 class DriverRepo(Repo):
-    def __init__(
-        self, 
-    ):
-        self.db_driver_path = "db/json/drivers.json"
+    def __init__(self):
         super().__init__()
     
-    def save_driver(
-            self, 
-            driver,
-        ):
-        
-        if self.database_type == "json":
-            self.save_driver_json(driver)
-        else:
-            self.save_driver_sql(driver)
-
-    def save_driver_json(self, driver):
+    def save_driver(self, driver,):
         with open(self.db_driver_path, "r", encoding="utf-8") as f:
             database = json.load(f)
 
@@ -42,10 +29,7 @@ class DriverRepo(Repo):
         
         print(f"Driver {driver.name} saved! Returning to menu...")
 
-    def save_driver_sql(self, vehicl):
-        pass
-
-    def read_drivers_json(self):
+    def read_drivers(self):
         with open(self.db_driver_path, "r", encoding="utf-8") as f:
             database = json.load(f)
 

@@ -1,5 +1,6 @@
 # external libs
 import questionary as q
+from tabulate import tabulate
 
 # Project imports
 from vfms.config.depedencies import MasterController
@@ -36,7 +37,12 @@ def page_select_vehicles_to_show():
     else:
         response = MasterController.VEHICLE_CONTROLLER.value.show_vehicles(what=i)
 
-    for item in response:
-        print(repr(item))
+    collumns = ["Plate", "Model", "Brand", "Year", "Mileage", "Consumption", "Status", "Fuel"]
+    data = []
 
-    q.text("Press a key to quit").ask()
+    for v in response:
+        data.append([v.plate, v.model, v.brand, v.year, v.mileage, v.average_consumption, v.status.name, v.fuel])
+    
+    print(tabulate(data, headers=collumns, tablefmt="fancy_grid"))
+
+    q.text("Press a key to go back").ask()

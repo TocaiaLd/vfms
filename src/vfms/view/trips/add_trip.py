@@ -36,40 +36,55 @@ def add_trip():
 
         return
 
-    for i in range(len(drivers)):
-        drivers[i] = q.Choice(
-            title   = repr(drivers[i]),
-            value   = f"{drivers[i].cpf}"
-        )
+    drivers_choices = []
 
-    cpf = q.select(
+    for i in range(len(drivers)):
+        drivers_choices.append(q.Choice(
+            title   = repr(drivers[i]),
+            value   = i
+        ))
+
+    driver_index = q.select(
         message         = "First, select a driver",
-        choices         = drivers 
+        choices         = drivers_choices
     ).ask()
+
+    driver = drivers[driver_index]
+
+    vehicles_choices = []
 
     for i in range(len(vehicles)):
-        vehicles[i] = q.Choice(
+        vehicles_choices.append(q.Choice(
             title   = repr(vehicles[i]),
-            value   = f"{vehicles[i].plate}"
-        )
+            value   = i
+        ))
 
-    plate = q.select(
+    vehicle_index = q.select(
         message         = "Now, select a vehicle",
-        choices         = vehicles 
+        choices         = vehicles_choices
     ).ask()
 
+    vehicle = vehicles[vehicle_index]
 
-    origin      = q.text("Origin:").ask()
-    destiny     = q.text("Destiny:").ask()
-    distance    = q.text("Distance:").ask()
+    from vfms.repos.trip_repo import TripRepo
+    if TripRepo.license_allows(driver.license.name, vehicle.license_category.name):
+        origin      = q.text("Origin:").ask()
+        destiny     = q.text("Destiny:").ask()
+        distance    = q.text("Distance:").ask()
 
-    request = {
-        "origin"        : origin,
-        "destiny"       : destiny,
-        "distance"      : distance,
-        "driver_cpf"    : cpf,
-        "vehicle_plate" : plate
-    }
+        request = {
+            "origin"        : origin,
+            "destiny"       : destiny,
+            "distance"      : distance,
+            "driver_cpf"    : f"{driver.cpf}",
+            "vehicle_plate" : vehicle.plate
+        }
 
-    MasterController.TRIP_CONTROLLER.value.new_trip(request)
- 
+        try:
+            MasterController.TRIP_CONTROLLER.value.new_trip(request)
+            q.text("Trip allocated. The driver and vehicle are assigned until the trip is completed.").ask()
+        except (ValueError, TypeError) as error:
+            q.text(str(error)).ask()
+    else:
+        q.text("Driver's license is incompatible with the vehicle category. Press any key to continue.").ask()
+
