@@ -24,9 +24,7 @@ class Car(Vehicle):
         self.ports = ports
         self.license_category = license_category
 
-    """
-    ports encapsulation
-    """
+    # Ports encapsulation
     @property
     def ports(self):
         return self._ports
@@ -54,9 +52,7 @@ class Car(Vehicle):
 
         return d
 
-    """
-    Special method to uses with print(v), where v is a Car class
-    """
+    # Special method used by print(v), where v is a Car object
     def __str__(self) -> str:
         text = super().__str__()
         text = text.replace(")", "")
@@ -64,9 +60,7 @@ class Car(Vehicle):
 license category: {self.license_category.name}
 ports: {self.ports}"""
     
-    """
-    Special method to uses with print(repr(v)), where v is a Car class
-    """
+    # Special method used by repr(v), where v is a Car object
     def __repr__(self) -> str:
         text = super().__repr__()
         text = text.replace(")", "")

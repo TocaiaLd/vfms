@@ -6,9 +6,7 @@ from vfms.models.users.person import Person
 from vfms.enums.driver_status import DriverStatus
 from vfms.enums.vehicle_license import VehicleLicense
 
-"""
-Testing the Driver class
-"""
+# Tests for the Driver class
 @pytest.fixture
 def driver():
     return Driver(
@@ -28,9 +26,7 @@ def test_driver_creation(driver):
     assert driver.status == DriverStatus.AVAILABLE
     assert driver.trip_history == []
 
-"""
-Testing the Person class
-"""
+# Tests for the Person class
 
 def test_person_cannot_be_instantiated():
     with pytest.raises(TypeError):
@@ -40,9 +36,7 @@ def test_person_cannot_be_instantiated():
         )
 
 
-"""
-Testing setters
-"""
+# Setter tests
 # Name
 @pytest.mark.parametrize(
     "value",

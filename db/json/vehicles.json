@@ -8,13 +8,27 @@
             "average_consumption": 0.0,
             "status": "AVAILABLE",
             "license_category": "B",
-            "maintenance_h": [],
-            "trips": [
-                0,
-                1
+            "maintenance_h": [
+                {
+                    "type": "preventive",
+                    "price": 1000.0,
+                    "description": "teste",
+                    "date": "2026-10-27T16:30:59"
+                }
             ],
-            "fuel": 0.0,
-            "ports": 4
+            "trips": [
+                0
+            ],
+            "fuel": 100.0,
+            "ports": 4,
+            "refuel_h": [
+                {
+                    "liters": 100.0,
+                    "price_per_liter": 5.85,
+                    "total": 585.0,
+                    "date": "2026-10-27T16:31:26"
+                }
+            ]
         }
     },
     "Truck": {},

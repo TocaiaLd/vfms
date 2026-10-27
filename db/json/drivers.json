@@ -1,12 +1,11 @@
 {
     "62853765300": {
         "name": "José",
-        "license": "AB",
+        "license": "AD",
         "xp": 20,
         "status": "AVAILABLE",
         "trip_history": [
-            0,
-            1
+            0
         ]
     }
 }

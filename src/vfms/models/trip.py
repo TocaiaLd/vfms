@@ -1,5 +1,5 @@
 class Trip:
-    """Representa uma viagem realizada por um motorista e um veículo."""
+    """Represents a trip taken by a driver in a vehicle."""
     def __init__(
         self            : Trip,
         driver_cpf      : str,

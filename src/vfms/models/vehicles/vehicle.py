@@ -29,13 +29,14 @@ class Vehicle:
         self.maintenance_h = maintenance_h
         self.fuel = fuel
         self.trips = trips
+        self.refuel_h = []
 
-    
+
     # Plate encapsulation
     @property
     def plate(self):
         return self._plate
-    
+
     @plate.setter
     def plate(self, p):
         l = len(p)
@@ -43,7 +44,7 @@ class Vehicle:
 
         if l < 8 or l > 8:
             raise IndexError(f"Wrong size of string")
-        
+
 
         for i, letter in enumerate(p):
             if i in number_positions:
@@ -60,7 +61,7 @@ class Vehicle:
 
         self._plate = p
 
-    
+
     # Mileage encapsulation
     @property
     def mileage(self):
@@ -75,10 +76,10 @@ class Vehicle:
                 new_value = float(new_value)
             except:
                 raise ValueError("Not a float")
-        
+
         if new_value < 0:
             raise ValueError("Mileage cannot be less than zero!")
-        
+
         self._mileage = new_value
 
     # Year encapsulation
@@ -87,27 +88,27 @@ class Vehicle:
         return self._year
 
     @year.setter
-    def year(self, value):    
+    def year(self, value):
         if not isinstance(value, int):
             try:
                 n_value = float(value)
                 value = int(value)
-                
+
                 r = n_value - value
 
                 if r != 0:
                     raise ValueError("Not a int")
-                                
+
             except:
                 raise ValueError("Not a int")
-        
+
         # the firts car was created at 1888
         if value < 1888:
             raise ValueError("the year of the car must be >= 1888")
 
         self._year = value
-    
-    
+
+
     # Average consumption encapsulation
     @property
     def average_consumption(self):
@@ -122,10 +123,10 @@ class Vehicle:
                 new_value = float(new_value)
             except:
                 raise ValueError("Not a float")
-        
+
         self._average_consumption= new_value
 
-    
+
     # fuel encapsulation
     @property
     def fuel(self):
@@ -140,14 +141,14 @@ class Vehicle:
                 new_value = float(new_value)
             except:
                 raise ValueError("Not a float")
-        
+
         if value < 0:
             raise Exception("Cannot be less than 0")
 
         self._fuel= new_value
 
 
-    
+
     # Vehicle status encapsulation
     @property
     def status(self):
@@ -156,7 +157,7 @@ class Vehicle:
     @status.setter
     def status(self, value):
         new_value = value
-        
+
         if not isinstance(new_value, VehicleStatus):
             if new_value == VehicleStatus.AVAILABLE.name:
                 new_value = VehicleStatus.AVAILABLE
@@ -168,22 +169,22 @@ class Vehicle:
                 new_value = VehicleStatus.ON_TRIP
             else:
                 raise ValueError("Not a Vehicle Status")
-        
+
         self._status = new_value
-    
-    
+
+
     # Vehicle maintenance history
     @property
     def maintenance_h(self):
         return self._maintenance_h
-        
+
     @maintenance_h.setter
     def maintenance_h(self, value):
         if not isinstance(value, list):
             raise ValueError("It's not a list")
-        
+
         for m in value:
-            if not isinstance(m, MaintenanceMixin):
+            if not isinstance(m, (MaintenanceMixin, dict)):
                 raise ValueError("The list of maintenances has one or more objects that are not from Maintenance class")
 
         self._maintenance_h = value
@@ -198,13 +199,14 @@ class Vehicle:
                 "average_consumption"   : self.average_consumption,
                 "status"                : self.status.name,
                 "license_category"      : self.license_category.name,
-                "maintenance_h"         : self.maintenance_h,
+                "maintenance_h"         : [m.to_dict() if hasattr(m, "to_dict") else m for m in self.maintenance_h],
                 "trips"                 : self.trips,
-                "fuel"                  : self.fuel
+                "fuel"                  : self.fuel,
+                "refuel_h"              : self.refuel_h
             }
         }
 
-    
+
     # Special method to uses with print(v), where v is a Vehicle class
     def __str__(self) -> str:
         return f"""Plate: {self.plate}
@@ -216,23 +218,23 @@ Average Consumption: {self.average_consumption} l/km
 Status: {self.status.name}
 Maintenances: {self.maintenance_h}
 Fuel: {self.fuel}"""
-    
+
     # Special method to uses with print(repr(v)), where v is a Vehicle class
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}(plate={self.plate}, model={self.model}, brand={self.brand}, year={self.year}, mileage={self.mileage}km, average_consumption={self.average_consumption}l/km, status={self.status.name}, maintenances={self.maintenance_h}, fuel={self.fuel}l)"
 
-    
+
     # Special method to compare objects using the plate (Ex: v1 == v2 -> v1.plate == v2.plate, where v1 and v2 are from Vehicle class)
     def __eq__(self, other : Vehicle) -> bool:
         return self.plate == other.plate
 
-    
+
     # special method to sort vehicles by mileage
     def __lt__(self, other : Vehicle) -> bool:
         return self.mileage < other.mileage
 
-    
+
     # Special method to iterate the vehicle maintenances
     def __iter__(self) -> list[MaintenanceMixin]:
         return iter(self.maintenance_h)
-            
+

@@ -23,9 +23,7 @@ class Motorcycle(Vehicle):
         self.cc = cc
         self.license_category = license_category
 
-    """
-    cc encapsulation
-    """
+    # CC encapsulation
     @property
     def cc(self):
         return self._cc
@@ -52,9 +50,7 @@ class Motorcycle(Vehicle):
             })
 
         return d
-    """
-    Special method to uses with print(v), where v is a Motorcile class
-    """
+    # Special method used by print(v), where v is a Motorcycle object
     def __str__(self) -> str:
         text = super().__str__()
         text = text.replace(")", "")
@@ -62,9 +58,7 @@ class Motorcycle(Vehicle):
 license category: {self.license_category.name}
 cc: {self.cc}"""
     
-    """
-    Special method to uses with print(repr(v)), where v is a Motorcile class
-    """
+    # Special method used by repr(v), where v is a Motorcycle object
     def __repr__(self) -> str:
         text = super().__repr__()
         text = text.replace(")", "")

@@ -2,6 +2,9 @@ from vfms.enums.vehicle_license import VehicleLicense
 from vfms.models.vehicles.motorcycle import Motorcycle
 from vfms.models.vehicles.truck import Truck
 from vfms.models.vehicles.car import Car
+from vfms.models.maintenance_mixin import MaintenanceMixin
+from vfms.models.refuel_mixin import RefuelMixin
+from vfms.enums.vehicle_status import VehicleStatus
 
 class VehicleController:
     def __init__(self, repo):
@@ -125,4 +128,30 @@ class VehicleController:
                 list_of_vehicles.append(v)
 
         return list_of_vehicles
+
+    def add_maintenance(self, plate, maintenance_type, price, description):
+        record = MaintenanceMixin(maintenance_type, price, description)
+        saved = self.repo.update_vehicle(plate, {"status": VehicleStatus.MAINTENANCE.name})
+        history = saved.setdefault("maintenance_h", [])
+        history.append(record.to_dict())
+        self.repo.update_vehicle(plate, {"maintenance_h": history})
+        return record
+
+    def complete_maintenance(self, plate):
+        vehicle = self.repo.update_vehicle(plate, {"status": VehicleStatus.AVAILABLE.name})
+        return vehicle
+
+    def refuel(self, plate, liters, price_per_liter=0):
+        record = RefuelMixin(liters, price_per_liter)
+        vehicle = self.repo.update_vehicle(plate, {})
+        history = vehicle.setdefault("refuel_h", [])
+        history.append(record.to_dict())
+        fuel = float(vehicle.get("fuel", 0)) + record.liters
+        update = {"fuel": fuel, "refuel_h": history}
+        # Refueling an inactive vehicle returns it to service, but never
+        # clears a trip or maintenance lock.
+        if vehicle.get("status") == VehicleStatus.INACTIVE.name:
+            update["status"] = VehicleStatus.AVAILABLE.name
+        self.repo.update_vehicle(plate, update)
+        return record
 

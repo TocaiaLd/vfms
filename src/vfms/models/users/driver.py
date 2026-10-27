@@ -83,6 +83,8 @@ class Driver(Person):
                 new_value = DriverStatus.AVAILABLE
             elif new_value == "ON_TRIP":
                 new_value = DriverStatus.ON_TRIP
+            elif new_value == "INACTIVE":
+                new_value = DriverStatus.INACTIVE
             else:
                 raise TypeError("the status is not from DriverStatus type")
         
