@@ -2,7 +2,7 @@
 
 class Person:
     def __init__(
-        self, 
+        self    : Person, 
         name    : str,
         cpf     : int,
     ):
@@ -56,22 +56,18 @@ class Person:
 
         self._cpf = n
 
-    """
-    Special method to uses with print(d), where d is a Driver class
-    """
+    # Special method to uses with print(d), where d is a Driver class
     def __str__(self) -> str:
         return f"""Name: {self.name}
 cpf: {self.cpf}"""
     
-    """
-    Special method to uses with print(repr(d)), where d is a Driver class
-    """
+    
+    # Special method to uses with print(repr(d)), where d is a Driver class
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}(name={self.name}, cpf={self.cpf})"
 
-    """
-    Special method to compare objects using the cpf (Ex: d1 == d2 -> d1.cpf == v2.cpf, where d1 and d2 are from Driver class)
-    """
+    
+    # Special method to compare objects using the cpf (Ex: d1 == d2 -> d1.cpf == v2.cpf, where d1 and d2 are from Driver class)
     def __eq__(self, other) -> bool:
         return self.cpf == other.cpf
     
