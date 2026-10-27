@@ -1,4 +1,5 @@
 # Vehicle Fleet Management System (vfms)
+The vfms project is a cli program writted in python - using the oriented object programming paradigm - that allows organizations to manage they vehicle fleet.
 
 ## Summary
 - [Description](#description)
@@ -10,8 +11,6 @@
 - [File Structure](#file-structure)
 
 - [Running](#running)
-
-The vfms project is a cli program writted in python - using the oriented object programming paradigm - that allows organizations to manage they vehicle fleet.
 
 ## Description
 The vfms project is a cli program writted in python - using the oriented object programming paradigm - that allows organizations to manage they vehicle fleet.
