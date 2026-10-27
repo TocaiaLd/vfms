@@ -76,7 +76,7 @@ class VehicleController:
         return response
 
     def show_vehicles(self, what):
-        response = self.repo.show_vehicles_json(what)
+        response = self.repo.show_vehicles(what)
 
         list_of_vehicles = []
 

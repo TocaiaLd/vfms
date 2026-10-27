@@ -1,5 +1,6 @@
 # external libs
 import questionary as q
+from tabulate import tabulate
 
 # Project imports
 from vfms.config.depedencies import MasterController
@@ -10,7 +11,13 @@ def page_show_driver_by_cpf():
     response = MasterController.DRIVER_CONTROLLER.value.show_driver_by_cpf(search_cpf)
     
     if response:
-        print(repr(response))
+        collumns = ["Name", "CPF", "License", "Experience", "Status", "Trips History"]
+        data = []
+
+        
+        data.append([response.name, response.cpf, response.license.name, response.xp, response.status.name, response.trip_history])
+    
+        print(tabulate(data, headers=collumns, tablefmt="fancy_grid"))
     else:
         q.text("There is no driver with this cpf")
 

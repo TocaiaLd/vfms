@@ -1,5 +1,22 @@
 {
-    "Car": {},
+    "Car": {
+        "ABC-1D34": {
+            "model": "teste",
+            "brand": "teste",
+            "year": 2020,
+            "mileage": 200.0,
+            "average_consumption": 0.0,
+            "status": "AVAILABLE",
+            "license_category": "B",
+            "maintenance_h": [],
+            "trips": [
+                0,
+                1
+            ],
+            "fuel": 0.0,
+            "ports": 4
+        }
+    },
     "Truck": {},
     "Motorcycle": {}
 }

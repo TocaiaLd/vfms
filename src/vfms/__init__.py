@@ -1,4 +1,4 @@
-from vfms.view.page_home import menu
+from vfms.view.menu import menu
 
 def main() -> None:
     menu()

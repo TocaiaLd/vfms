@@ -7,7 +7,7 @@
                 "trips.json",
                 "vehicles.json"
             ],
-            "last_id_trip": 0
+            "last_id_trip": 2
         }
     }
 }
