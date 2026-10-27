@@ -9,6 +9,8 @@
 
 - [File Structure](#file-structure)
 
+- [Running](#running)
+
 The vfms project is a cli program writted in python - using the oriented object programming paradigm - that allows organizations to manage they vehicle fleet.
 
 ## Description
@@ -28,7 +30,7 @@ Learn how to use OOP and create a functional program.
 
 ```
 
-## Running the Project
+## Running
 You can use the following commands to run the program:
 
 #### Linux and MacOs
