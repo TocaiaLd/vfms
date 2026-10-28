@@ -1,27 +1,25 @@
-from vfms.models.trip import Trip
-from vfms.models.maintenance_mixin import MaintenanceMixin
 from vfms.models.vehicles.vehicle import Vehicle
 from vfms.enums.vehicle_status import VehicleStatus
 from vfms.enums.vehicle_license import VehicleLicense
 
 class Motorcycle(Vehicle):
     def __init__(
-        self,
-        plate               : str | None,
+        self                : Motorcycle,
+        plate               : str,
         model               : str,
         brand               : str,
         year                : int,
         mileage             : float,
         average_consumption : float,
         status              : VehicleStatus,
-        maintenance_h       : list[MaintenanceMixin] | [],
-        trips               : list[Trip] | [],
+        max_fuel            : float,
+        fuel                : float,
         cc                  : int,
-        license_category    = VehicleLicense.A,
+        license             = VehicleLicense.A,
     ):
-        super().__init__(plate, model, brand, year, mileage, average_consumption, status, maintenance_h, trips)
+        super().__init__(plate, model, brand, year, mileage, average_consumption, status, max_fuel, fuel)
         self.cc = cc
-        self.license_category = license_category
+        self.license = license
 
     # CC encapsulation
     @property
@@ -45,8 +43,8 @@ class Motorcycle(Vehicle):
     
         for plate, data in d.items():
             data.update({
-            "license_category"  : self.license_category.name,
-            "cc"                : self.cc
+            "cc"                : self.cc,
+            "license"           : self.license.name
             })
 
         return d
@@ -55,11 +53,11 @@ class Motorcycle(Vehicle):
         text = super().__str__()
         text = text.replace(")", "")
         return f"""{text}
-license category: {self.license_category.name}
+license category: {self.license.name}
 cc: {self.cc}"""
     
     # Special method used by repr(v), where v is a Motorcycle object
     def __repr__(self) -> str:
         text = super().__repr__()
         text = text.replace(")", "")
-        return f"{text}, license_category={self.license_category.name}, cc={self.cc})"
+        return f"{text}, license_category={self.license.name}, cc={self.cc})"

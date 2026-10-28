@@ -4,7 +4,7 @@ import questionary as q
 # project imports
 from vfms.models.users.driver import Driver
 from vfms.models.vehicles.vehicle import Vehicle
-from vfms.config.depedencies import MasterController
+from vfms.depedencies import MasterController
 
 def get_drivers() -> list[Driver]:
     drivers = MasterController.DRIVER_CONTROLLER.value.show_drivers()

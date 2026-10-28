@@ -1,6 +1,6 @@
 # Standard libs
 from vfms.enums.vehicle_license import VehicleLicense
-from vfms.config.depedencies import MasterController
+from vfms.depedencies import MasterController
 import questionary as q
 
 # Project imports

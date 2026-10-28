@@ -8,7 +8,6 @@ from vfms.models.vehicles.motorcycle import Motorcycle
 from vfms.enums.vehicle_license import VehicleLicense
 from vfms.enums.vehicle_status import VehicleStatus
 
-
 # Creation of Vehicle, Car, Truck, and Motorcycle objects
 def test_vehicle_cannot_be_instantiated_directly():
     with pytest.raises(TypeError):
@@ -20,7 +19,6 @@ def test_vehicle_cannot_be_instantiated_directly():
             mileage=10000.0,
             average_consumption=10.0,
             status=VehicleStatus.AVAILABLE,
-            maintenance_h=[]
         )
 
 @pytest.fixture
@@ -33,8 +31,6 @@ def car():
         mileage             = 10000.0,
         average_consumption = 10.0,
         status              = VehicleStatus.AVAILABLE,
-        trips               = [],
-        maintenance_h       = [],
         ports               = 4,
     )
 def test_car_creation(car):
@@ -46,11 +42,9 @@ def test_car_creation(car):
     assert car.mileage              == 10000.0
     assert car.average_consumption  == 10.0
     assert car.status               == VehicleStatus.AVAILABLE
-    assert car.maintenance_h        == []
     assert car.ports                == 4
     assert car.fuel                 == 0.0
-    assert car.license_category     == VehicleLicense.B
-    assert car.trips                == []
+    assert car.license              == VehicleLicense.B
 
 @pytest.fixture
 def truck():
@@ -62,8 +56,6 @@ def truck():
         mileage                 = 4800.0,
         average_consumption     = 8.0,
         status                  = VehicleStatus.AVAILABLE,
-        maintenance_h           = [],
-        trips                   = [],
         max_weight              = 15.5
     )
 def test_truck_creation(truck):
@@ -92,9 +84,7 @@ def motorcycle():
         mileage             = 423425.3125,
         average_consumption = 20.5,
         status              = VehicleStatus.AVAILABLE,
-        maintenance_h       = [],
         cc                  = 150,
-        trips               = []
     )
 def test_motorcycle_creation(motorcycle):
     assert isinstance(motorcycle, Motorcycle)

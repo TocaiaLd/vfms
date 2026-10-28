@@ -1,9 +1,9 @@
 from enum import Enum
 
 class VehicleLicense(Enum):
-    A = "A"
-    B = "B"
-    D = "D"
-    AB = "AB"
-    AD = "AD"
+    A = 6
+    B = 12
+    D = 9
+    AB = 2
+    AD = 3
     

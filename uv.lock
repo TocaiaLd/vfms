@@ -107,6 +107,11 @@ dependencies = [
     { name = "tabulate" },
 ]
 
+[package.dev-dependencies]
+dev = [
+    { name = "pytest" },
+]
+
 [package.metadata]
 requires-dist = [
     { name = "prompt-toolkit", specifier = ">=3.0.53" },
@@ -114,6 +119,9 @@ requires-dist = [
     { name = "questionary", specifier = ">=2.1.1" },
     { name = "tabulate", specifier = ">=0.10.0" },
 ]
+
+[package.metadata.requires-dev]
+dev = [{ name = "pytest", specifier = ">=9.1.1" }]
 
 [[package]]
 name = "wcwidth"

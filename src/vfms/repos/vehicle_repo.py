@@ -5,57 +5,70 @@ from vfms.models.vehicles.motorcycle import Motorcycle
 from vfms.models.vehicles.truck import Truck
 from vfms.models.vehicles.car import Car
 
-class VehicleRepo(Repo):
-    def update_vehicle(self, plate, update):
-        with open(self.db_vehicles_path, "r", encoding="utf-8") as f:
-            database = json.load(f)
-        for vehicles in database.values():
-            if plate in vehicles:
-                vehicles[plate].update(update)
-                with open(self.db_vehicles_path, "w", encoding="utf-8") as f:
-                    json.dump(database, f, indent=4, ensure_ascii=False)
-                return vehicles[plate]
-        raise ValueError("Vehicle not found")
+class VehicleRepo():
+    def __init__(
+        self    : VehicleRepo, 
+        repo    : Repo
+    ):
+        self.repo = repo
+    
+    # def update_vehicle(
+    #     self    : VehicleRepo, 
+    #     plate   : str, 
+    #     update  : 
+    # ):
+    #     pass
 
     def save_vehicle(
-            self         : VehicleRepo, 
-            vehicle_dict : dict,
-            vehicle_type : str
-        ):
+        self            : VehicleRepo, 
+        vehicle_obj     : Car | Truck | Motorcycle,
+    ):
+        response = "Vehicle saved successfuly."
         
-        response = None
+        if isinstance(vehicle_obj, Car):
+            self.save_car(vehicle_obj)
+        elif isinstance(vehicle_obj, Truck):
+            self.save_truck(vehicle_obj)
+        elif isinstance(vehicle_obj, Motorcycle):
+            self.save_motorcycle(vehicle_obj)
+        else:
+            response = "Error to save the vehicle. Class doesn't exists"
 
-        with open(self.db_vehicles_path, "r", encoding="utf-8") as f:
-            database = json.load(f)
-
-            database[vehicle_type].update(vehicle_dict) 
-            f.close()
-
-        with open(self.db_vehicles_path, "w", encoding="utf-8") as f:
-            json.dump(database, f, indent=4, ensure_ascii=False)
-            f.close()
-        
-        response = {
-            "sucess" : True,
-            "message": f"{vehicle_type} saved in json!",
-        }
-
+        self.repo._con.commit()
         return response
 
+    def save_car(
+        self            : VehicleRepo, 
+        vehicle_obj     : Car,
+    ):
+        self.repo._cursor.execute("""
+INSERT INTO cars (plate, model, brand, year, mileage, average_consumption, status, max_fuel, fuel, ports, license) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+""",
+(vehicle_obj.plate, vehicle_obj.model, vehicle_obj.brand, vehicle_obj.year, vehicle_obj.mileage, vehicle_obj.average_consumption, vehicle_obj.status.name, vehicle_obj.max_fuel, vehicle_obj.fuel, vehicle_obj.ports, vehicle_obj.license.name)
+)
+
+    def save_truck(
+        self            : VehicleRepo, 
+        vehicle_obj     : Truck,
+    ):
+        self.repo._cursor.execute("""
+INSERT INTO trucks (plate, model, brand, year, mileage, average_consumption, status, max_fuel, fuel, max_weight, license) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+""",
+(vehicle_obj.plate, vehicle_obj.model, vehicle_obj.brand, vehicle_obj.year, vehicle_obj.mileage, vehicle_obj.average_consumption, vehicle_obj.status.name, vehicle_obj.max_fuel, vehicle_obj.fuel, vehicle_obj.max_weight, vehicle_obj.license.name)
+)
+
+    def save_motorcycle(
+        self            : VehicleRepo, 
+        vehicle_obj     : Truck,
+    ):
+        self.repo._cursor.execute("""
+INSERT INTO motorcycles (plate, model, brand, year, mileage, average_consumption, status, max_fuel, fuel, cc, license) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+""",
+(vehicle_obj.plate, vehicle_obj.model, vehicle_obj.brand, vehicle_obj.year, vehicle_obj.mileage, vehicle_obj.average_consumption, vehicle_obj.status.name, vehicle_obj.max_fuel, vehicle_obj.fuel, vehicle_obj.cc, vehicle_obj.license.name)
+)
+
     def show_vehicles(self, what):
-        with open(self.db_vehicles_path, "r", encoding="utf-8") as f:
-            database = json.load(f)
-
-        list_vehicles = {}
-
-        for vehicle_type, vehicles in database.items():
-            if vehicles:
-                if what == vehicle_type:
-                    list_vehicles[what] = vehicles
-                elif what == "vehicles":
-                    list_vehicles[vehicle_type] = vehicles
-
-        return list_vehicles
+        pass
 
 
                     

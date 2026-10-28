@@ -1,6 +1,6 @@
 # External libs
 import questionary as q
-from vfms.config.depedencies import MasterController
+from vfms.depedencies import MasterController
 
 from vfms.view.trips.add_trip import add_trip
 

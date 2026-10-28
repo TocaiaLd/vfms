@@ -3,7 +3,7 @@ import questionary as q
 from tabulate import tabulate
 
 # Project imports
-from vfms.config.depedencies import MasterController
+from vfms.depedencies import MasterController
 
 def page_select_vehicles_to_show():
     i = q.select(

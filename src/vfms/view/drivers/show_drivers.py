@@ -3,7 +3,7 @@ import questionary as q
 from tabulate import tabulate
 
 # Project imports
-from vfms.config.depedencies import MasterController
+from vfms.depedencies import MasterController
 
 def page_show_drivers():
     response = MasterController.DRIVER_CONTROLLER.value.show_drivers()

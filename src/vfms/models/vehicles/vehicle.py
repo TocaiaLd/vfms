@@ -1,10 +1,8 @@
-from vfms.models.trip import Trip
-from vfms.models.maintenance_mixin import MaintenanceMixin
 from vfms.enums.vehicle_status import VehicleStatus
 
 class Vehicle:
     def __init__(
-        self,
+        self                : Vehicle,
         plate               : str,
         model               : str,
         brand               : str,
@@ -12,24 +10,21 @@ class Vehicle:
         mileage             : float,
         average_consumption : float,
         status              : VehicleStatus,
-        maintenance_h       : list[MaintenanceMixin] | [],
-        trips               : list[Trip] | [],
-        fuel                = 0.0
+        max_fuel            : float,
+        fuel                : float,
     ):
         if type(self) is Vehicle:
             raise TypeError("You cannot create a Vehicle object directly")
 
-        self.plate = plate
-        self.model = model
-        self.brand = brand
-        self.year = year
-        self.mileage = mileage
-        self.average_consumption = average_consumption
-        self.status = status
-        self.maintenance_h = maintenance_h
-        self.fuel = fuel
-        self.trips = trips
-        self.refuel_h = []
+        self.plate                  = plate
+        self.model                  = model
+        self.brand                  = brand
+        self.year                   = year
+        self.mileage                = mileage
+        self.average_consumption    = average_consumption
+        self.status                 = status
+        self.max_fuel               = max_fuel
+        self.fuel                   = fuel
 
 
     # Plate encapsulation
@@ -60,7 +55,6 @@ class Vehicle:
                     raise ValueError(f"position {i} must be a char")
 
         self._plate = p
-
 
     # Mileage encapsulation
     @property
@@ -108,7 +102,6 @@ class Vehicle:
 
         self._year = value
 
-
     # Average consumption encapsulation
     @property
     def average_consumption(self):
@@ -126,7 +119,6 @@ class Vehicle:
 
         self._average_consumption= new_value
 
-
     # fuel encapsulation
     @property
     def fuel(self):
@@ -142,12 +134,10 @@ class Vehicle:
             except:
                 raise ValueError("Not a float")
 
-        if value < 0:
+        if new_value < 0:
             raise Exception("Cannot be less than 0")
 
         self._fuel= new_value
-
-
 
     # Vehicle status encapsulation
     @property
@@ -172,23 +162,6 @@ class Vehicle:
 
         self._status = new_value
 
-
-    # Vehicle maintenance history
-    @property
-    def maintenance_h(self):
-        return self._maintenance_h
-
-    @maintenance_h.setter
-    def maintenance_h(self, value):
-        if not isinstance(value, list):
-            raise ValueError("It's not a list")
-
-        for m in value:
-            if not isinstance(m, (MaintenanceMixin, dict)):
-                raise ValueError("The list of maintenances has one or more objects that are not from Maintenance class")
-
-        self._maintenance_h = value
-
     def to_dict(self) -> dict:
         return {
             self.plate: {
@@ -199,10 +172,8 @@ class Vehicle:
                 "average_consumption"   : self.average_consumption,
                 "status"                : self.status.name,
                 "license_category"      : self.license_category.name,
-                "maintenance_h"         : [m.to_dict() if hasattr(m, "to_dict") else m for m in self.maintenance_h],
-                "trips"                 : self.trips,
-                "fuel"                  : self.fuel,
-                "refuel_h"              : self.refuel_h
+                "max_fuel"              : self.max_fuel,
+                "fuel"                  : self.fuel
             }
         }
 
@@ -216,25 +187,20 @@ Year: {self.year}
 Mileage: {self.mileage} km
 Average Consumption: {self.average_consumption} l/km
 Status: {self.status.name}
-Maintenances: {self.maintenance_h}
-Fuel: {self.fuel}"""
+Max Fuel: {self.max_fuel} l
+Fuel: {self.fuel} l"""
 
     # Special method to uses with print(repr(v)), where v is a Vehicle class
     def __repr__(self) -> str:
-        return f"{self.__class__.__name__}(plate={self.plate}, model={self.model}, brand={self.brand}, year={self.year}, mileage={self.mileage}km, average_consumption={self.average_consumption}l/km, status={self.status.name}, maintenances={self.maintenance_h}, fuel={self.fuel}l)"
+        return f"{self.__class__.__name__}(plate={self.plate}, model={self.model}, brand={self.brand}, year={self.year}, mileage={self.mileage}km, average_consumption={self.average_consumption}l/km, status={self.status.name}, fuel={self.fuel}l, max_fuel={self.max_fuel}l)"
 
 
     # Special method to compare objects using the plate (Ex: v1 == v2 -> v1.plate == v2.plate, where v1 and v2 are from Vehicle class)
     def __eq__(self, other : Vehicle) -> bool:
         return self.plate == other.plate
 
-
     # special method to sort vehicles by mileage
     def __lt__(self, other : Vehicle) -> bool:
         return self.mileage < other.mileage
 
-
-    # Special method to iterate the vehicle maintenances
-    def __iter__(self) -> list[MaintenanceMixin]:
-        return iter(self.maintenance_h)
 

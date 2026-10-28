@@ -1,27 +1,26 @@
-from vfms.models.trip import Trip
-from vfms.models.maintenance_mixin import MaintenanceMixin
+from vfms.models.vehicles.motorcycle import Motorcycle
 from vfms.models.vehicles.vehicle import Vehicle
 from vfms.enums.vehicle_status import VehicleStatus
 from vfms.enums.vehicle_license import VehicleLicense
 
 class Truck(Vehicle):
     def __init__(
-        self,
-        plate               : str | None,
+        self                : Truck,
+        plate               : str,
         model               : str,
         brand               : str,
         year                : int,
         mileage             : float,
         average_consumption : float,
         status              : VehicleStatus,
-        maintenance_h       : list[MaintenanceMixin] | [],
-        trips               : list[Trip] | [],
+        max_fuel            : float,
+        fuel                : float,
         max_weight          : float,
-        license_category    = VehicleLicense.D,
+        license             = VehicleLicense.D,
     ):
-        super().__init__(plate, model, brand, year, mileage, average_consumption, status, maintenance_h, trips)
+        super().__init__(plate, model, brand, year, mileage, average_consumption, status, max_fuel, fuel)
         self.max_weight = max_weight
-        self.license_category = license_category
+        self.license = license
 
     # Max weight encapsulation
     @property
@@ -45,7 +44,7 @@ class Truck(Vehicle):
         
         for plate, data in d.items():
             data.update({
-            "license_category"  : self.license_category.name,
+            "license_category"  : self.license.name,
             "max_weight"        : self.max_weight
             })
 
@@ -56,11 +55,11 @@ class Truck(Vehicle):
         text = super().__str__()
         text = text.replace(")", "")
         return f"""{text}
-license category: {self.license_category.name}
+license category: {self.license.name}
 max_weight: {self.max_weight}t"""
     
     # Special method used by repr(v), where v is a Truck object
     def __repr__(self) -> str:
         text = super().__repr__()
         text = text.replace(")", "")
-        return f"{text}, license_category={self.license_category.name}, max_weight={self.max_weight}t)"
+        return f"{text}, license={self.license.name}, max_weight={self.max_weight}t)"
