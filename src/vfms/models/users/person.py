@@ -4,7 +4,7 @@ class Person:
     def __init__(
         self    : Person, 
         name    : str,
-        cpf     : int,
+        cpf     : str,
     ):
         if type(self) is Person:
             raise TypeError("You cannot create a Person object directly")
@@ -35,26 +35,56 @@ class Person:
         return self._cpf
     
     @cpf.setter
-    def cpf(self, n):
-        n = str(n)
-
-        n = n.replace("-", "").replace(".", "")
-
-        l = len(n)
+    def cpf(self, cpf):
+        cpf_to_setter   = cpf
+        first_number    = 0
+        second_number   = 0
+        count           = 11
         
-        if l < 11 or l > 11:
+        # Gets a rest of a number divided by 11
+        def get_rest(number) -> int:
+            r = number % 11 
+            if r < 2:
+                return 0
+            else:
+                return (11 - r)
+
+        # If is not a string, convert to it
+        if not isinstance(cpf_to_setter, str):
+            cpf_to_setter = str(cpf_to_setter)
+
+        cpf_length = len(cpf_to_setter)
+        
+        if cpf_length < 11 or cpf_length > 11:
             raise Exception("The cpf must have 11 digits")
         
-        for letter in n:
+        # Checks if all characters are numbers
+        for digit in cpf_to_setter:
             try:
-                letter = int(letter)
+                digit = int(digit)
             except:
                 raise Exception("The cpf is only digits") 
-
-        n = int(n)
             
+        for index, char in enumerate(cpf):
+            number = int(char)
 
-        self._cpf = n
+            if index <= 9:
+                first_number += number * (count - 1)
+                second_number += number * count
+
+                if index == 8:
+                    first_number = get_rest(first_number)
+                if index == 9:
+                    second_number = get_rest(second_number)
+                    break
+                
+            
+            count -= 1
+
+        if first_number != int(cpf_to_setter[9]) or second_number != int(cpf_to_setter[10]):
+            raise Exception("Invalid cpf!")
+
+        self._cpf = cpf_to_setter
 
     # Special method to uses with print(d), where d is a Driver class
     def __str__(self) -> str:
