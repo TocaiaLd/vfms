@@ -177,7 +177,6 @@ class Vehicle:
             }
         }
 
-
     # Special method to uses with print(v), where v is a Vehicle class
     def __str__(self) -> str:
         return f"""Plate: {self.plate}

@@ -48,6 +48,7 @@ class Motorcycle(Vehicle):
             })
 
         return d
+        
     # Special method used by print(v), where v is a Motorcycle object
     def __str__(self) -> str:
         text = super().__str__()

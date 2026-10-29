@@ -105,8 +105,6 @@ def page_create_vehicle() -> None:
                 ), 
             ]
         ).ask()
-            
-        clear_screen()
         
         if not input:
             running = False
@@ -117,4 +115,6 @@ def page_create_vehicle() -> None:
 
         response = MasterController.VEHICLE_CONTROLLER.value.create_vehicle(request)
         
-        q.text(f"{response}. Press any key to return to main menu...").ask()
+        q.text(f"{response}. Press any key to continue...").ask()
+
+        clear_screen()

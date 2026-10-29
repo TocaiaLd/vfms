@@ -5,8 +5,9 @@ import questionary as q
 from vfms.utilities.clear_screen import clear_screen
 
 # pages
+from vfms.view.vehicles.delete_vehicle import delete_vehicle
 from .new_vehicle import page_create_vehicle
-from .show_all_vehicles import page_select_vehicles_to_show
+from .vehicles_to_show import menu_vehicles_to_show
 
 # def vehicle_maintenance():
 #     controller = MasterController.VEHICLE_CONTROLLER.value
@@ -52,12 +53,12 @@ def menu_vehicles():
                 ), 
                 q.Choice(
                     title   = "Show vehicles",
-                    value   = page_select_vehicles_to_show
+                    value   = menu_vehicles_to_show
                 ),
-                # q.Choice(
-                #     title="Maintenance", 
-                #     value=vehicle_maintenance
-                # ),
+                q.Choice(
+                    title   = "Delete a vehicle", 
+                    value   = delete_vehicle
+                ),
                 # q.Choice(
                 #     title="Refuel", 
                 #     value=vehicle_refuel

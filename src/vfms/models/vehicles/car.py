@@ -55,11 +55,11 @@ class Car(Vehicle):
         text = super().__str__()
         text = text.replace(")", "")
         return f"""{text}
-License: {self.license_category.name}
+License: {self.license.name}
 Number of ports: {self.ports}"""
     
     # Special method used by repr(v), where v is a Car object
     def __repr__(self) -> str:
         text = super().__repr__()
         text = text.replace(")", "")
-        return f"{text}, license_category={self.license_category.name}, ports={self.ports})"
+        return f"{text}, license_category={self.license.name}, ports={self.ports})"

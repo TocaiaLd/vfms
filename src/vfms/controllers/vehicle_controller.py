@@ -1,3 +1,6 @@
+# External libs
+from tabulate import tabulate
+
 from vfms.enums.vehicle_license import VehicleLicense
 from vfms.models.vehicles.motorcycle import Motorcycle
 from vfms.models.vehicles.truck import Truck
@@ -25,7 +28,7 @@ class VehicleController:
             license             = VehicleLicense.B
         )
        
-        response = self.repo.save_vehicle(car)
+        response = self.repo.save_car(car)
         return response
     
     def create_truck(self, request) -> dict:
@@ -43,7 +46,7 @@ class VehicleController:
             license             = VehicleLicense.D
         )
        
-        response = self.repo.save_vehicle(truck)
+        response = self.repo.save_truck(truck)
         return response
     
     def create_motorcycle(self, request) -> dict:
@@ -61,7 +64,7 @@ class VehicleController:
             license             = VehicleLicense.A,
         )
        
-        response = self.repo.save_vehicle(motorcycle)
+        response = self.repo.save_motorcycle(motorcycle)
         
         return response
 
@@ -78,56 +81,66 @@ class VehicleController:
         return response
 
     def show_vehicles(self, what):
-        pass
-        # response = self.repo.show_vehicles(what)
+        response = None
+        
+        collumns = ["Plate", "Model", "Brand", "Year", "Mileage", "Consumption", "Status", "Max Fuel", "Fuel"]
 
-        # list_of_vehicles = []
+        if what == "cars":
+            response = self.show_cars()
+            collumns.append("Ports")
+        elif what == "trucks":
+            response = self.show_trucks()
+            collumns.append("Max Weight")
+        elif what == "motorcycles":
+            response = self.show_motorcycles()
+            collumns.append("CC")
 
-        # for type, data in response.items():
-        #     for plate, d in data.items():
-        #         if type == "Motorcycle":
-        #             v = Motorcycle(
-        #                 plate               = plate,
-        #                 model               = d["model"],  
-        #                 brand               = d["brand"],  
-        #                 year                = d["year"],
-        #                 mileage             = d["mileage"],
-        #                 average_consumption = d["average_consumption"],
-        #                 status              = d["status"],
-        #                 maintenance_h       = d["maintenance_h"],
-        #                 trips               = d["trips"],
-        #                 cc                  = d["cc"],
-        #             )
-        #         elif type == "Car":
-        #             v = Car(
-        #                 plate               = plate,
-        #                 model               = d["model"],  
-        #                 brand               = d["brand"],  
-        #                 year                = d["year"],
-        #                 mileage             = d["mileage"],
-        #                 average_consumption = d["average_consumption"],
-        #                 status              = d["status"],
-        #                 maintenance_h       = d["maintenance_h"],
-        #                 trips               = d["trips"],
-        #                 ports               = d["ports"],
-        #             )
-        #         elif type == "Truck":
-        #             v = Truck(
-        #                 plate               = plate,
-        #                 model               = d["model"],  
-        #                 brand               = d["brand"],  
-        #                 year                = d["year"],
-        #                 mileage             = d["mileage"],
-        #                 average_consumption = d["average_consumption"],
-        #                 status              = d["status"],
-        #                 maintenance_h       = d["maintenance_h"],
-        #                 trips               = d["trips"],
-        #                 max_weight          = d["max_weight"],
-        #             )
-                
-        #         list_of_vehicles.append(v)
+        collumns.append("License")
+        
+        data = []
 
-        # return list_of_vehicles
+        for v in response:
+            data.append(v)
+
+        response = tabulate(data, headers=collumns, tablefmt="fancy_grid")
+
+        return response
+
+    def show_cars(self):
+        response = self.repo.show_cars()
+        return response
+
+    def show_trucks(self):
+        response = self.repo.show_trucks()
+        return response
+
+    def show_motorcycles(self):
+        response = self.repo.show_motorcycles()
+        return response
+        
+    def delete_vehicle(self, what, plate):
+        response = None
+
+        if what == "cars":
+            response = self.delete_car(plate)
+        elif what == "trucks":
+            response = self.delete_truck(plate)
+        elif what == "motorcycles":
+            response = self.delete_motorcycle(plate)
+        
+        return response
+
+    def delete_car(self, plate):
+        response = self.repo.delete_car(plate)
+        return response
+
+    def delete_truck(self, plate):
+        response = self.repo.delete_truck(plate)
+        return response
+
+    def delete_motorcycle(self, plate):
+        response = self.repo.delete_motorcycle(plate)
+        return response
 
     # def add_maintenance(self, plate, maintenance_type, price, description):
     #     record = MaintenanceMixin(maintenance_type, price, description)

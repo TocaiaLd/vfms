@@ -9,12 +9,6 @@ class Repo():
         self.create_motorcycles_table()
         self._con.commit()
 
-        self._cursor.execute("SELECT * from motorcycles")
-        cars = self._cursor.fetchall()
-
-        for car in cars:
-            print(car)
-
     def create_cars_table(self):
         self._cursor.execute("""
 CREATE TABLE IF NOT EXISTS cars (
