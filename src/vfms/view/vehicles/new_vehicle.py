@@ -80,7 +80,7 @@ def vehicle_asks() -> dict:
     # Returns a dict with the general attributes of a Vehicle class
     return request
 
-def page_create_vehicle() -> None:
+def page_create_vehicle() -> bool:
     running = True
 
     while running:
@@ -89,15 +89,15 @@ def page_create_vehicle() -> None:
             choices = [
                 q.Choice(
                     title   = "Car", 
-                    value   = car_asks
+                    value   = (car_asks, 1)
                 ), 
                 q.Choice(
                     title   = "Truck", 
-                    value   = truck_asks
+                    value   = (truck_asks, 2)
                 ), 
                 q.Choice(
                     title   = "Motorcycle", 
-                    value   = motorcycle_asks
+                    value   = (motorcycle_asks, 3)
                 ), 
                 q.Choice(
                     title   = "Back to the previous page", 
@@ -109,11 +109,18 @@ def page_create_vehicle() -> None:
         if not input:
             running = False
             return not running
-        
-        request = vehicle_asks()
-        request.update(input())
 
-        response = MasterController.VEHICLE_CONTROLLER.value.create_vehicle(request)
+        request = vehicle_asks()
+        request.update(input[0]())
+
+        response = None
+
+        if input[1] == 1:
+            response = MasterController.CAR_CONTROLLER.value.create_car(request)
+        elif input[1] == 2:
+            response = MasterController.TRUCK_CONTROLLER.value.create_truck(request)
+        elif input[1] == 3:
+            response = MasterController.MOTORCYCLE_CONTROLLER.value.create_motorcycle(request)
         
         q.text(f"{response}. Press any key to continue...").ask()
 

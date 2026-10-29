@@ -1,5 +1,6 @@
 # external libs
 import questionary as q
+from tabulate import tabulate
 
 # Utilities
 from vfms.utilities.clear_screen import clear_screen
@@ -37,7 +38,13 @@ def menu_vehicles_to_show():
             running = False
             return True
 
-        response = MasterController.VEHICLE_CONTROLLER.value.show_vehicles(what=input)
+        response = None
+        if input == "cars":
+            response = MasterController.CAR_CONTROLLER.value.show_cars()
+        elif input == "trucks":
+            response = MasterController.TRUCK_CONTROLLER.value.show_trucks()
+        elif input == "motorcycles":
+            response = MasterController.MOTORCYCLE_CONTROLLER.value.show_motorcycles()
 
         print(response)
 

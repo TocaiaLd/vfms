@@ -1,15 +1,12 @@
-# Standard libs
-import os
-
 # External libs
 import questionary as q
 
 # Project imports
 from vfms.utilities.clear_screen import clear_screen
 from vfms.utilities.close_program import close_program
-from vfms.view.reports.menu_reports import menu_reports
-from vfms.view.trips.menu_trips import menu_trips
-from vfms.view.drivers.menu_drivers import menu_drivers
+# from vfms.view.reports.menu_reports import menu_reports
+# from vfms.view.trips.menu_trips import menu_trips
+# from vfms.view.drivers.menu_drivers import menu_drivers
 from vfms.view.vehicles.menu_vehicles import menu_vehicles
 
 def menu():    
