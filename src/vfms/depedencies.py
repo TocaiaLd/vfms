@@ -25,11 +25,11 @@ motorcycle_repo        = MotorcycleRepo(repo)
 motorcycle_controller  = MotorcycleController(motorcycle_repo)
 
 # driver classes imports
-# from vfms.repos.driver_repo import DriverRepo
-# from vfms.controllers.driver_controller import DriverController
+from vfms.repos.driver_repo import DriverRepo
+from vfms.controllers.driver_controller import DriverController
 
-# driver_repo         = DriverRepo(repo)
-# driver_controller   = DriverController(driver_repo)
+driver_repo         = DriverRepo(repo)
+driver_controller   = DriverController(driver_repo)
 
 # trip classes imports
 # from vfms.repos.trip_repo import TripRepo
@@ -42,5 +42,5 @@ class MasterController(Enum):
     CAR_CONTROLLER                = car_controller
     TRUCK_CONTROLLER            = truck_controller
     MOTORCYCLE_CONTROLLER  = motorcycle_controller
-    # DRIVER_CONTROLLER   = driver_controller
+    DRIVER_CONTROLLER          = driver_controller
     # TRIP_CONTROLLER       = trip_controller

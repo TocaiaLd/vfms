@@ -7,6 +7,7 @@ class Repo():
         self.create_cars_table()
         self.create_trucks_table()
         self.create_motorcycles_table()
+        self.create_drivers_table()
         self._con.commit()
 
     def create_cars_table(self):
@@ -61,7 +62,15 @@ CREATE TABLE IF NOT EXISTS motorcycles (
 """)
 
     def create_drivers_table(self):
-        pass
+        self._cursor.execute("""
+CREATE TABLE IF NOT EXISTS drivers (
+    name TEXT NOT NULL,
+    cpf TEXT NOT NULL PRIMARY KEY,
+    license TEXT NOT NULL,
+    xp INTEGER,
+    status TEXT NOT NULL
+)
+""")
 
     def create_trips_table(self):
         pass

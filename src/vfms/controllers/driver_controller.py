@@ -1,55 +1,54 @@
+# External libs
+from vfms.repos.driver_repo import DriverRepo
+from tabulate import tabulate
+
 # Projects imports
 from vfms.models.users.driver import Driver
 
 class DriverController:
-    def __init__(self, repo):
+    def __init__(
+        self : DriverController, 
+        repo : DriverRepo
+    ):
         self.repo = repo
     
-    def new_driver(self, request):
+    def new_driver(self, request) -> str:
         driver = Driver(
             name            = request["name"],
             cpf             = request["cpf"],
             license         = request["license"],
             xp              = request["xp"],
             status          = request["status"],
-            trip_history    = request["trip_history"]
         )
 
-        self.repo.save_driver(driver)
+        return self.repo.save_driver(driver)
 
-    def show_drivers(self):
+    def show_drivers(self) -> str:
         response = self.repo.read_drivers()
 
-        list_of_drivers = []
+        collumns = ["Name", "CPF", "License", "Experience", "Status"]
+        data = []
 
-        for cpf, data in response.items():
-            driver = Driver(
-                name            = data["name"],
-                cpf             = cpf,
-                license         = data["license"],
-                xp              = data["xp"],
-                status          = data["status"],
-                trip_history    = data["trip_history"]
-            )
-            
-            list_of_drivers.append(driver)
-
-        return list_of_drivers
+        for d in response:
+            data.append([d[0], d[1], d[2], d[3], d[4]])
     
-    def show_driver_by_cpf(self, search_cpf):
+        response = tabulate(data, headers=collumns, tablefmt="fancy_grid")
+
+        return response
+    
+    def show_driver_by_cpf(self, search_cpf) -> str:
         response = self.repo.read_driver_by_cpf(search_cpf)
 
-        driver = None
+        collumns = ["Name", "CPF", "License", "Experience", "Status"]
+        data = []
 
-        if response:
-            for cpf, data in response.items():
-                driver = Driver(
-                    name            = data["name"],
-                    cpf             = cpf,
-                    license         = data["license"],
-                    xp              = data["xp"],
-                    status          = data["status"],
-                    trip_history    = data["trip_history"]
-                )
-            
-        return driver
+        for d in response:
+            data.append([d[0], d[1], d[2], d[3], d[4]])
+    
+        response = tabulate(data, headers=collumns, tablefmt="fancy_grid")
+
+        return response
+
+    def delete_driver(self, search_cpf) -> str:
+        response = self.repo.delete_driver(search_cpf)
+        return response

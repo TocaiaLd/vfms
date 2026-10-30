@@ -43,10 +43,11 @@ def page_new_driver():
         "license"               : license,
         "xp"                    : xp,
         "status"                : DriverStatus.AVAILABLE,
-        "trip_history"          : []
     }
 
-    MasterController.DRIVER_CONTROLLER.value.new_driver(request)
+    response = MasterController.DRIVER_CONTROLLER.value.new_driver(request)
+
+    q.text(f"{response}. press any key to continue.").ask()
         
     
     

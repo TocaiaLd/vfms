@@ -69,19 +69,22 @@ class Person:
             number = int(char)
 
             if index <= 9:
-                first_number += number * (count - 1)
                 second_number += number * count
-
-                if index == 8:
-                    first_number = get_rest(first_number)
+                
+                if index <= 8:
+                    first_number += number * (count - 1)
+                    if index == 8:
+                        first_number = get_rest(first_number)
+    
                 if index == 9:
                     second_number = get_rest(second_number)
                     break
                 
-            
             count -= 1
 
         if first_number != int(cpf_to_setter[9]) or second_number != int(cpf_to_setter[10]):
+            print(first_number)
+            print(second_number)
             raise Exception("Invalid cpf!")
 
         self._cpf = cpf_to_setter

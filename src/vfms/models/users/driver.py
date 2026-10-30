@@ -12,14 +12,12 @@ class Driver(Person):
         license         : VehicleLicense,
         xp              : int,
         status          : DriverStatus,
-        trip_history    : list[Trip] | []
     ):
         super().__init__(name, cpf)
         
         self.license                        = license
         self.xp                             = xp
         self.status                         = status
-        self.trip_history                   = trip_history
 
     @property
     def license(self):
