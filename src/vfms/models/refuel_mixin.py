@@ -1,20 +1,35 @@
-import datetime
-
+# Standard imports
+from datetime import datetime
 
 class RefuelMixin:
-    """Represents a fuel refill record."""
+    def refuel(
+        self            : RefuelMixin,
+        liters          : float,
+        price_per_liter : float,
+    ) -> tuple:
+        date = datetime.now()
+        n_liters = float(liters)
 
-    def __init__(self, liters, price_per_liter=0, date=None):
-        self.liters = float(liters)
-        self.price_per_liter = float(price_per_liter)
-        if self.liters <= 0 or self.price_per_liter < 0:
-            raise ValueError("Liters must be positive and price cannot be negative")
-        self.date = date or datetime.datetime.now().isoformat(timespec="seconds")
+        fuel        = getattr(self, 'fuel', 0.0)
+        max_fuel    = getattr(self, 'max_fuel', float('inf'))
+        vehicle_plate= getattr(self, 'plate', None)
 
-    @property
-    def total(self):
-        return self.liters * self.price_per_liter
+        if fuel + n_liters > max_fuel:
+            liters_allowed = max_fuel - fuel
+            print(f"[Aviso] {n_liters}L excede a capacidade. Abastecendo apenas {liters_allowed:.2f}L para encher o tanque.")
+            n_liters = liters_allowed
 
-    def to_dict(self):
-        return {"liters": self.liters, "price_per_liter": self.price_per_liter,
-                "total": self.total, "date": self.date}
+        if n_liters <= 0:
+            print("[Erro] Não é possível abastecer uma quantidade menor ou igual a zero.")
+            return
+
+        self.fuel = fuel + n_liters
+        total_cost= n_liters * float(price_per_liter)
+        total_cost      = round(total_cost, 2)
+
+        # Cria o registro do abastecimento
+        record = (vehicle_plate, n_liters, float(price_per_liter), total_cost, date)
+        
+        print(f"[Mixin] Abastecido com sucesso! Nível atual do tanque: {self.fuel}L")
+
+        return record

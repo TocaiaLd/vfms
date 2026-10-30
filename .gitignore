@@ -11,3 +11,6 @@ wheels/
 
 # pytest
 .pytest_cache
+
+# database
+sqlite3

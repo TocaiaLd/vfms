@@ -31,6 +31,13 @@ from vfms.controllers.driver_controller import DriverController
 driver_repo         = DriverRepo(repo)
 driver_controller   = DriverController(driver_repo)
 
+# maintenance classes imports
+from vfms.repos.refuel_repo import RefuelRepo
+from vfms.controllers.refuel_controller import RefuelController
+
+refuel_repo        = RefuelRepo(repo)
+refuel_controller  = RefuelController(refuel_repo)
+
 # trip classes imports
 # from vfms.repos.trip_repo import TripRepo
 # from vfms.controllers.trip_controller import TripController
@@ -43,4 +50,5 @@ class MasterController(Enum):
     TRUCK_CONTROLLER            = truck_controller
     MOTORCYCLE_CONTROLLER  = motorcycle_controller
     DRIVER_CONTROLLER          = driver_controller
+    REFUEL_CONTROLLER= refuel_controller
     # TRIP_CONTROLLER       = trip_controller

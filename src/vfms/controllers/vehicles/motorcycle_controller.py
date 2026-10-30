@@ -45,6 +45,42 @@ class MotorcycleController:
         
         return response
     
+    def get_by_plate(self, plate) -> Motorcycle | False:
+        vehicle = self.repo.get_by_plate(plate)
+        
+        if vehicle:
+            motorcycle = Motorcycle(
+                plate               = vehicle[0],
+                model               = vehicle[1],  
+                brand               = vehicle[2],  
+                year                = vehicle[3],
+                mileage             = vehicle[4],
+                average_consumption = vehicle[5],
+                status              = vehicle[6],
+                max_fuel            = vehicle[7],
+                fuel                = vehicle[8],
+                cc                  = vehicle[9],
+                license             = VehicleLicense.A
+            )
+
+            return motorcycle
+        
+        return False
+
+    def update_motorcycle(self, motorcycle_obj):
+        response = self.repo.update_motorcycle(motorcycle_obj)
+        return response
+
     def delete_motorcycle(self, plate) -> str:
         response = self.repo.delete_motorcycle(plate)
         return response
+
+    def refuel_motorcycle(self, plate_to_refuel, liters, price_per_liter) -> tuple:
+        motorcycle_obj = self.get_by_plate(plate_to_refuel)
+        
+        if not motorcycle_obj:
+            return "The plate is incorrect"
+        
+        maintenance = motorcycle_obj.refuel(liters, price_per_liter)
+
+        return (self.update_motorcycle(motorcycle_obj), maintenance)

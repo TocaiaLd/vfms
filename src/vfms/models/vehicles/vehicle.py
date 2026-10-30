@@ -1,6 +1,7 @@
+from vfms.models.refuel_mixin import RefuelMixin
 from vfms.enums.vehicle_status import VehicleStatus
 
-class Vehicle:
+class Vehicle(RefuelMixin):
     def __init__(
         self                : Vehicle,
         plate               : str,
@@ -137,7 +138,30 @@ class Vehicle:
         if new_value < 0:
             raise Exception("Cannot be less than 0")
 
-        self._fuel= new_value
+        if new_value > self.max_fuel:
+            raise Exception("Cannot be bigger than max_fuel")
+
+        self._fuel = new_value
+
+    # max_fuel encapsulation
+    @property
+    def max_fuel(self):
+        return self._max_fuel
+
+    @max_fuel.setter
+    def max_fuel(self, value):
+        new_value = value
+
+        if not isinstance(new_value, float):
+            try:
+                new_value = float(new_value)
+            except:
+                raise ValueError("Not a float")
+
+        if new_value < 0:
+            raise Exception("Cannot be less than 0")
+
+        self._max_fuel= new_value
 
     # Vehicle status encapsulation
     @property

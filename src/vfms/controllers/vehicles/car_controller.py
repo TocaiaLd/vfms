@@ -44,6 +44,42 @@ class CarController:
         
         return response
     
+    def get_by_plate(self, plate) -> Car | False:
+        vehicle = self.repo.get_by_plate(plate)
+        
+        if vehicle:
+            car = Car(
+                plate               = vehicle[0],
+                model               = vehicle[1],  
+                brand               = vehicle[2],  
+                year                = vehicle[3],
+                mileage             = vehicle[4],
+                average_consumption = vehicle[5],
+                status              = vehicle[6],
+                max_fuel            = vehicle[7],
+                fuel                = vehicle[8],
+                ports               = vehicle[9],
+                license             = VehicleLicense.B
+            )
+
+            return car
+        
+        return False
+
+    def update_car(self, car_obj):
+        response = self.repo.update_car(car_obj)
+        return response
+
     def delete_car(self, plate) -> str:
         response = self.repo.delete_car(plate)
         return response
+
+    def refuel_car(self, plate_to_refuel, liters, price_per_liter) -> tuple:
+        car_obj = self.get_by_plate(plate_to_refuel)
+        
+        if not car_obj:
+            return "The plate is incorrect"
+        
+        maintenance = car_obj.refuel(liters, price_per_liter)
+
+        return (self.update_car(car_obj), maintenance)

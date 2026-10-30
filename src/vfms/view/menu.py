@@ -32,18 +32,6 @@ def menu():
                 #     title   = "Trips",
                 #     value   = menu_trips
                 # ), 
-                # q.Choice(
-                #     title   = "New driver",
-                #     value   = page_new_driver
-                # ), 
-                # q.Choice(
-                #     title   = "Show drivers",
-                #     value   = page_show_drivers
-                # ), 
-                # q.Choice(
-                #     title   = "Search driver by cpf",
-                #     value   = page_show_driver_by_cpf
-                # ), 
                 q.Choice(
                     title   = "Close Program", 
                     value   = close_program
