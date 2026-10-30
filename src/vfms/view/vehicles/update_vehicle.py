@@ -38,17 +38,29 @@ def update_vehicle():
             return True
 
         
-        loop_update = True
+        loop_delete = True
 
-        while loop_update:
-            response = MasterController.VEHICLE_CONTROLLER.value.show_vehicles(what=input)
+        controllers = []
+
+        if input == "cars":
+            controllers.append(MasterController.CAR_CONTROLLER.value.show_cars)
+            controllers.append(MasterController.CAR_CONTROLLER.value.delete_car)
+        elif input == "trucks":
+            controllers.append(MasterController.TRUCK_CONTROLLER.value.show_trucks)
+            controllers.append(MasterController.TRUCK_CONTROLLER.value.delete_truck)
+        elif input == "motorcycles":
+            controllers.append(MasterController.MOTORCYCLE_CONTROLLER.value.show_motorcycles)
+            controllers.append(MasterController.MOTORCYCLE_CONTROLLER.value.delete_motorcycle)
+
+        while loop_edit:
+            response = controllers[0]()
             
             print(response)
 
-            delete_input = q.text("Write the vehicle plate that you want to update: ").ask()
+            plate_to_edit = q.text("Write the vehicle plate that you want to delete: ").ask()
 
-            response = MasterController.VEHICLE_CONTROLLER.value.delete_vehicle(what=input, plate=delete_input)
+            response = controllers[1](plate_to_edit)
 
-            loop_update = q.confirm(f"{response}. Do you want to continue?").ask()
+            loop_edit = q.confirm(f"{response}. Do you want to continue?").ask()
 
             clear_screen()
