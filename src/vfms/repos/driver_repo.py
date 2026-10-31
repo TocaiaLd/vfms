@@ -65,3 +65,9 @@ class DriverRepo():
             return False
 
         return True
+
+    def get_by_cpf(self, cpf) -> dict:
+        self.repo._cursor.execute(f"SELECT * from drivers WHERE cpf = ?", (cpf,))
+        driver = self.repo._cursor.fetchone()
+
+        return driver

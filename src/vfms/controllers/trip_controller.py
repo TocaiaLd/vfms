@@ -18,7 +18,7 @@ class TripController:
             distance        = request["distance"],
         )
 
-        self.repo.save_trip(trip)
+        return self.repo.save_trip(trip)
 
     def finish_trip(self, trip_id):
         return self.repo.finish_trip(str(trip_id))

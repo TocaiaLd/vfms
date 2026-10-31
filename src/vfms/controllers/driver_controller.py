@@ -60,3 +60,19 @@ class DriverController:
     def driver_is_available(self, search_cpf) -> bool:
         response = self.repo.driver_exists(search_cpf)
         return response
+
+    def get_by_cpf(self, plate) -> Driver | False:
+        driver = self.repo.get_by_cpf(plate)
+        
+        if driver:
+            driver = Driver(
+                name    = driver[0],
+                cpf     = driver[1],  
+                license = driver[2],  
+                xp      = driver[3],
+                status  = driver[4]
+            )
+
+            return driver
+        
+        return False

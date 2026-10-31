@@ -14,7 +14,14 @@ class Repo():
         self.create_vehicles_table()
         self.create_vehicles_table_triggers()
         self.create_refuels_table()
+        self.create_trips_table()
         self._con.commit()
+
+        self._cursor.execute("SELECT * FROM trips")
+        r = self._cursor.fetchall()
+
+        for i in r:
+            print(i)
 
     def create_cars_table(self):
         self._cursor.execute("""
