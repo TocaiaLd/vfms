@@ -68,3 +68,21 @@ WHERE plate = ?;
         truck = self.repo._cursor.fetchone()
 
         return truck
+
+    def vehicle_exists(self, search_plate) -> bool:
+        self.repo._cursor.execute("SELECT * FROM trucks WHERE plate = ?", (search_plate,))
+        search_result = self.repo._cursor.fetchone()
+
+        if not search_result:
+            return False
+
+        return True
+
+    def vehicle_is_available(self, search_plate) -> bool:
+        self.repo._cursor.execute("SELECT * FROM trucks WHERE plate = ? AND status = ?", (search_plate, "AVAILABLE"))
+        search_result = self.repo._cursor.fetchone()
+
+        if not search_result:
+            return False
+
+        return True

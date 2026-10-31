@@ -80,6 +80,14 @@ class CarController:
         if not car_obj:
             return "The plate is incorrect"
         
-        maintenance = car_obj.refuel(liters, price_per_liter)
+        refuel = car_obj.refuel(liters, price_per_liter)
 
-        return (self.update_car(car_obj), maintenance)
+        return (self.update_car(car_obj), refuel)
+
+    def vehicle_exists(self, search_plate) -> bool:
+        response = self.repo.vehicle_exists(search_plate)
+        return response
+
+    def vehicle_is_available(self, search_plate) -> bool:
+        response = self.repo.vehicle_is_available(search_plate)
+        return response

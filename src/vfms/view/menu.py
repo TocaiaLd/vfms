@@ -5,7 +5,7 @@ import questionary as q
 from vfms.utilities.clear_screen import clear_screen
 from vfms.utilities.close_program import close_program
 # from vfms.view.reports.menu_reports import menu_reports
-# from vfms.view.trips.menu_trips import menu_trips
+from vfms.view.trips.menu_trips import menu_trips
 from vfms.view.drivers.menu_drivers import menu_drivers
 from vfms.view.vehicles.menu_vehicles import menu_vehicles
 
@@ -28,10 +28,10 @@ def menu():
                     title   = "Drivers",
                     value   = menu_drivers
                 ), 
-                # q.Choice(
-                #     title   = "Trips",
-                #     value   = menu_trips
-                # ), 
+                q.Choice(
+                    title   = "Trips",
+                    value   = menu_trips
+                ), 
                 q.Choice(
                     title   = "Close Program", 
                     value   = close_program

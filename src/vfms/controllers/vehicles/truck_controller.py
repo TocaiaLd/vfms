@@ -83,3 +83,11 @@ class TruckController:
         maintenance = truck_obj.refuel(liters, price_per_liter)
 
         return (self.update_truck(truck_obj), maintenance)
+
+    def vehicle_exists(self, search_plate) -> bool:
+        response = self.repo.vehicle_exists(search_plate)
+        return response
+
+    def vehicle_is_available(self, search_plate) -> bool:
+        response = self.repo.vehicle_is_available(search_plate)
+        return response

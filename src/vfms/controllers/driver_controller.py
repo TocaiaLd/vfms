@@ -52,3 +52,11 @@ class DriverController:
     def delete_driver(self, search_cpf) -> str:
         response = self.repo.delete_driver(search_cpf)
         return response
+
+    def driver_exists(self, search_cpf) -> bool:
+        response = self.repo.driver_exists(search_cpf)
+        return response
+
+    def driver_is_available(self, search_cpf) -> bool:
+        response = self.repo.driver_exists(search_cpf)
+        return response

@@ -48,4 +48,20 @@ class DriverRepo():
 
         return f"The driver with cpf {search_cpf} was deleted."
 
+    def driver_exists(self, search_cpf) -> bool:
+        self.repo._cursor.execute("SELECT * FROM drivers WHERE cpf = ?", (search_cpf,))
+        search_result = self.repo._cursor.fetchone()
 
+        if not search_result:
+            return False
+
+        return True
+
+    def driver_is_available(self, search_cpf) -> bool:
+        self.repo._cursor.execute("SELECT * FROM drivers WHERE cpf = ? AND status = AVAILABLE", (search_cpf))
+        search_result = self.repo._cursor.fetchone()
+
+        if not search_result:
+            return False
+
+        return True
