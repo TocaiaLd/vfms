@@ -1,7 +1,8 @@
+from vfms.models.maintenance_mixin import MaintenanceMixin
 from vfms.models.refuel_mixin import RefuelMixin
 from vfms.enums.vehicle_status import VehicleStatus
 
-class Vehicle(RefuelMixin):
+class Vehicle(RefuelMixin, MaintenanceMixin):
     def __init__(
         self                : Vehicle,
         plate               : str,

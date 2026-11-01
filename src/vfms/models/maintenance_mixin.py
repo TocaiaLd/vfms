@@ -4,13 +4,15 @@ import datetime
 from vfms.enums.enum_maintenance import EnumMaintenance
 
 class MaintenanceMixin:
-    def __init__(
+    def new_maintenance(
         self        : MaintenanceMixin, 
         type        : EnumMaintenance,
         price       : float,
         description : str,
         date        = None,
     ):
+        plate = getattr(self, 'plate', "")
+        
         if not isinstance(type, EnumMaintenance):
             try:
                 type = EnumMaintenance(type)
@@ -24,7 +26,5 @@ class MaintenanceMixin:
         self.description = str(description)
         self.date = date or datetime.datetime.now().isoformat(timespec="seconds")
 
-    def to_dict(self):
-        return {"type": self.type.value, "price": self.price,
-                "description": self.description, "date": self.date}
+        return (plate, self.type.value, self.price, self.description, self.date)
 

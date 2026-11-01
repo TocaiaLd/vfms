@@ -16,6 +16,10 @@ class Repo():
         self.create_refuels_table()
         self.create_trips_table()
         self.create_maintenances_table()
+
+        self._cursor.execute("SELECT * FROM maintenances")
+        maintenances = self._cursor.fetchall()
+
         self._con.commit()
 
     def create_cars_table(self):

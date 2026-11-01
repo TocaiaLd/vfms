@@ -4,6 +4,7 @@ from tabulate import tabulate
 # Project dependencies
 from vfms.repos.vehicles.motorcycle_repo import MotorcycleRepo
 from vfms.models.vehicles.motorcycle import Motorcycle
+from vfms.models.vehicles.vehicle import Vehicle
 from vfms.enums.vehicle_license import VehicleLicense
 
 class MotorcycleController:
@@ -92,3 +93,13 @@ class MotorcycleController:
     def vehicle_is_available(self, search_plate) -> bool:
         response = self.repo.vehicle_is_available(search_plate)
         return response
+
+    def add_maintenance(self, plate_to_add_maintenance, type_maintenance, price, description) -> tuple:
+        vehicle_obj : Vehicle = self.get_by_plate(plate_to_add_maintenance)
+
+        if not vehicle_obj:
+            return "The plate is incorrect"
+        
+        maintenance = vehicle_obj.new_maintenance(plate_to_add_maintenance, type_maintenance, price, description)
+
+        return maintenance

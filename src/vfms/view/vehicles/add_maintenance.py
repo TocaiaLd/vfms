@@ -1,4 +1,5 @@
 # external libs
+from vfms.enums.enum_maintenance import EnumMaintenance
 import questionary as q
 
 # Utilities
@@ -44,13 +45,13 @@ def add_maintenance_vehicle():
 
         if input == "cars":
             controllers.append(MasterController.CAR_CONTROLLER.value.show_cars)
-            controllers.append(MasterController.CAR_CONTROLLER.value.add_maintenance_car)
+            controllers.append(MasterController.CAR_CONTROLLER.value.add_maintenance)
         elif input == "trucks":
             controllers.append(MasterController.TRUCK_CONTROLLER.value.show_trucks)
-            controllers.append(MasterController.TRUCK_CONTROLLER.value.add_maintenance_truck)
+            controllers.append(MasterController.TRUCK_CONTROLLER.value.add_maintenance)
         elif input == "motorcycles":
             controllers.append(MasterController.MOTORCYCLE_CONTROLLER.value.show_motorcycles)
-            controllers.append(MasterController.MOTORCYCLE_CONTROLLER.value.add_maintenance_motorcycle)
+            controllers.append(MasterController.MOTORCYCLE_CONTROLLER.value.add_maintenance)
 
         while loop:
             response = controllers[0]()
@@ -59,10 +60,32 @@ def add_maintenance_vehicle():
 
             plate_to_add_maintenance = q.text("Write the vehicle plate that you want to add a maintenance: ").ask()
             
-            # response = controllers[1](plate_to_refuel, liters, price_per_liter)
+            type_maintenance = q.select(
+            "What type of maintenance it will be?",
+            choices = [
+                q.Choice(
+                    title   = "Preventive", 
+                    value   = EnumMaintenance.PREVENTIVE
+                ), 
+                q.Choice(
+                    title   = "Corrective", 
+                    value   = EnumMaintenance.CORRECTIVE
+                ), 
 
-            # MasterController.REFUEL_CONTROLLER.value.save_refuel(response[1])
+                ]
+            ).ask()
 
-            # loop = q.confirm(f"{response[0]}. Do you want to continue?").ask()
+            price = q.text("How much it will cost?").ask()
+            price = float(price)
+
+            description = q.text("Write a description for the maintenance: ").ask()
+            
+            response = controllers[1](plate_to_add_maintenance, type_maintenance, price, description)
+
+            print(response)
+
+            response = MasterController.MAINTENANCE_CONTROLLER.value.save_maintenance(response)
+
+            loop = q.confirm(f"{response}. Do you want to continue?").ask()
 
             clear_screen()

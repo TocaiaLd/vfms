@@ -39,11 +39,11 @@ refuel_repo        = RefuelRepo(repo)
 refuel_controller  = RefuelController(refuel_repo)
 
 # maintenances classes imports
-from vfms.repos.maintenace_repo import MaintenanceRepo
+from vfms.repos.maintenance_repo import MaintenanceRepo
 from vfms.controllers.maintenance_controller import MaintenanceController
 
 maintenance_repo        = MaintenanceRepo(repo)
-maintenance_controller  = MaintenanceController(maintenace_repo)
+maintenance_controller  = MaintenanceController(maintenance_repo)
 
 # trip classes imports
 from vfms.repos.trip_repo import TripRepo
@@ -59,4 +59,4 @@ class MasterController(Enum):
     DRIVER_CONTROLLER       = driver_controller
     REFUEL_CONTROLLER       = refuel_controller
     TRIP_CONTROLLER         = trip_controller
-    MAINTENANCE_REPO        = maintenance_controller
+    MAINTENANCE_CONTROLLER        = maintenance_controller

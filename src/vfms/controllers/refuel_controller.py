@@ -9,7 +9,7 @@ class RefuelController:
         self.repo = repo
     
     def save_refuel(
-        self            : RefuelController, 
-        maintenance     : tuple
+        self    : RefuelController, 
+        refuel  : tuple
     ):
-        return self.repo.save_refuel(maintenance)
+        return self.repo.save_refuel(refuel)
