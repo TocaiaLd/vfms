@@ -10,37 +10,7 @@ from vfms.view.vehicles.vehicles_to_show import menu_vehicles_to_show
 from vfms.view.vehicles.update_vehicle import update_vehicle
 from vfms.view.vehicles.delete_vehicle import delete_vehicle
 from vfms.view.vehicles.refuel_vehicle import refuel_vehicle
-
-# def vehicle_maintenance():
-#     controller = MasterController.VEHICLE_CONTROLLER.value
-#     plate = q.text("Vehicle plate:").ask()
-#     action = q.select("Action:", choices=["Record maintenance", "Complete maintenance", "Back"]).ask()
-#     try:
-#         if action == "Record maintenance":
-#             kind = q.select("Type:", choices=["preventive", "corrective"]).ask()
-#             cost = q.text("Cost:").ask()
-#             description = q.text("Description:").ask()
-#             controller.add_maintenance(plate, kind, cost, description)
-#             q.text("Maintenance recorded; the vehicle is unavailable for allocation.").ask()
-#             q.text("Press any key to continue.").ask()
-#         elif action == "Complete maintenance":
-#             controller.complete_maintenance(plate)
-#             q.text("Maintenance completed; the vehicle is available.").ask()
-#             q.text("Press any key to continue.").ask()
-#     except (ValueError, TypeError) as error:
-#         q.text(str(error)).ask()
-
-# def vehicle_refuel():
-#     controller = MasterController.VEHICLE_CONTROLLER.value
-#     plate = q.text("Vehicle plate:").ask()
-#     liters = q.text("Liters refueled:").ask()
-#     price = q.text("Price per liter (optional):").ask() or 0
-#     try:
-#         record = controller.refuel(plate, liters, price)
-#         q.text(f"Refueling recorded: {record.liters:g} L. Fuel level updated.").ask()
-#         q.text("Press any key to continue.").ask()
-#     except (ValueError, TypeError) as error:
-#         q.text(str(error)).ask()
+from vfms.view.vehicles.add_maintenance import add_maintenance_vehicle
 
 def menu_vehicles():
     running = True
@@ -68,6 +38,10 @@ def menu_vehicles():
                 q.Choice(
                     title   = "Refuel a vehicle", 
                     value   = refuel_vehicle
+                ),
+                q.Choice(
+                    title   = "Add a maintenance to a vehicle", 
+                    value   = add_maintenance_vehicle
                 ),
                 q.Choice(
                     title   = "Back to main menu", 

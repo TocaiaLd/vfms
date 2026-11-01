@@ -21,9 +21,5 @@ class TripRepo():
 
         return "trip saved."
 
-    @staticmethod
-    def license_allows(driver_license, vehicle_license):
-        pass
-
     def finish_trip(self, trip_id):
         pass

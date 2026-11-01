@@ -15,13 +15,8 @@ class Repo():
         self.create_vehicles_table_triggers()
         self.create_refuels_table()
         self.create_trips_table()
+        self.create_maintenances_table()
         self._con.commit()
-
-        self._cursor.execute("SELECT * FROM trips")
-        r = self._cursor.fetchall()
-
-        for i in r:
-            print(i)
 
     def create_cars_table(self):
         self._cursor.execute("""
@@ -146,7 +141,17 @@ CREATE TABLE IF NOT EXISTS vehicles (
             END;""")
 
     def create_maintenances_table(self):
-        pass
+        self._cursor.execute("""
+CREATE TABLE IF NOT EXISTS maintenances (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    plate TEXT NOT NULL,
+    type TEXT NOT NULL,
+    price REAL,
+    description TEXT NOT NULL,
+    date TEXT NOT NULL,
+    FOREIGN KEY (plate) REFERENCES vehicles (plate)
+)
+""")
 
     def create_refuels_table(self):
         self._cursor.execute("""

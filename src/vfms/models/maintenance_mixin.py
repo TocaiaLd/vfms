@@ -5,17 +5,18 @@ from vfms.enums.enum_maintenance import EnumMaintenance
 
 class MaintenanceMixin:
     def __init__(
-        self, 
-        type  : EnumMaintenance,
-        price : float,
+        self        : MaintenanceMixin, 
+        type        : EnumMaintenance,
+        price       : float,
         description : str,
-        date  = None,
+        date        = None,
     ):
         if not isinstance(type, EnumMaintenance):
             try:
                 type = EnumMaintenance(type)
             except (TypeError, ValueError):
                 raise ValueError("Invalid maintenance type") from None
+        
         self.type = type
         self.price = float(price)
         if self.price < 0:
