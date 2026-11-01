@@ -1,8 +1,10 @@
 # External libs
-from vfms.repos.driver_repo import DriverRepo
 from tabulate import tabulate
 
 # Projects imports
+from vfms.enums.driver_status import DriverStatus
+from vfms.enums.vehicle_license import VehicleLicense
+from vfms.repos.driver_repo import DriverRepo
 from vfms.models.users.driver import Driver
 
 class DriverController:
@@ -76,3 +78,21 @@ class DriverController:
             return driver
         
         return False
+
+    def update_driver(
+        self    : DriverController,
+        name    : str,
+        cpf     : str,
+        license : VehicleLicense,
+        xp      : str,
+        status  : DriverStatus,
+    ):
+        driver = Driver(
+            name    = name,
+            cpf     = cpf,  
+            license = license,  
+            xp      = xp,
+            status  = status,
+        )
+
+        return self.repo.update_driver(driver)

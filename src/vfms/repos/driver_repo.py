@@ -71,3 +71,20 @@ class DriverRepo():
         driver = self.repo._cursor.fetchone()
 
         return driver
+
+    def update_driver(
+        self    : DriverRepo,
+        driver  : Driver
+    ):
+        new_data = (driver.name, driver.license.name, driver.xp, driver.status.name, driver.cpf)
+        
+        self.repo._cursor.execute("""
+UPDATE drivers 
+SET name = ?, license = ?, xp = ?, status = ?  
+WHERE cpf = ?;
+""", new_data)
+        self.repo._con.commit()
+        return "Driver updated successfuly"
+
+
+

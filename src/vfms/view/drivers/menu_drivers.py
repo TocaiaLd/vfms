@@ -1,6 +1,7 @@
 # External libs
 import questionary as q
 
+from vfms.view.drivers.update_driver import update_driver
 from vfms.view.drivers.delete_driver import delete_driver
 from vfms.view.drivers.show_drivers import page_show_drivers
 from vfms.view.drivers.new_driver import page_new_driver
@@ -28,6 +29,10 @@ def menu_drivers():
                 q.Choice(
                     title   = "Delete a driver", 
                     value   = delete_driver
+                ), 
+                q.Choice(
+                    title   = "Update a driver", 
+                    value   = update_driver
                 ), 
                 q.Choice(
                     title   = "Back to main menu", 
