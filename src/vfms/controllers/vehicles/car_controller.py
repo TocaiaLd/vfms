@@ -11,6 +11,7 @@ from vfms.repos.vehicles.car_repo import CarRepo
 from vfms.models.vehicles.car import Car
 
 class CarController:
+    # Coordinate car operations between the view, model, and repository.
     def __init__(
         self    : CarController, 
         repo    : CarRepo
@@ -63,7 +64,7 @@ class CarController:
                 max_fuel            = vehicle[7],
                 fuel                = vehicle[8],
                 ports               = vehicle[9],
-                license             = VehicleLicense.B
+                license             = VehicleLicense[vehicle[10]]
             )
 
             return car
@@ -89,8 +90,8 @@ class CarController:
     def refuel_car(
         self,
         plate_to_refuel: str,
-        liters: float,
-        price_per_liter: float,
+        liters: float | str,
+        price_per_liter: float | str,
     ) -> tuple[str, tuple[object, ...] | None] | str:
         car_obj = self.get_by_plate(plate_to_refuel)
         
@@ -115,7 +116,7 @@ class CarController:
         type_maintenance: EnumMaintenance,
         price: float,
         description: str,
-    ) -> tuple[str, EnumMaintenance, float, str, str, str] | str:
+    ) -> tuple[str, str, float, str, str, str, float] | str:
         vehicle_obj: Car | bool = self.get_by_plate(plate_to_add_maintenance)
 
         if not vehicle_obj:

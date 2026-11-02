@@ -8,6 +8,7 @@ from vfms.repos.trip_repo import TripRepo
 from vfms.models.trip import Trip
 
 class TripController:
+    # Coordinate trip creation, lookup, completion, and display.
     def __init__(
         self    : TripController,
         repo    : TripRepo,

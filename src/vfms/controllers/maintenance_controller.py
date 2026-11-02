@@ -6,6 +6,7 @@ from tabulate import tabulate
 from vfms.repos.maintenance_repo import MaintenanceRepo
 
 class MaintenanceController():
+    # Coordinate maintenance persistence, display, and completion.
     def __init__(
         self : MaintenanceController,
         repo : MaintenanceRepo,
@@ -48,4 +49,4 @@ class MaintenanceController():
 
             return self.repo.finish_maintenance(maintenance[0][1], maintenance[0][0])
 
-        return "this trip doenst exists"
+        return "This maintenance does not exist"

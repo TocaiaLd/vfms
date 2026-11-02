@@ -11,6 +11,7 @@ from vfms.enums.vehicle_license import VehicleLicense
 from vfms.enums.enum_maintenance import EnumMaintenance
 
 class TruckController:
+    # Coordinate truck operations between the view, model, and repository.
     def __init__(
         self    : TruckController, 
         repo    : TruckRepo
@@ -29,7 +30,7 @@ class TruckController:
             max_fuel            = request["max_fuel"],
             fuel                = request["fuel"],
             max_weight          = request["max_weight"],
-            license             = VehicleLicense.D
+            license             = VehicleLicense.C
         )
        
         response = self.repo.save_truck(truck)
@@ -63,7 +64,7 @@ class TruckController:
                 max_fuel            = vehicle[7],
                 fuel                = vehicle[8],
                 max_weight          = vehicle[9],
-                license             = VehicleLicense.D
+                license             = VehicleLicense[vehicle[10]]
             )
 
             return truck
@@ -89,8 +90,8 @@ class TruckController:
     def refuel_truck(
         self,
         plate_to_refuel: str,
-        liters: float,
-        price_per_liter: float,
+        liters: float | str,
+        price_per_liter: float | str,
     ) -> tuple[str, tuple[object, ...] | None] | str:
         truck_obj = self.get_by_plate(plate_to_refuel)
         
@@ -115,7 +116,7 @@ class TruckController:
         type_maintenance: EnumMaintenance,
         price: float,
         description: str,
-    ) -> tuple[str, EnumMaintenance, float, str, str, str] | str:
+    ) -> tuple[str, str, float, str, str, str, float] | str:
         vehicle_obj: Truck | bool = self.get_by_plate(plate_to_add_maintenance)
 
         if not vehicle_obj:

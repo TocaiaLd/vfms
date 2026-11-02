@@ -10,6 +10,7 @@ from vfms.repos.driver_repo import DriverRepo
 from vfms.models.users.driver import Driver
 
 class DriverController:
+    # Coordinate driver operations between the view, model, and repository.
     def __init__(
         self : DriverController, 
         repo : DriverRepo
@@ -62,12 +63,7 @@ class DriverController:
         return response
 
     def driver_is_available(self, search_cpf: str) -> bool:
-        response = self.repo.driver_exists(search_cpf)
-        
-        if response:
-            reponse = self.repo.driver_is_available(search_cpf)
-        
-        return response
+        return self.repo.driver_is_available(search_cpf)
 
     def get_by_cpf(self, cpf: str) -> Driver | bool:
         driver = self.repo.get_by_cpf(cpf)

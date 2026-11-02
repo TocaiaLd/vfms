@@ -2,6 +2,7 @@
 from vfms.repos.refuel_repo import RefuelRepo
 
 class RefuelController:
+    # Coordinate persistence of refueling records.
     def __init__(
         self : RefuelController,
         repo : RefuelRepo
