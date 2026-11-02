@@ -20,7 +20,7 @@ class MaintenanceRepo:
             result = self.repo._cursor.fetchall()
 
             if result:
-                self.repo._cursor.execute(f"UPDATE {n} SET status = ? WHERE plate = ?;", (VehicleStatus.MAINTENANCE.name, maintenance.plate))
+                self.repo._cursor.execute(f"UPDATE {n} SET status = ? WHERE plate = ?;", (VehicleStatus.MAINTENANCE.name, maintenance[0]))
                 self.repo._con.commit()
                 break
 
