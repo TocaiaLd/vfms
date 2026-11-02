@@ -40,9 +40,17 @@ def update_driver() -> None:
                         value   = VehicleLicense.B
                     ), 
                     q.Choice(
+                        title   = "C",
+                        value   = VehicleLicense.C
+                    ),
+                    q.Choice(
                         title   = "D", 
                         value   = VehicleLicense.D
                     ), 
+                    q.Choice(
+                        title   = "E",
+                        value   = VehicleLicense.E
+                    ),
                     q.Choice(
                         title   = "AB",
                         value   = VehicleLicense.AB

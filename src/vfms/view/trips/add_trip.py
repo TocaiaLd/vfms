@@ -31,8 +31,11 @@ def loop_driver() -> str | bool | None:
         if not driver_exists:
             loop = q.confirm("This driver does not exists. Do you want to select another driver?").ask()
         else:
-            driver = MasterController.DRIVER_CONTROLLER.value.get_by_cpf(driver_to_add_trip)
-            driver_available = bool(driver and driver.status.name == "AVAILABLE")
+            driver_available = (
+                MasterController.DRIVER_CONTROLLER.value.driver_is_available(
+                    driver_to_add_trip
+                )
+            )
 
             if driver_available:
                 return driver_to_add_trip
@@ -72,11 +75,7 @@ def loop_vehicle(
                     loop = False
                     continue
 
-                if vehicle_obj.license.value in driver_obj.license.value:
-                    return vehicle_to_add_trip
-                else:
-                    q.text("The vehicle license is incompatible. Press any key to return to the vehicle type menu.").ask()
-                    loop = False
+                return vehicle_to_add_trip
             else:
                 loop = q.confirm("This vehicle is not available. Do you want to select another vehicle?").ask()
 

@@ -12,6 +12,8 @@ The vfms project is a command-line application written in Python using object-or
 - [Installation](#installation)
 - [Running](#running)
 - [Data and Configuration](#data-and-configuration)
+- [Reports](#reports)
+- [Tests](#tests)
 - [Classes and Architecture](#classes-and-architecture)
 - [Design Decisions](#design-decisions)
 
@@ -50,6 +52,7 @@ classDiagram
 		+license: VehicleLicense
 		+xp: int
 		+status: DriverStatus
+		+trip_history: list[Trip]
 		-_license: VehicleLicense
 		-_xp: int
 		-_status: DriverStatus
@@ -60,6 +63,8 @@ classDiagram
 		+xp(value)
 		+status()
 		+status(value)
+		+trip_history()
+		+trip_history(value)
 		+__str__()
 		+__repr__()
 		+__lt__(other)
@@ -70,6 +75,7 @@ classDiagram
 		+plate: str
 		+model: str
 		+brand: str
+		+license: VehicleLicense
 		+year: int
 		+mileage: float
 		+average_consumption: float
@@ -77,6 +83,9 @@ classDiagram
 		+max_fuel: float
 		+fuel: float
 		-_plate: str
+		-_model: str
+		-_brand: str
+		-_license: VehicleLicense
 		-_year: int
 		-_mileage: float
 		-_average_consumption: float
@@ -86,6 +95,12 @@ classDiagram
 		+__init__(...)
 		+plate()
 		+plate(p)
+		+model()
+		+model(value)
+		+brand()
+		+brand(value)
+		+license()
+		+license(value)
 		+mileage()
 		+mileage(value)
 		+year()
@@ -98,6 +113,7 @@ classDiagram
 		+max_fuel(value)
 		+status()
 		+status(value)
+		+license_category()
 		+to_dict()
 		+__str__()
 		+__repr__()
@@ -147,14 +163,34 @@ classDiagram
 		+date_init: datetime
 		+date_end: datetime
 		-_status: EnumTrip
+		-_driver_cpf: str
+		-_vehicle_plate: str
+		-_origin: str
+		-_destiny: str
+		-_distance: float
+		-_date_init: datetime
+		-_date_end: datetime
 		+__init__(driver_cpf, vehicle_plate, origin, destiny, distance, status)
+		+driver_cpf()
+		+driver_cpf(value)
+		+vehicle_plate()
+		+vehicle_plate(value)
+		+origin()
+		+origin(value)
+		+destiny()
+		+destiny(value)
+		+distance()
+		+distance(value)
 		+status()
 		+status(value)
+		+date_init()
+		+date_init(value)
+		+date_end()
+		+date_end(value)
 		+set_date_init()
 		+set_date_end()
 	}
 	class RefuelMixin {
-		+fuel: float
 		+refuel(liters, price_per_liter)
 	}
 	class MaintenanceMixin {
@@ -163,6 +199,16 @@ classDiagram
 		+description: str
 		+date_init: str
 		+date_end: str
+		+type()
+		+type(value)
+		+price()
+		+price(value)
+		+description()
+		+description(value)
+		+date_init()
+		+date_init(value)
+		+date_end()
+		+date_end(value)
 		+new_maintenance(...)
 	}
 	class VehicleStatus {
@@ -192,7 +238,9 @@ classDiagram
 		<<enumeration>>
 		A
 		B
+		C
 		D
+		E
 		AB
 		AD
 	}
@@ -214,6 +262,14 @@ classDiagram
 	Trip ..> Driver : driver_cpf
 	Trip ..> Vehicle : vehicle_plate
 	MaintenanceMixin ..> EnumMaintenance
+	class ManutencaoInvalidaError
+	class AlocacaoInvalidaError
+	class PoliticaNaoAtendidaError
+	class RepositorioError
+	ValueError <|-- ManutencaoInvalidaError
+	ValueError <|-- AlocacaoInvalidaError
+	ValueError <|-- PoliticaNaoAtendidaError
+	RuntimeError <|-- RepositorioError
 ```
 
 ### Controllers
@@ -332,7 +388,7 @@ classDiagram
 	}
 	class TripRepo {
 		+repo: Repo
-		+__init__(repo)
+		+__init__(repo, settings)
 		+save_trip(trip)
 		+finish_trip(trip, trip_id)
 		+get_trip_by_id(trip_id)
@@ -387,7 +443,8 @@ classDiagram
 	class Repo {
 		-_con: sqlite3.Connection
 		-_cursor: sqlite3.Cursor
-		+__init__()
+		+__init__(database_path)
+		+close()
 		+create_cars_table()
 		+create_trucks_table()
 		+create_motorcycles_table()
@@ -396,6 +453,7 @@ classDiagram
 		+create_vehicles_table()
 		+create_vehicles_table_triggers()
 		+create_maintenances_table()
+		+delete_vehicle_records(plate, vehicle_table)
 		+create_refuels_table()
 	}
 	DriverRepo --> Repo
@@ -426,14 +484,17 @@ src/vfms/repos/        SQLite persistence
 src/vfms/view/         Interactive terminal menus
 src/vfms/enums/        Status, maintenance, trip, and license values
 src/vfms/config/       Application settings and validation
+src/vfms/exceptions.py Business and persistence exceptions
 db/                    Local SQLite database
-docs/                  Additional project documentation
+tests/                 Model, repository, report, and interface tests
 ```
 
 ## Requirements
 
 - Python 3.14 or later
 - [uv](https://docs.astral.sh/uv/getting-started/installation/)
+- Runtime libraries: `questionary`, `prompt-toolkit`, and `tabulate` (installed by `uv sync`).
+- Test runner: `pytest` (included in the project's development dependency group).
 
 ## Installation
 
@@ -471,10 +532,27 @@ Use the arrow keys to navigate menus and press Enter to select an option. Follow
 - **Drivers:** register, list, search by CPF, update, or delete drivers.
 - **Trips:** create, list, or finish trips. Select an available driver and vehicle, then enter the trip details. A compatible driver's license is required.
 - **Maintenances:** list, add, or finish vehicle maintenance records.
+- **Reports:** view maintenance costs, fuel efficiency, trips per driver, average mileage by vehicle type, and vehicle inventory.
 
 ## Data and Configuration
 
-The application creates and uses `db/sqlite3.db` for local data. The database schema is initialized when the application starts. Settings in `src/vfms/config/settings.json` define preventive maintenance intervals and reference costs, acceptable fuel-consumption ranges, and minimum license categories.
+The application creates and uses `db/sqlite3.db` for local data. The database schema is initialized when the application starts. Set `VFMS_DATABASE_PATH` to select another SQLite file; tests use `:memory:` or temporary databases and do not modify the checked-in database. Vehicle-specific tables synchronize with the shared `vehicles` table through SQLite triggers. Vehicle deletion removes associated trips, maintenance records, and refuels in one transaction. A driver with trip history cannot be deleted so historical trips retain a valid driver reference.
+
+Settings in `src/vfms/config/settings.json` define preventive maintenance intervals and reference costs, acceptable fuel-consumption ranges, and minimum license categories. Trucks require category C or higher; categories D and E satisfy that threshold.
+
+## Reports
+
+The reports menu reads persisted rows through the existing repositories. It includes total and average maintenance costs by vehicle type, average fuel consumption with efficiency ranking and configured-range checks, trips per driver, average odometer readings by vehicle type, and a vehicle inventory report. Empty tables produce empty reports without placeholder records.
+
+## Tests
+
+Run the suite with:
+
+```bash
+uv run pytest
+```
+
+Repository and report tests use isolated SQLite databases. The suite covers driver availability and history, vehicle CRUD and related-record deletion, trip allocation and preventive maintenance, maintenance/refuel persistence, settings-based policies, report calculations, serialization, and menu navigation.
 
 ## Classes and Architecture
 
@@ -489,6 +567,7 @@ The application creates and uses `db/sqlite3.db` for local data. The database sc
 | Shared values | `VehicleStatus`, `DriverStatus`, `EnumTrip`, `EnumMaintenance`, `VehicleLicense` | Enumerate supported states, maintenance types, trip states, and license categories. |
 | Application wiring | `MasterController` | Provides the shared controller instances used by the terminal views. |
 | Configuration | `SettingsValidationError` | Reports invalid application settings loaded from JSON. |
+| Errors | `ManutencaoInvalidaError`, `AlocacaoInvalidaError`, `PoliticaNaoAtendidaError`, `RepositorioError` | Distinguish maintenance, allocation, policy, and persistence failures. |
 
 ## Design Decisions
 

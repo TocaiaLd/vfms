@@ -1,5 +1,6 @@
 # External libs
 import questionary as q
+import sqlite3
 
 # Project imports
 from vfms.utilities.clear_screen import clear_screen
@@ -9,6 +10,7 @@ from vfms.view.reports.menu_reports import menu_reports
 from vfms.view.trips.menu_trips import menu_trips
 from vfms.view.drivers.menu_drivers import menu_drivers
 from vfms.view.vehicles.menu_vehicles import menu_vehicles
+from vfms.exceptions import RepositorioError
 
 def menu() -> None:
     running = True
@@ -52,7 +54,11 @@ def menu() -> None:
             running = selection()
             continue
 
-        selection()
+        try:
+            selection()
+        except (ValueError, TypeError, sqlite3.Error, RepositorioError) as exc:
+            print(f"Operation could not be completed: {exc}")
+            q.text("Press any key to return to the main menu").ask()
 
 
 
