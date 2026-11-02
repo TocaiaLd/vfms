@@ -45,7 +45,7 @@ class Car(Vehicle):
         for plate, data in d.items():
             data.update({
             "ports"     : self.ports,
-            "license"   : self.license_category.name
+            "license_category": self.license_category.name
             })
 
         return d
@@ -53,7 +53,6 @@ class Car(Vehicle):
     # Special method used by print(v), where v is a Car object
     def __str__(self) -> str:
         text = super().__str__()
-        text = text.replace(")", "")
         return f"""{text}
 License: {self.license.name}
 Number of ports: {self.ports}"""

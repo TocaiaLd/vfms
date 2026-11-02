@@ -12,10 +12,9 @@ from vfms.view.vehicles.delete_vehicle import delete_vehicle
 from vfms.view.vehicles.refuel_vehicle import refuel_vehicle
 
 def menu_vehicles() -> bool | None:
-    running = True
-    
-    while running:
-        input = q.select(
+    while True:
+        clear_screen()
+        selection = q.select(
             message = "|----- Vehicles Menu -----|",
             choices = [
                 q.Choice(
@@ -25,10 +24,6 @@ def menu_vehicles() -> bool | None:
                 q.Choice(
                     title   = "Show vehicles",
                     value   = menu_vehicles_to_show
-                ),
-                q.Choice(
-                    title   = "Update a vehicle", 
-                    value   = update_vehicle
                 ),
                 q.Choice(
                     title   = "Delete a vehicle", 
@@ -49,12 +44,11 @@ def menu_vehicles() -> bool | None:
             ]
         ).ask()
 
-        clear_screen()
+        if selection is None or selection is False:
+            clear_screen()
+            return True
 
-        if not input:
-            running = False
-            return not running
-        
-        running = input()
+        selection()
+        clear_screen()
 
 

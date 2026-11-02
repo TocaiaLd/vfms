@@ -5,7 +5,6 @@ import questionary as q
 from vfms.enums.driver_status import DriverStatus
 from vfms.enums.vehicle_license import VehicleLicense
 from vfms.utilities.clear_screen import clear_screen
-VehicleLicense
 
 # Project imports
 from vfms.depedencies import MasterController
@@ -22,7 +21,12 @@ def update_driver() -> None:
 
         driver = MasterController.DRIVER_CONTROLLER.value.get_by_cpf(driver_to_update)
 
-        if not driver.status.value == 1:
+        if not driver:
+            loop_update = q.confirm("This driver does not exist. Do you want to update another driver?").ask()
+            clear_screen()
+            continue
+
+        if driver.status != DriverStatus.ON_TRIP:
             name        = q.text(f"New name: (old is {driver.name})").ask()
             license     = q.select(
                 f"New license category: (old is {driver.license.name})",

@@ -9,6 +9,13 @@ class RefuelMixin:
     ) -> tuple[str | None, float, float, float, datetime] | None:
         date = datetime.now()
         n_liters = float(liters)
+        n_price_per_liter = float(price_per_liter)
+
+        if n_liters <= 0:
+            print("[Erro] Não é possível abastecer uma quantidade menor ou igual a zero.")
+            return None
+        if n_price_per_liter < 0:
+            raise ValueError("O preço por litro não pode ser negativo")
 
         fuel        = getattr(self, 'fuel', 0.0)
         max_fuel    = getattr(self, 'max_fuel', float('inf'))
@@ -24,11 +31,11 @@ class RefuelMixin:
             return
 
         self.fuel = fuel + n_liters
-        total_cost= n_liters * float(price_per_liter)
+        total_cost= n_liters * n_price_per_liter
         total_cost      = round(total_cost, 2)
 
         # Cria o registro do abastecimento
-        record = (vehicle_plate, n_liters, float(price_per_liter), total_cost, date)
+        record = (vehicle_plate, n_liters, n_price_per_liter, total_cost, date)
         
         print(f"[Mixin] Abastecido com sucesso! Nível atual do tanque: {self.fuel}L")
 

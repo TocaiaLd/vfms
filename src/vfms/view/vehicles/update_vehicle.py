@@ -2,7 +2,6 @@
 import questionary as q
 
 # Utilities
-from vfms.enums.vehicle_status import VehicleStatus
 from vfms.utilities.clear_screen import clear_screen
 
 # Project imports

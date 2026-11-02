@@ -14,7 +14,6 @@ def motorcycle_asks() -> dict[str, Any]:
     cc = q.text("cc: ").ask() 
     
     d = {
-        "type"           : "Motorcycle",
         "cc"             : cc,
     }
 

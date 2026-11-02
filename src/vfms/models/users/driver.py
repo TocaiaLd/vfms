@@ -14,12 +14,24 @@ class Driver(Person):
         license         : VehicleLicense,
         xp              : int,
         status          : DriverStatus,
+        trip_history    : list[Trip] | None = None,
     ) -> None:
         super().__init__(name, cpf)
         
         self.license                        = license
         self.xp                             = xp
         self.status                         = status
+        self.trip_history                   = trip_history or []
+
+    @property
+    def trip_history(self) -> list[Trip]:
+        return self._trip_history
+
+    @trip_history.setter
+    def trip_history(self, value: list[Trip]) -> None:
+        if not isinstance(value, list):
+            raise TypeError("trip_history must be a list")
+        self._trip_history = value
 
     @property
     def license(self) -> VehicleLicense:

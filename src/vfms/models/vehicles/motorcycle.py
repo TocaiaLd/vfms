@@ -44,7 +44,7 @@ class Motorcycle(Vehicle):
         for plate, data in d.items():
             data.update({
             "cc"                : self.cc,
-            "license"           : self.license.name
+            "license_category"  : self.license_category.name
             })
 
         return d
@@ -52,7 +52,6 @@ class Motorcycle(Vehicle):
     # Special method used by print(v), where v is a Motorcycle object
     def __str__(self) -> str:
         text = super().__str__()
-        text = text.replace(")", "")
         return f"""{text}
 license category: {self.license.name}
 cc: {self.cc}"""

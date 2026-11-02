@@ -1,15 +1,15 @@
 # External libs
 import questionary as q
+from vfms.utilities.clear_screen import clear_screen
 
 from vfms.view.maintenances.show_maintenances import show_maintenances
 from vfms.view.maintenances.finish_maintenance import finish_maintenance
 from vfms.view.maintenances.add_maintenance import add_maintenance_vehicle
 
 def menu_maintenances() -> bool | None:
-    running = True
-
-    while running:
-        input = q.select(
+    while True:
+        clear_screen()
+        selection = q.select(
             message = "|----- Maintenances Menu -----|",
             choices = [
                 q.Choice(
@@ -31,8 +31,9 @@ def menu_maintenances() -> bool | None:
             ]
         ).ask()
 
-        if not input:
-            running = False
+        if selection is None or selection is False:
+            clear_screen()
             return True
 
-        input()
+        selection()
+        clear_screen()

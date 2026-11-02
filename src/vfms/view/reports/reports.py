@@ -4,20 +4,23 @@ from typing import Any
 import questionary as q
 from tabulate import tabulate
 
-from vfms.view.trips.add_trip import get_vehicles
+from vfms.depedencies import MasterController
 
 def page_vehicle_status_report() -> tuple[list[str], list[list[Any]]]:
-    vehicles = get_vehicles()
+    vehicle_rows = []
+    for controller, show_method in (
+        (MasterController.CAR_CONTROLLER.value, "show_cars"),
+        (MasterController.TRUCK_CONTROLLER.value, "show_trucks"),
+        (MasterController.MOTORCYCLE_CONTROLLER.value, "show_motorcycles"),
+    ):
+        vehicle_rows.extend(getattr(controller.repo, show_method)())
 
-    if not vehicles:
+    if not vehicle_rows:
         q.text("there are no vehicles, please add at least one to use the reports page. Press any key to go back to the menu").ask()
+        return ["Plate", "Model", "Brand", "Year", "Mileage", "Consumption", "Status", "Max fuel", "Fuel"], []
 
-    collumns = ["Plate", "Model", "Brand", "Year", "Mileage", "Consumption", "Status", "Fuel", "Maintenances", "Trips"]
-    data = []
-
-
-    for v in vehicles:
-        data.append([v.plate, v.model, v.brand, v.year, v.mileage, v.average_consumption, v.status.name, v.fuel, v.maintenance_h, v.trips])
+    collumns = ["Plate", "Model", "Brand", "Year", "Mileage", "Consumption", "Status", "Max fuel", "Fuel"]
+    data = [list(row[:9]) for row in vehicle_rows]
 
     return collumns, data
 
@@ -29,14 +32,6 @@ def page_reports() -> None:
                 title   = "Report - All vehicles", 
                 value   = page_vehicle_status_report
             ), 
-            # q.Choice(
-            #     title   = "Truck", 
-            #     value   = truck_asks
-            # ), 
-            # q.Choice(
-            #     title   = "Motorcycle", 
-            #     value   = motorcycle_asks
-            # ), 
             q.Choice(
                 title   = "Back to homepage", 
                 value   = 0
@@ -44,7 +39,7 @@ def page_reports() -> None:
         ]
     ).ask()
         
-    if i == 0:
+    if not callable(i):
         return
 
     collumns, data = i()

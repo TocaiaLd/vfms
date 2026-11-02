@@ -1,4 +1,3 @@
-from vfms.models.vehicles.motorcycle import Motorcycle
 from vfms.models.vehicles.vehicle import Vehicle
 from vfms.enums.vehicle_status import VehicleStatus
 from vfms.enums.vehicle_license import VehicleLicense
@@ -53,7 +52,6 @@ class Truck(Vehicle):
     # Special method used by print(v), where v is a Truck object
     def __str__(self) -> str:
         text = super().__str__()
-        text = text.replace(")", "")
         return f"""{text}
 license category: {self.license.name}
 max_weight: {self.max_weight}t"""

@@ -1,15 +1,15 @@
 # External libs
 import questionary as q
+from vfms.utilities.clear_screen import clear_screen
 
 from vfms.view.trips.show_trips import show_trips
 from vfms.view.trips.finish_trip import finish_trip
 from vfms.view.trips.add_trip import add_trip
 
 def menu_trips() -> bool | None:
-    running = True
-
-    while running:
-        input = q.select(
+    while True:
+        clear_screen()
+        selection = q.select(
             message = "|----- Trips Menu -----|",
             choices = [
                 q.Choice(
@@ -31,8 +31,9 @@ def menu_trips() -> bool | None:
             ]
         ).ask()
 
-        if not input:
-            running = False
+        if selection is None or selection is False:
+            clear_screen()
             return True
 
-        input()
+        selection()
+        clear_screen()

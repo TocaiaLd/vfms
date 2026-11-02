@@ -1,6 +1,5 @@
 # external libs
 import questionary as q
-from tabulate import tabulate
 
 # Project imports
 from vfms.depedencies import MasterController

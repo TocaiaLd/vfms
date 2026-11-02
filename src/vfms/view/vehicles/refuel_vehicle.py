@@ -38,7 +38,7 @@ def refuel_vehicle() -> bool | None:
             return True
 
         
-        loop_delete = True
+        loop_refuel = True
 
         controllers = []
 
@@ -52,7 +52,7 @@ def refuel_vehicle() -> bool | None:
             controllers.append(MasterController.MOTORCYCLE_CONTROLLER.value.show_motorcycles)
             controllers.append(MasterController.MOTORCYCLE_CONTROLLER.value.refuel_motorcycle)
 
-        while loop_delete:
+        while loop_refuel:
             response = controllers[0]()
             
             print(response)
@@ -63,8 +63,13 @@ def refuel_vehicle() -> bool | None:
 
             response = controllers[1](plate_to_refuel, liters, price_per_liter)
 
-            MasterController.REFUEL_CONTROLLER.value.save_refuel(response[1])
+            if isinstance(response, tuple):
+                message, refuel_record = response
+                if refuel_record is not None:
+                    MasterController.REFUEL_CONTROLLER.value.save_refuel(refuel_record)
+            else:
+                message = response
 
-            loop_delete = q.confirm(f"{response[0]}. Do you want to continue?").ask()
+            loop_refuel = q.confirm(f"{message}. Do you want to continue?").ask()
 
             clear_screen()

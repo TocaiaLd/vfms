@@ -10,8 +10,6 @@ from vfms.config.settings_validations import is_license_compatible
 
 # project imports
 from vfms.enums.enum_trip import EnumTrip
-from vfms.models.users.driver import Driver
-from vfms.models.vehicles.vehicle import Vehicle
 from vfms.depedencies import MasterController
 
 def show_drivers() -> None:
@@ -20,16 +18,7 @@ def show_drivers() -> None:
     print(response)
 
 def show_vehicles(vehicle_controller: Any, type: str) -> None:
-    response = None
-   
-    if type == "cars":
-        response = MasterController.CAR_CONTROLLER.value.show_cars()
-    elif type == "trucks":
-        response = MasterController.TRUCK_CONTROLLER.value.show_trucks()
-    elif type == "motorcycles":
-        response = MasterController.MOTORCYCLE_CONTROLLER.value.show_motorcycles()
-
-    print(response)
+    print(getattr(vehicle_controller, f"show_{type}")())
 
 def loop_driver() -> str | bool | None:
     loop = True
@@ -42,7 +31,8 @@ def loop_driver() -> str | bool | None:
         if not driver_exists:
             loop = q.confirm("This driver does not exists. Do you want to select another driver?").ask()
         else:
-            driver_available = MasterController.DRIVER_CONTROLLER.value.driver_is_available(driver_to_add_trip)
+            driver = MasterController.DRIVER_CONTROLLER.value.get_by_cpf(driver_to_add_trip)
+            driver_available = bool(driver and driver.status.name == "AVAILABLE")
 
             if driver_available:
                 return driver_to_add_trip
@@ -88,7 +78,7 @@ def loop_vehicle(
                     q.text("The vehicle license is incompatible. Press any key to return to the vehicle type menu.").ask()
                     loop = False
             else:
-                q.confirm("This vehicle is not available. Do you want to select another vehicle?").ask()
+                loop = q.confirm("This vehicle is not available. Do you want to select another vehicle?").ask()
 
         clear_screen()
     

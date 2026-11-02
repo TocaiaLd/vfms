@@ -2,20 +2,20 @@
 
 class Person:
     def __init__(
-        self    : Person, 
+        self    : Person,
         name    : str,
         cpf     : str | int,
     ) -> None:
         if type(self) is Person:
             raise TypeError("You cannot create a Person object directly")
-        
+
         self.name   = name
         self.cpf    = cpf
 
     @property
     def name(self) -> str:
         return self._name
-    
+
     @name.setter
     def name(self, n: str) -> None:
         if len(n) < 3:
@@ -33,74 +33,40 @@ class Person:
     @property
     def cpf(self) -> str:
         return self._cpf
-    
+
     @cpf.setter
     def cpf(self, cpf: str | int) -> None:
-        cpf_to_setter   = cpf
-        first_number    = 0
-        second_number   = 0
-        count           = 11
-        
-        # Gets a rest of a number divided by 11
-        def get_rest(number: int) -> int:
-            r = number % 11 
-            if r < 2:
-                return 0
-            else:
-                return (11 - r)
+        digits = "".join(char for char in str(cpf) if char.isdigit())
+        if len(digits) != 11:
+            raise ValueError("The cpf must have 11 digits")
 
-        # If is not a string, convert to it
-        if not isinstance(cpf_to_setter, str):
-            cpf_to_setter = str(cpf_to_setter)
+        numbers = [int(char) for char in digits]
+        if len(set(numbers)) == 1:
+            raise ValueError("Invalid cpf")
 
-        cpf_length = len(cpf_to_setter)
-        
-        if cpf_length < 11 or cpf_length > 11:
-            raise Exception("The cpf must have 11 digits")
-        
-        # Checks if all characters are numbers
-        for digit in cpf_to_setter:
-            try:
-                digit = int(digit)
-            except:
-                raise Exception("The cpf is only digits") 
-            
-        for index, char in enumerate(cpf):
-            number = int(char)
+        def check_digit(values: list[int]) -> int:
+            remainder = sum(number * weight for number, weight in zip(values, range(len(values) + 1, 1, -1))) % 11
+            return 0 if remainder < 2 else 11 - remainder
 
-            if index <= 9:
-                second_number += number * count
-                
-                if index <= 8:
-                    first_number += number * (count - 1)
-                    if index == 8:
-                        first_number = get_rest(first_number)
-    
-                if index == 9:
-                    second_number = get_rest(second_number)
-                    break
-                
-            count -= 1
+        if check_digit(numbers[:9]) != numbers[9] or check_digit(numbers[:10]) != numbers[10]:
+            raise ValueError("Invalid cpf")
 
-        if first_number != int(cpf_to_setter[9]) or second_number != int(cpf_to_setter[10]):
-            print(first_number)
-            print(second_number)
-            raise Exception("Invalid cpf!")
-
-        self._cpf = cpf_to_setter
+        self._cpf = digits
 
     # Special method to uses with print(d), where d is a Driver class
     def __str__(self) -> str:
         return f"""Name: {self.name}
 cpf: {self.cpf}"""
-    
-    
+
+
     # Special method to uses with print(repr(d)), where d is a Driver class
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}(name={self.name}, cpf={self.cpf})"
 
-    
+
     # Special method to compare objects using the cpf (Ex: d1 == d2 -> d1.cpf == v2.cpf, where d1 and d2 are from Driver class)
-    def __eq__(self, other: Person) -> bool:
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, Person):
+            return NotImplemented
         return self.cpf == other.cpf
-    
+

@@ -9,45 +9,43 @@ from vfms.view.drivers.new_driver import page_new_driver
 from vfms.view.drivers.show_driver_by_cpf import page_show_driver_by_cpf
 
 def menu_drivers() -> bool | None:
-    running = True
-
-    while running:
-        input = q.select(
+    while True:
+        clear_screen()
+        selection = q.select(
             message = "|----- Drivers Menu -----|",
             choices = [
                 q.Choice(
                     title   = "New driver",
                     value   = page_new_driver
-                ), 
+                ),
                 q.Choice(
                     title   = "Show drivers",
                     value   = page_show_drivers
-                ), 
+                ),
                 q.Choice(
                     title   = "Search driver by cpf",
                     value   = page_show_driver_by_cpf
-                ), 
+                ),
                 q.Choice(
-                    title   = "Delete a driver", 
+                    title   = "Delete a driver",
                     value   = delete_driver
-                ), 
+                ),
                 q.Choice(
-                    title   = "Update a driver", 
+                    title   = "Update a driver",
                     value   = update_driver
-                ), 
+                ),
                 q.Choice(
-                    title   = "Back to main menu", 
+                    title   = "Back to main menu",
                     value   = False
                 ),
             ]
         ).ask()
 
-        clear_screen()
-
-        if not input:
-            running = False
+        if selection is None or selection is False:
+            clear_screen()
             return True
 
-        input()    
+        selection()
+        clear_screen()
 
-        
+

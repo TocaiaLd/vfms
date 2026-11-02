@@ -1,6 +1,7 @@
 from vfms.models.maintenance_mixin import MaintenanceMixin
 from vfms.models.refuel_mixin import RefuelMixin
 from vfms.enums.vehicle_status import VehicleStatus
+from vfms.enums.vehicle_license import VehicleLicense
 
 class Vehicle(RefuelMixin, MaintenanceMixin):
     def __init__(
@@ -27,6 +28,44 @@ class Vehicle(RefuelMixin, MaintenanceMixin):
         self.status                 = status
         self.max_fuel               = max_fuel
         self.fuel                   = fuel
+
+    @property
+    def model(self) -> str:
+        return self._model
+
+    @model.setter
+    def model(self, value: str) -> None:
+        if not isinstance(value, str):
+            raise TypeError("model must be a string")
+        self._model = value
+
+    @property
+    def brand(self) -> str:
+        return self._brand
+
+    @brand.setter
+    def brand(self, value: str) -> None:
+        if not isinstance(value, str):
+            raise TypeError("brand must be a string")
+        self._brand = value
+
+    @property
+    def license_category(self) -> VehicleLicense:
+        return self.license
+
+    @property
+    def license(self) -> VehicleLicense:
+        return self._license
+
+    @license.setter
+    def license(self, value: VehicleLicense | str) -> None:
+        try:
+            if isinstance(value, VehicleLicense):
+                self._license = value
+            else:
+                self._license = VehicleLicense[value] if value in VehicleLicense.__members__ else VehicleLicense(value)
+        except (TypeError, ValueError):
+            raise ValueError("Not a Vehicle License") from None
 
 
     # Plate encapsulation
@@ -220,7 +259,9 @@ Fuel: {self.fuel} l"""
 
 
     # Special method to compare objects using the plate (Ex: v1 == v2 -> v1.plate == v2.plate, where v1 and v2 are from Vehicle class)
-    def __eq__(self, other: Vehicle) -> bool:
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, Vehicle):
+            return NotImplemented
         return self.plate == other.plate
 
     # special method to sort vehicles by mileage
