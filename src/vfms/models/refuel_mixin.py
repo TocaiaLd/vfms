@@ -1,15 +1,20 @@
 # Standard imports
 from datetime import datetime
+from math import isfinite
 
 class RefuelMixin:
+    # Apply fuel purchases to objects exposing fuel and tank capacity.
     def refuel(
         self            : RefuelMixin,
-        liters          : float,
-        price_per_liter : float,
+        liters          : float | str,
+        price_per_liter : float | str,
     ) -> tuple[str | None, float, float, float, datetime] | None:
         date = datetime.now()
         n_liters = float(liters)
         n_price_per_liter = float(price_per_liter)
+
+        if not isfinite(n_liters) or not isfinite(n_price_per_liter):
+            raise ValueError("Liters and price per liter must be finite numbers")
 
         if n_liters <= 0:
             print("[Erro] Não é possível abastecer uma quantidade menor ou igual a zero.")

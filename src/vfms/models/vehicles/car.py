@@ -3,6 +3,7 @@ from vfms.enums.vehicle_status import VehicleStatus
 from vfms.enums.vehicle_license import VehicleLicense
 
 class Car(Vehicle):
+    # A passenger car with a configured number of ports.
     def __init__(
         self                : Car,
         plate               : str,
@@ -28,14 +29,20 @@ class Car(Vehicle):
         return self._ports
 
     @ports.setter
-    def ports(self, value: int | str) -> None:
+    def ports(self, value: int | float | str) -> None:
+        if isinstance(value, bool):
+            raise ValueError("Ports must be an integer")
         new_value = value
-
-        if not isinstance(new_value, int):
+        if not isinstance(value, int):
             try:
-                new_value = int(new_value)
-            except:
-                raise ValueError("Not a int")
+                number = float(value)
+                if not number.is_integer():
+                    raise ValueError("Ports must be an integer")
+                new_value = int(number)
+            except (TypeError, ValueError, OverflowError) as exc:
+                raise ValueError("Not an int") from exc
+        if new_value <= 0:
+            raise ValueError("Ports must be greater than zero")
         
         self._ports= new_value
 
@@ -45,7 +52,7 @@ class Car(Vehicle):
         for plate, data in d.items():
             data.update({
             "ports"     : self.ports,
-            "license_category": self.license_category.name
+            "license"   : self.license.name
             })
 
         return d

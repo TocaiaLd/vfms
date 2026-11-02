@@ -3,6 +3,7 @@ from vfms.enums.vehicle_status import VehicleStatus
 from vfms.enums.vehicle_license import VehicleLicense
 
 class Motorcycle(Vehicle):
+    # A motorcycle with engine capacity in cubic centimeters.
     def __init__(
         self                : Motorcycle,
         plate               : str,
@@ -27,14 +28,20 @@ class Motorcycle(Vehicle):
         return self._cc
 
     @cc.setter
-    def cc(self, value: int | str) -> None:
+    def cc(self, value: int | float | str) -> None:
+        if isinstance(value, bool):
+            raise ValueError("Engine capacity must be an integer")
         new_value = value
-
-        if not isinstance(new_value, int):
+        if not isinstance(value, int):
             try:
-                new_value = int(new_value)
-            except:
-                raise ValueError("Not a int")
+                number = float(value)
+                if not number.is_integer():
+                    raise ValueError("Engine capacity must be an integer")
+                new_value = int(number)
+            except (TypeError, ValueError, OverflowError) as exc:
+                raise ValueError("Not an int") from exc
+        if new_value <= 0:
+            raise ValueError("Engine capacity must be greater than zero")
         
         self._cc= new_value
 
@@ -44,7 +51,7 @@ class Motorcycle(Vehicle):
         for plate, data in d.items():
             data.update({
             "cc"                : self.cc,
-            "license_category"  : self.license_category.name
+            "license"           : self.license.name
             })
 
         return d

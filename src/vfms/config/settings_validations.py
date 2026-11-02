@@ -205,7 +205,7 @@ def validate_settings(config: dict) -> dict:
 
 
 # Convert vehicle names to the keys used in settings.json.
-def normalize_vehicle_type(vehicle_type: str | object) -> str:
+def normalize_vehicle_type(vehicle_type: object) -> str:
 
     if not isinstance(vehicle_type, str):
         vehicle_type = type(vehicle_type).__name__
@@ -269,7 +269,19 @@ def is_license_compatible(
 
     required_category = config["driver_license"]["minimum_category_by_vehicle_type"][vehicle_type]
 
-    required_value = VehicleLicense[required_category].value
+    if required_category not in VehicleLicense.__members__:
+        return False
     driver_value = getattr(driver_license, "value", driver_license)
+    if not isinstance(driver_value, str):
+        return False
 
-    return isinstance(driver_value, str) and required_value in driver_value
+    if required_category == "A":
+        return "A" in driver_value
+
+    category_levels = {"B": 1, "C": 2, "D": 3, "E": 4}
+    required_level = category_levels.get(required_category)
+    driver_level = max(
+        (category_levels.get(category, 0) for category in driver_value),
+        default=0,
+    )
+    return required_level is not None and driver_level >= required_level

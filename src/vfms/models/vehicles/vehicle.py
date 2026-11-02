@@ -2,8 +2,10 @@ from vfms.models.maintenance_mixin import MaintenanceMixin
 from vfms.models.refuel_mixin import RefuelMixin
 from vfms.enums.vehicle_status import VehicleStatus
 from vfms.enums.vehicle_license import VehicleLicense
+from math import isfinite
 
 class Vehicle(RefuelMixin, MaintenanceMixin):
+    # Shared validated properties and operations for fleet vehicles.
     def __init__(
         self                : Vehicle,
         plate               : str,
@@ -75,6 +77,8 @@ class Vehicle(RefuelMixin, MaintenanceMixin):
 
     @plate.setter
     def plate(self, p: str) -> None:
+        if not isinstance(p, str):
+            raise TypeError("plate must be a string")
         l = len(p)
         number_positions = [4, 6, 7]
 
@@ -86,7 +90,7 @@ class Vehicle(RefuelMixin, MaintenanceMixin):
             if i in number_positions:
                 try:
                     letter = int(letter)
-                except:
+                except (TypeError, ValueError):
                     raise ValueError(f"position {i} must be a integer")
             elif i == 3:
                 if not letter == "-":
@@ -109,10 +113,10 @@ class Vehicle(RefuelMixin, MaintenanceMixin):
         if not isinstance(new_value, float):
             try:
                 new_value = float(new_value)
-            except:
+            except (TypeError, ValueError, OverflowError):
                 raise ValueError("Not a float")
 
-        if new_value < 0:
+        if not isfinite(new_value) or new_value < 0:
             raise ValueError("Mileage cannot be less than zero!")
 
         self._mileage = new_value
@@ -134,7 +138,7 @@ class Vehicle(RefuelMixin, MaintenanceMixin):
                 if r != 0:
                     raise ValueError("Not a int")
 
-            except:
+            except (TypeError, ValueError, OverflowError):
                 raise ValueError("Not a int")
 
         # the firts car was created at 1888
@@ -155,9 +159,11 @@ class Vehicle(RefuelMixin, MaintenanceMixin):
         if not isinstance(new_value, float):
             try:
                 new_value = float(new_value)
-            except:
+            except (TypeError, ValueError, OverflowError):
                 raise ValueError("Not a float")
 
+        if not isfinite(new_value) or new_value < 0:
+            raise ValueError("Average consumption must be a finite non-negative number")
         self._average_consumption= new_value
 
     # fuel encapsulation
@@ -172,14 +178,14 @@ class Vehicle(RefuelMixin, MaintenanceMixin):
         if not isinstance(new_value, float):
             try:
                 new_value = float(new_value)
-            except:
+            except (TypeError, ValueError, OverflowError):
                 raise ValueError("Not a float")
 
-        if new_value < 0:
-            raise Exception("Cannot be less than 0")
+        if not isfinite(new_value) or new_value < 0:
+            raise ValueError("Cannot be less than 0")
 
         if new_value > self.max_fuel:
-            raise Exception("Cannot be bigger than max_fuel")
+            raise ValueError("Cannot be bigger than max_fuel")
 
         self._fuel = new_value
 
@@ -195,11 +201,11 @@ class Vehicle(RefuelMixin, MaintenanceMixin):
         if not isinstance(new_value, float):
             try:
                 new_value = float(new_value)
-            except:
+            except (TypeError, ValueError, OverflowError):
                 raise ValueError("Not a float")
 
-        if new_value < 0:
-            raise Exception("Cannot be less than 0")
+        if not isfinite(new_value) or new_value < 0:
+            raise ValueError("Cannot be less than 0")
 
         self._max_fuel= new_value
 
@@ -224,6 +230,23 @@ class Vehicle(RefuelMixin, MaintenanceMixin):
             else:
                 raise ValueError("Not a Vehicle Status")
 
+        previous = getattr(self, "_status", None)
+        transitions = {
+            VehicleStatus.AVAILABLE: {
+                VehicleStatus.AVAILABLE,
+                VehicleStatus.INACTIVE,
+                VehicleStatus.MAINTENANCE,
+                VehicleStatus.ON_TRIP,
+            },
+            VehicleStatus.ON_TRIP: {
+                VehicleStatus.AVAILABLE,
+                VehicleStatus.MAINTENANCE,
+            },
+            VehicleStatus.MAINTENANCE: {VehicleStatus.AVAILABLE},
+            VehicleStatus.INACTIVE: {VehicleStatus.AVAILABLE},
+        }
+        if previous is not None and new_value not in transitions[previous]:
+            raise ValueError(f"Invalid vehicle status transition: {previous.name} -> {new_value.name}")
         self._status = new_value
 
     def to_dict(self) -> dict[str, dict[str, str | int | float]]:
@@ -235,7 +258,7 @@ class Vehicle(RefuelMixin, MaintenanceMixin):
                 "mileage"               : self.mileage,
                 "average_consumption"   : self.average_consumption,
                 "status"                : self.status.name,
-                "license_category"      : self.license_category.name,
+                "license"               : self.license.name,
                 "max_fuel"              : self.max_fuel,
                 "fuel"                  : self.fuel
             }

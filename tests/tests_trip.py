@@ -1,3 +1,4 @@
+from typing import Any
 from datetime import datetime
 
 import pytest
@@ -7,7 +8,7 @@ from vfms.models.trip import Trip
 
 
 @pytest.fixture
-def trip():
+def trip() -> Any:
     return Trip(
         driver_cpf="80658405071",
         vehicle_plate="ABC-1D34",
@@ -18,7 +19,7 @@ def trip():
     )
 
 
-def test_trip_creation(trip):
+def test_trip_creation(trip: Any) -> None:
     assert trip.driver_cpf == "80658405071"
     assert trip.vehicle_plate == "ABC-1D34"
     assert trip.origin == "Fortaleza"
@@ -27,7 +28,7 @@ def test_trip_creation(trip):
     assert trip.status == EnumTrip.IN_PROGRESS
 
 
-def test_trip_text_fields_are_normalized(trip):
+def test_trip_text_fields_are_normalized(trip: Any) -> None:
     trip.driver_cpf = 80658405071
     trip.vehicle_plate = 123
     trip.origin = 42
@@ -39,14 +40,14 @@ def test_trip_text_fields_are_normalized(trip):
     assert trip.destiny == "None"
 
 
-def test_trip_distance_setter_converts_to_float(trip):
+def test_trip_distance_setter_converts_to_float(trip: Any) -> None:
     trip.distance = "12.5"
 
     assert trip.distance == 12.5
 
 
 @pytest.mark.parametrize("value", ["invalid", None])
-def test_trip_distance_setter_rejects_non_numeric_values(trip, value):
+def test_trip_distance_setter_rejects_non_numeric_values(trip: Any, value: Any) -> None:
     with pytest.raises((TypeError, ValueError)):
         trip.distance = value
 
@@ -61,18 +62,18 @@ def test_trip_distance_setter_rejects_non_numeric_values(trip, value):
         ("In progress", EnumTrip.IN_PROGRESS),
     ],
 )
-def test_trip_status_setter_accepts_enum_and_names(trip, value, expected):
+def test_trip_status_setter_accepts_enum_and_names(trip: Any, value: Any, expected: Any) -> None:
     trip.status = value
 
     assert trip.status == expected
 
 
-def test_trip_status_setter_rejects_unknown_status(trip):
+def test_trip_status_setter_rejects_unknown_status(trip: Any) -> None:
     with pytest.raises(TypeError):
         trip.status = "CANCELLED"
 
 
-def test_trip_date_setters_and_date_methods(trip):
+def test_trip_date_setters_and_date_methods(trip: Any) -> None:
     start = datetime(2026, 1, 1, 10, 0)
     end = datetime(2026, 1, 1, 11, 0)
     trip.date_init = start
@@ -89,6 +90,6 @@ def test_trip_date_setters_and_date_methods(trip):
 
 
 @pytest.mark.parametrize("attribute", ["date_init", "date_end"])
-def test_trip_date_setters_reject_non_datetime_values(trip, attribute):
+def test_trip_date_setters_reject_non_datetime_values(trip: Any, attribute: Any) -> None:
     with pytest.raises(TypeError):
         setattr(trip, attribute, "2026-01-01")

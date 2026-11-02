@@ -7,12 +7,13 @@ from vfms.models.users.person import Person
 
 # represents a driver signed on system
 class Driver(Person):
+    # A registered driver, including license, status, and trip history.
     def __init__(
         self            : Driver,
         name            : str,
         cpf             : str | int,
         license         : VehicleLicense,
-        xp              : int,
+        xp              : int | float | str,
         status          : DriverStatus,
         trip_history    : list[Trip] | None = None,
     ) -> None:
@@ -21,7 +22,7 @@ class Driver(Person):
         self.license                        = license
         self.xp                             = xp
         self.status                         = status
-        self.trip_history                   = trip_history or []
+        self.trip_history                   = trip_history if trip_history is not None else []
 
     @property
     def trip_history(self) -> list[Trip]:
@@ -42,18 +43,14 @@ class Driver(Person):
         new_value = value
         
         if not isinstance(new_value, VehicleLicense):
-            if new_value == "A":
-                new_value = VehicleLicense.A
-            elif new_value == "B":
-                new_value = VehicleLicense.B
-            elif new_value == "D":
-                new_value = VehicleLicense.D
-            elif new_value == "AB":
-                new_value = VehicleLicense.AB
-            elif new_value == "AD":
-                new_value = VehicleLicense.AD
-            else:
-                raise TypeError("the license is not from VehicleLicense type")
+            try:
+                new_value = (
+                    VehicleLicense[new_value]
+                    if isinstance(new_value, str) and new_value in VehicleLicense.__members__
+                    else VehicleLicense(new_value)
+                )
+            except (TypeError, ValueError):
+                raise TypeError("the license is not from VehicleLicense type") from None
         
         self._license = new_value
 
@@ -62,7 +59,9 @@ class Driver(Person):
         return self._xp 
 
     @xp.setter
-    def xp(self, value: int | str) -> None:
+    def xp(self, value: int | float | str) -> None:
+        if isinstance(value, bool):
+            raise ValueError("the experience must be an integer")
         if not isinstance(value, int):
             try:
                 n_value = float(value)
@@ -73,8 +72,8 @@ class Driver(Person):
                 if r != 0:
                     raise ValueError("the experience must be a int number")
                                 
-            except:
-                raise ValueError("The experience cannot be a string")
+            except (TypeError, ValueError, OverflowError) as exc:
+                raise ValueError("The experience must be an integer") from exc
         
         # the firts car was created at 1888
         if value < 0:
@@ -119,7 +118,7 @@ trip_history: {self.trip_history}"""
         return f"{text}, license={self.license}, xp={self.xp}, status={self.status}, trip_history={self.trip_history})"
 
     # Special method to sort drivers by xp
-    def __lt__(self, other : Driver) -> bool:
+    def __lt__(self, other: Driver) -> bool:
         return self.xp < other.xp
 
     # Special method to iterate the driver trips

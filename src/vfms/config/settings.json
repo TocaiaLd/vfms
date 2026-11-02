@@ -34,7 +34,7 @@
     "minimum_category_by_vehicle_type": {
       "motorcycle": "A",
       "car": "B",
-      "truck": "D"
+      "truck": "C"
     }
   }
 }

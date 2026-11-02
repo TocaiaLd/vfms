@@ -1,6 +1,7 @@
 # Represents a person signed on the system.
 
 class Person:
+    # Abstract identity data shared by people registered in VFMS.
     def __init__(
         self    : Person,
         name    : str,

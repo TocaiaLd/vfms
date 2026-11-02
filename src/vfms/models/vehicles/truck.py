@@ -1,8 +1,10 @@
 from vfms.models.vehicles.vehicle import Vehicle
 from vfms.enums.vehicle_status import VehicleStatus
 from vfms.enums.vehicle_license import VehicleLicense
+from math import isfinite
 
 class Truck(Vehicle):
+    # A truck with a maximum cargo weight.
     def __init__(
         self                : Truck,
         plate               : str,
@@ -15,7 +17,7 @@ class Truck(Vehicle):
         max_fuel            : float,
         fuel                : float,
         max_weight          : float,
-        license             : VehicleLicense = VehicleLicense.D,
+        license             : VehicleLicense = VehicleLicense.C,
     ) -> None:
         super().__init__(plate, model, brand, year, mileage, average_consumption, status, max_fuel, fuel)
         self.max_weight = max_weight
@@ -33,8 +35,10 @@ class Truck(Vehicle):
         if not isinstance(new_value, float):
             try:
                 new_value = float(new_value)
-            except:
-                raise ValueError("Not a float")
+            except (TypeError, ValueError, OverflowError) as exc:
+                raise ValueError("Not a float") from exc
+        if not isfinite(new_value) or new_value <= 0:
+            raise ValueError("Maximum weight must be greater than zero")
         
         self._max_weight= new_value
 
@@ -43,7 +47,7 @@ class Truck(Vehicle):
         
         for plate, data in d.items():
             data.update({
-            "license_category"  : self.license.name,
+            "license"           : self.license.name,
             "max_weight"        : self.max_weight
             })
 

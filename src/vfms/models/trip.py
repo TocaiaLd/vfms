@@ -1,8 +1,10 @@
 from datetime import datetime
+from math import isfinite
 
 from vfms.enums.enum_trip import EnumTrip
 
 class Trip:
+    # A trip assigned to a driver and vehicle, with route and timestamps.
     # Represents a trip taken by a driver in a vehicle
     def __init__(
         self            : Trip,
@@ -10,7 +12,7 @@ class Trip:
         vehicle_plate   : str,
         origin          : str,
         destiny         : str,
-        distance        : float,
+        distance        : float | str,
         status          : EnumTrip,
     ) -> None:
         self.driver_cpf     = driver_cpf
@@ -19,6 +21,8 @@ class Trip:
         self.destiny        = destiny
         self.distance       = distance
         self.status         = status
+        self.date_init = None
+        self.date_end = None
 
     @property
     def driver_cpf(self) -> str:
@@ -57,8 +61,11 @@ class Trip:
         return self._distance
 
     @distance.setter
-    def distance(self, value: float) -> None:
-        self._distance = float(value)
+    def distance(self, value: float | str) -> None:
+        distance = float(value)
+        if not isfinite(distance) or distance <= 0:
+            raise ValueError("Trip distance must be a finite positive number")
+        self._distance = distance
 
     @property
     def date_init(self) -> datetime | None:
