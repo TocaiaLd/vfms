@@ -73,8 +73,16 @@ class MotorcycleController:
         return response
 
     def delete_motorcycle(self, plate) -> str:
-        response = self.repo.delete_motorcycle(plate)
-        return response
+        motorycle = self.get_by_plate(plate)
+
+        if not motorycle:
+            return "This motorycle plate doesnt exist"
+
+        if motorycle.status.value == 1 or motorycle.status.value == 0:
+            response = self.repo.delete_motorcycle(plate)
+            return response
+        
+        return "The motorycle must be AVAILABLE or INACTIVE to delete"
 
     def refuel_motorcycle(self, plate_to_refuel, liters, price_per_liter) -> tuple:
         motorcycle_obj = self.get_by_plate(plate_to_refuel)

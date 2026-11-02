@@ -24,7 +24,8 @@ class MaintenanceMixin:
         if self.price < 0:
             raise ValueError("Cost cannot be negative")
         self.description = str(description)
-        self.date = date or datetime.datetime.now().isoformat(timespec="seconds")
+        self.date_init = date or datetime.datetime.now().isoformat(timespec="seconds")
+        self.date_end = "..."
 
-        return (plate, self.type.value, self.price, self.description, self.date)
+        return (plate, self.type.value, self.price, self.description, self.date_init, self.date_end)
 

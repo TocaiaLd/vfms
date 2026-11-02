@@ -13,7 +13,7 @@ def add_maintenance_vehicle():
     
     while running:
         input = q.select(
-            "What type of vehicle do you want to refuel?",
+            "What type of vehicle do you want to add a maintenance?",
             choices = [
                 q.Choice(
                     title   = "Car", 
@@ -66,7 +66,8 @@ def add_maintenance_vehicle():
             vehicle_obj = controllers[2](plate_to_add_maintenance)
 
             if not vehicle_obj: 
-                 q.text("This vehicle doesnt exists, press any key to try again.").ask()
+                running = q.confirm("This vehicle doesnt exists, Do you wanna continue?").ask()
+                loop = running
             elif vehicle_obj.status.value == 1:
                 type_maintenance = q.select(
                 "What type of maintenance it will be?",
@@ -92,8 +93,11 @@ def add_maintenance_vehicle():
 
                 response = MasterController.MAINTENANCE_CONTROLLER.value.save_maintenance(response)
 
-                loop = q.confirm(f"{response}. Do you want to continue in maintenance session?").ask()
+                running = q.confirm(f"{response}. Do you want to continue in maintenance session?").ask()
+                loop = running
 
-                clear_screen()
             else:
-                loop = q.confirm(f"The vehicle must be available to add a maintenance. Do you want to continue in maintenance session?").ask()
+                running = q.confirm(f"The vehicle must be available to add a maintenance. Do you want to continue in maintenance session?").ask()
+                loop = running
+            
+            clear_screen()

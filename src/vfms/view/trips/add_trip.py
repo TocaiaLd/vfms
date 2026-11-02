@@ -66,7 +66,7 @@ def loop_vehicle(vehicle_controller, driver_cpf, type) -> str | False:
                 vehicle_obj = vehicle_controller.get_by_plate(vehicle_to_add_trip)
                 driver_obj  = MasterController.DRIVER_CONTROLLER.value.get_by_cpf(driver_cpf)
 
-                if vehicle_obj.license.value % driver_obj.license.value == 0:
+                if vehicle_obj.license.value in driver_obj.license.value:
                     return vehicle_to_add_trip
                 else:
                     q.text("The vehicle license is incompatible. Press any key to return to the vehicle type menu.").ask()

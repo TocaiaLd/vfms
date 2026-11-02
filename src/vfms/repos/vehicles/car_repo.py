@@ -52,12 +52,9 @@ WHERE plate = ?;
         return f"Does not exists a vehicle with this plate"
 
     def delete_car(self, plate) -> str:
-        self.repo._cursor.execute("SELECT * FROM cars WHERE plate = ?", (plate,))
-        search_result = self.repo._cursor.fetchone()
-
-        if not search_result:
-            return "This car plate doesn't exists"
-
+        self.repo._cursor.execute("DELETE * FROM maintenances WHERE plate = ?", (plate,))
+        self.repo._cursor.execute("DELETE * FROM trips WHERE plate = ?", (plate,))
+        self.repo._cursor.execute("DELETE * FROM refuels WHERE plate = ?", (plate,))
         self.repo._cursor.execute("DELETE FROM cars WHERE plate = ?", (plate,))
         self.repo._con.commit()
 

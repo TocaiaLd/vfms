@@ -151,7 +151,8 @@ CREATE TABLE IF NOT EXISTS maintenances (
     type TEXT NOT NULL,
     price REAL,
     description TEXT NOT NULL,
-    date TEXT NOT NULL,
+    date_init TEXT NOT NULL,
+    date_end TEXT NOT NULL,
     FOREIGN KEY (plate) REFERENCES vehicles (plate)
 )
 """)

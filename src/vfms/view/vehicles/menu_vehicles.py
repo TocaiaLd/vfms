@@ -10,7 +10,6 @@ from vfms.view.vehicles.vehicles_to_show import menu_vehicles_to_show
 from vfms.view.vehicles.update_vehicle import update_vehicle
 from vfms.view.vehicles.delete_vehicle import delete_vehicle
 from vfms.view.vehicles.refuel_vehicle import refuel_vehicle
-from vfms.view.vehicles.add_maintenance import add_maintenance_vehicle
 
 def menu_vehicles():
     running = True
@@ -38,10 +37,6 @@ def menu_vehicles():
                 q.Choice(
                     title   = "Refuel a vehicle", 
                     value   = refuel_vehicle
-                ),
-                q.Choice(
-                    title   = "Add a maintenance to a vehicle", 
-                    value   = add_maintenance_vehicle
                 ),
                 q.Choice(
                     title   = "Update a vehicle", 

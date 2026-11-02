@@ -72,8 +72,16 @@ class CarController:
         return response
 
     def delete_car(self, plate) -> str:
-        response = self.repo.delete_car(plate)
-        return response
+        car = self.get_by_plate(plate)
+
+        if not car:
+            return "This car plate doesnt exist"
+
+        if car.status.value == 1 or car.status.value == 0:
+            response = self.repo.delete_car(plate)
+            return response
+        
+        return "The car must be AVAILABLE or INACTIVE to delete"
 
     def refuel_car(self, plate_to_refuel, liters, price_per_liter) -> tuple:
         car_obj = self.get_by_plate(plate_to_refuel)
