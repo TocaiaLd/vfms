@@ -1,3 +1,5 @@
+from typing import Any
+
 # Projects imports
 from vfms.repos.repo import Repo
 from vfms.models.users.driver import Driver
@@ -6,7 +8,7 @@ class DriverRepo():
     def __init__(
         self : DriverRepo, 
         repo : Repo
-    ):
+    ) -> None:
         self.repo = repo
 
     def save_driver(
@@ -24,19 +26,19 @@ class DriverRepo():
 
         return f"Already exists a driver with the {driver.cpf} cpf"
 
-    def read_drivers(self) -> list:
+    def read_drivers(self) -> list[tuple[Any, ...]]:
         self.repo._cursor.execute("SELECT * FROM drivers")
         list_of_drivers = self.repo._cursor.fetchall()
 
         return list_of_drivers
 
-    def read_driver_by_cpf(self, search_cpf) -> list:
+    def read_driver_by_cpf(self, search_cpf: str) -> list[tuple[Any, ...]]:
         self.repo._cursor.execute("SELECT * FROM drivers WHERE cpf = ?", (search_cpf,))
         list_of_drivers = self.repo._cursor.fetchall()
 
         return list_of_drivers
 
-    def delete_driver(self, search_cpf) -> str:
+    def delete_driver(self, search_cpf: str) -> str:
         self.repo._cursor.execute("SELECT * FROM drivers WHERE cpf = ?", (search_cpf,))
         search_result = self.repo._cursor.fetchone()
 
@@ -48,7 +50,7 @@ class DriverRepo():
 
         return f"The driver with cpf {search_cpf} was deleted."
 
-    def driver_exists(self, search_cpf) -> bool:
+    def driver_exists(self, search_cpf: str) -> bool:
         self.repo._cursor.execute("SELECT * FROM drivers WHERE cpf = ?", (search_cpf,))
         search_result = self.repo._cursor.fetchone()
 
@@ -57,7 +59,7 @@ class DriverRepo():
 
         return True
 
-    def driver_is_available(self, search_cpf) -> bool:
+    def driver_is_available(self, search_cpf: str) -> bool:
         self.repo._cursor.execute("SELECT * FROM drivers WHERE cpf = ? AND status = AVAILABLE", (search_cpf))
         search_result = self.repo._cursor.fetchone()
 
@@ -66,7 +68,7 @@ class DriverRepo():
 
         return True
 
-    def get_by_cpf(self, cpf) -> dict:
+    def get_by_cpf(self, cpf: str) -> tuple[Any, ...] | None:
         self.repo._cursor.execute(f"SELECT * from drivers WHERE cpf = ?", (cpf,))
         driver = self.repo._cursor.fetchone()
 
@@ -75,7 +77,7 @@ class DriverRepo():
     def update_driver(
         self    : DriverRepo,
         driver  : Driver
-    ):
+    ) -> str:
         new_data = (driver.name, driver.license.name, driver.xp, driver.status.name, driver.cpf)
         
         self.repo._cursor.execute("""

@@ -6,7 +6,7 @@ import questionary as q
 # Project imports
 from vfms.enums.driver_status import DriverStatus
 
-def page_new_driver():
+def page_new_driver() -> None:
     name        = q.text("name: ").ask()
     cpf         = q.text("cpf: ").ask()
     license     = q.select(

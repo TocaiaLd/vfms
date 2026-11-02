@@ -7,7 +7,7 @@ from vfms.utilities.clear_screen import clear_screen
 # Project imports
 from vfms.depedencies import MasterController
 
-def delete_driver():
+def delete_driver() -> None:
     loop_delete = True
 
     while loop_delete:

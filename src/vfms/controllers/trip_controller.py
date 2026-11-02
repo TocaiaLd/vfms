@@ -1,3 +1,5 @@
+from typing import Any
+
 # External libs
 from tabulate import tabulate
 
@@ -9,10 +11,10 @@ class TripController:
     def __init__(
         self    : TripController,
         repo    : TripRepo,
-    ):
+    ) -> None:
         self.repo   = repo
 
-    def new_trip(self, request):
+    def new_trip(self, request: dict[str, Any]) -> str:
         trip = Trip(
             driver_cpf      = request["driver_cpf"],
             vehicle_plate   = request["vehicle_plate"],
@@ -26,7 +28,7 @@ class TripController:
 
         return self.repo.save_trip(trip)
 
-    def get_trip_by_id(self, trip_id) -> Trip | bool:
+    def get_trip_by_id(self, trip_id: str) -> Trip | bool:
         trip = self.repo.get_trip_by_id(trip_id)
         
         if trip:
@@ -43,8 +45,8 @@ class TripController:
         
         return False
 
-    def finish_trip(self, trip_id):
-        trip : Trip = self.get_trip_by_id(trip_id)
+    def finish_trip(self, trip_id: str) -> str:
+        trip: Trip | bool = self.get_trip_by_id(trip_id)
         
         if trip:
             if trip.status.name == "ENDED":

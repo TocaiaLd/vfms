@@ -7,7 +7,7 @@ from vfms.utilities.clear_screen import clear_screen
 # Project imports
 from vfms.depedencies import MasterController
 
-def delete_vehicle():
+def delete_vehicle() -> bool | None:
     running = True
     
     while running:

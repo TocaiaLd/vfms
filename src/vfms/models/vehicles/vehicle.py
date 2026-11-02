@@ -14,7 +14,7 @@ class Vehicle(RefuelMixin, MaintenanceMixin):
         status              : VehicleStatus,
         max_fuel            : float,
         fuel                : float,
-    ):
+    ) -> None:
         if type(self) is Vehicle:
             raise TypeError("You cannot create a Vehicle object directly")
 
@@ -31,11 +31,11 @@ class Vehicle(RefuelMixin, MaintenanceMixin):
 
     # Plate encapsulation
     @property
-    def plate(self):
+    def plate(self) -> str:
         return self._plate
 
     @plate.setter
-    def plate(self, p):
+    def plate(self, p: str) -> None:
         l = len(p)
         number_positions = [4, 6, 7]
 
@@ -60,11 +60,11 @@ class Vehicle(RefuelMixin, MaintenanceMixin):
 
     # Mileage encapsulation
     @property
-    def mileage(self):
+    def mileage(self) -> float:
         return self._mileage
 
     @mileage.setter
-    def mileage(self, value):
+    def mileage(self, value: int | float | str) -> None:
         new_value = value
 
         if not isinstance(new_value, float):
@@ -80,11 +80,11 @@ class Vehicle(RefuelMixin, MaintenanceMixin):
 
     # Year encapsulation
     @property
-    def year(self):
+    def year(self) -> int:
         return self._year
 
     @year.setter
-    def year(self, value):
+    def year(self, value: int | float | str) -> None:
         if not isinstance(value, int):
             try:
                 n_value = float(value)
@@ -106,11 +106,11 @@ class Vehicle(RefuelMixin, MaintenanceMixin):
 
     # Average consumption encapsulation
     @property
-    def average_consumption(self):
+    def average_consumption(self) -> float:
         return self._average_consumption
 
     @average_consumption.setter
-    def average_consumption(self, value):
+    def average_consumption(self, value: int | float | str) -> None:
         new_value = value
 
         if not isinstance(new_value, float):
@@ -123,11 +123,11 @@ class Vehicle(RefuelMixin, MaintenanceMixin):
 
     # fuel encapsulation
     @property
-    def fuel(self):
+    def fuel(self) -> float:
         return self._fuel
 
     @fuel.setter
-    def fuel(self, value):
+    def fuel(self, value: int | float | str) -> None:
         new_value = value
 
         if not isinstance(new_value, float):
@@ -146,11 +146,11 @@ class Vehicle(RefuelMixin, MaintenanceMixin):
 
     # max_fuel encapsulation
     @property
-    def max_fuel(self):
+    def max_fuel(self) -> float:
         return self._max_fuel
 
     @max_fuel.setter
-    def max_fuel(self, value):
+    def max_fuel(self, value: int | float | str) -> None:
         new_value = value
 
         if not isinstance(new_value, float):
@@ -166,11 +166,11 @@ class Vehicle(RefuelMixin, MaintenanceMixin):
 
     # Vehicle status encapsulation
     @property
-    def status(self):
+    def status(self) -> VehicleStatus:
         return self._status
 
     @status.setter
-    def status(self, value):
+    def status(self, value: VehicleStatus | str) -> None:
         new_value = value
 
         if not isinstance(new_value, VehicleStatus):
@@ -187,7 +187,7 @@ class Vehicle(RefuelMixin, MaintenanceMixin):
 
         self._status = new_value
 
-    def to_dict(self) -> dict:
+    def to_dict(self) -> dict[str, dict[str, str | int | float]]:
         return {
             self.plate: {
                 "model"                 : self.model,
@@ -220,7 +220,7 @@ Fuel: {self.fuel} l"""
 
 
     # Special method to compare objects using the plate (Ex: v1 == v2 -> v1.plate == v2.plate, where v1 and v2 are from Vehicle class)
-    def __eq__(self, other : Vehicle) -> bool:
+    def __eq__(self, other: Vehicle) -> bool:
         return self.plate == other.plate
 
     # special method to sort vehicles by mileage

@@ -7,7 +7,7 @@ from vfms.utilities.clear_screen import clear_screen
 # Project imports
 from vfms.depedencies import MasterController
 
-def finish_maintenance():
+def finish_maintenance() -> None:
     loop_finish = True
 
     while loop_finish:

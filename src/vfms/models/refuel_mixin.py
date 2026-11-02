@@ -6,7 +6,7 @@ class RefuelMixin:
         self            : RefuelMixin,
         liters          : float,
         price_per_liter : float,
-    ) -> tuple:
+    ) -> tuple[str | None, float, float, float, datetime] | None:
         date = datetime.now()
         n_liters = float(liters)
 

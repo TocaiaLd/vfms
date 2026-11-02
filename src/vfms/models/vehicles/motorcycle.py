@@ -15,19 +15,19 @@ class Motorcycle(Vehicle):
         max_fuel            : float,
         fuel                : float,
         cc                  : int,
-        license             = VehicleLicense.A,
-    ):
+        license             : VehicleLicense = VehicleLicense.A,
+    ) -> None:
         super().__init__(plate, model, brand, year, mileage, average_consumption, status, max_fuel, fuel)
         self.cc = cc
         self.license = license
 
     # CC encapsulation
     @property
-    def cc(self):
+    def cc(self) -> int:
         return self._cc
 
     @cc.setter
-    def cc(self, value):
+    def cc(self, value: int | str) -> None:
         new_value = value
 
         if not isinstance(new_value, int):
@@ -38,7 +38,7 @@ class Motorcycle(Vehicle):
         
         self._cc= new_value
 
-    def to_dict(self) -> dict:
+    def to_dict(self) -> dict[str, dict[str, str | int | float]]:
         d = super().to_dict()
     
         for plate, data in d.items():

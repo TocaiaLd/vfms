@@ -1,11 +1,11 @@
-"""represents a person signed on system"""
+# Represents a person signed on the system.
 
 class Person:
     def __init__(
         self    : Person, 
         name    : str,
-        cpf     : str,
-    ):
+        cpf     : str | int,
+    ) -> None:
         if type(self) is Person:
             raise TypeError("You cannot create a Person object directly")
         
@@ -13,11 +13,11 @@ class Person:
         self.cpf    = cpf
 
     @property
-    def name(self):
+    def name(self) -> str:
         return self._name
     
     @name.setter
-    def name(self, n):
+    def name(self, n: str) -> None:
         if len(n) < 3:
             raise Exception("The name must have at least 3 letters")
 
@@ -31,18 +31,18 @@ class Person:
         self._name = n
 
     @property
-    def cpf(self):
+    def cpf(self) -> str:
         return self._cpf
     
     @cpf.setter
-    def cpf(self, cpf):
+    def cpf(self, cpf: str | int) -> None:
         cpf_to_setter   = cpf
         first_number    = 0
         second_number   = 0
         count           = 11
         
         # Gets a rest of a number divided by 11
-        def get_rest(number) -> int:
+        def get_rest(number: int) -> int:
             r = number % 11 
             if r < 2:
                 return 0
@@ -101,6 +101,6 @@ cpf: {self.cpf}"""
 
     
     # Special method to compare objects using the cpf (Ex: d1 == d2 -> d1.cpf == v2.cpf, where d1 and d2 are from Driver class)
-    def __eq__(self, other) -> bool:
+    def __eq__(self, other: Person) -> bool:
         return self.cpf == other.cpf
     

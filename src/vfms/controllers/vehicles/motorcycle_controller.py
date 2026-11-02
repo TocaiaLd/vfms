@@ -1,3 +1,5 @@
+from typing import Any
+
 # External libs
 from tabulate import tabulate
 
@@ -6,15 +8,16 @@ from vfms.repos.vehicles.motorcycle_repo import MotorcycleRepo
 from vfms.models.vehicles.motorcycle import Motorcycle
 from vfms.models.vehicles.vehicle import Vehicle
 from vfms.enums.vehicle_license import VehicleLicense
+from vfms.enums.enum_maintenance import EnumMaintenance
 
 class MotorcycleController:
     def __init__(
         self    : MotorcycleController, 
         repo    : MotorcycleRepo
-    ):
+    ) -> None:
         self.repo = repo
 
-    def create_motorcycle(self, request) -> str:
+    def create_motorcycle(self, request: dict[str, Any]) -> str:
         motorcycle = Motorcycle(
             plate               = request["plate"],
             model               = request["model"],  
@@ -46,7 +49,7 @@ class MotorcycleController:
         
         return response
     
-    def get_by_plate(self, plate) -> Motorcycle | False:
+    def get_by_plate(self, plate: str) -> Motorcycle | bool:
         vehicle = self.repo.get_by_plate(plate)
         
         if vehicle:
@@ -68,11 +71,11 @@ class MotorcycleController:
         
         return False
 
-    def update_motorcycle(self, motorcycle_obj):
+    def update_motorcycle(self, motorcycle_obj: Motorcycle) -> str:
         response = self.repo.update_motorcycle(motorcycle_obj)
         return response
 
-    def delete_motorcycle(self, plate) -> str:
+    def delete_motorcycle(self, plate: str) -> str:
         motorycle = self.get_by_plate(plate)
 
         if not motorycle:
@@ -84,7 +87,12 @@ class MotorcycleController:
         
         return "The motorycle must be AVAILABLE or INACTIVE to delete"
 
-    def refuel_motorcycle(self, plate_to_refuel, liters, price_per_liter) -> tuple:
+    def refuel_motorcycle(
+        self,
+        plate_to_refuel: str,
+        liters: float,
+        price_per_liter: float,
+    ) -> tuple[str, tuple[object, ...] | None] | str:
         motorcycle_obj = self.get_by_plate(plate_to_refuel)
         
         if not motorcycle_obj:
@@ -94,16 +102,22 @@ class MotorcycleController:
 
         return (self.update_motorcycle(motorcycle_obj), maintenance)
     
-    def vehicle_exists(self, search_plate) -> bool:
+    def vehicle_exists(self, search_plate: str) -> bool:
         response = self.repo.vehicle_exists(search_plate)
         return response
 
-    def vehicle_is_available(self, search_plate) -> bool:
+    def vehicle_is_available(self, search_plate: str) -> bool:
         response = self.repo.vehicle_is_available(search_plate)
         return response
 
-    def add_maintenance(self, plate_to_add_maintenance, type_maintenance, price, description) -> tuple:
-        vehicle_obj : Vehicle = self.get_by_plate(plate_to_add_maintenance)
+    def add_maintenance(
+        self,
+        plate_to_add_maintenance: str,
+        type_maintenance: EnumMaintenance,
+        price: float,
+        description: str,
+    ) -> tuple[str, EnumMaintenance, float, str, str, str] | str:
+        vehicle_obj: Motorcycle | bool = self.get_by_plate(plate_to_add_maintenance)
 
         if not vehicle_obj:
             return "The plate is incorrect"

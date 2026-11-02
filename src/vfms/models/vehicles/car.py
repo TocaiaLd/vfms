@@ -15,8 +15,8 @@ class Car(Vehicle):
         max_fuel            : float,
         fuel                : float,
         ports               : int,
-        license             = VehicleLicense.B,
-    ):
+        license             : VehicleLicense = VehicleLicense.B,
+    ) -> None:
         super().__init__(plate, model, brand, year, mileage, average_consumption, status, max_fuel, fuel)
         
         self.ports      = ports
@@ -24,11 +24,11 @@ class Car(Vehicle):
 
     # Ports encapsulation
     @property
-    def ports(self):
+    def ports(self) -> int:
         return self._ports
 
     @ports.setter
-    def ports(self, value):
+    def ports(self, value: int | str) -> None:
         new_value = value
 
         if not isinstance(new_value, int):
@@ -39,7 +39,7 @@ class Car(Vehicle):
         
         self._ports= new_value
 
-    def to_dict(self) -> dict:
+    def to_dict(self) -> dict[str, dict[str, str | int | float]]:
         d = super().to_dict()
         
         for plate, data in d.items():

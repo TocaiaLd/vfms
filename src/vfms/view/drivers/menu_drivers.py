@@ -8,7 +8,7 @@ from vfms.view.drivers.show_drivers import page_show_drivers
 from vfms.view.drivers.new_driver import page_new_driver
 from vfms.view.drivers.show_driver_by_cpf import page_show_driver_by_cpf
 
-def menu_drivers():
+def menu_drivers() -> bool | None:
     running = True
 
     while running:

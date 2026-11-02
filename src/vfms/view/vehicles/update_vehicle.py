@@ -7,23 +7,27 @@ from vfms.utilities.clear_screen import clear_screen
 
 # Project imports
 from vfms.depedencies import MasterController
+from vfms.models.vehicles.car import Car
+from vfms.models.vehicles.motorcycle import Motorcycle
+from vfms.models.vehicles.truck import Truck
+from vfms.models.vehicles.vehicle import Vehicle
 
-def motorcycle_asks(vehicle_obj) -> dict:
+def motorcycle_asks(vehicle_obj: Motorcycle) -> Motorcycle:
     vehicle_obj.cc = q.text(f"New cc: {vehicle_obj.cc}").ask() 
 
     return vehicle_obj
 
-def truck_asks(vehicle_obj) -> dict:
+def truck_asks(vehicle_obj: Truck) -> Truck:
     vehicle_obj.max_weight = q.text(f"Max weight: {vehicle_obj.max_weight}").ask() 
 
     return vehicle_obj
 
-def car_asks(vehicle_obj) -> dict:
+def car_asks(vehicle_obj: Car) -> Car:
     vehicle_obj.ports = q.text(f"New number of ports: {vehicle_obj.ports}").ask() 
 
     return vehicle_obj
 
-def vehicle_asks(vehicle_obj) -> dict:
+def vehicle_asks(vehicle_obj: Vehicle) -> Vehicle:
     vehicle_obj.model               = q.text(f"New model: (Old is {vehicle_obj.model})").ask()
     vehicle_obj.brand               = q.text(f"New brand: (Old is {vehicle_obj.brand})").ask()
     vehicle_obj.year                = q.text(f"New year: (Old is {vehicle_obj.year})").ask()
@@ -36,7 +40,7 @@ def vehicle_asks(vehicle_obj) -> dict:
 
     return vehicle_obj
 
-def update_vehicle():
+def update_vehicle() -> bool | None:
     running = True
     
     while running:

@@ -10,7 +10,7 @@ from vfms.utilities.clear_screen import clear_screen
 # Project imports
 from vfms.depedencies import MasterController
 
-def add_maintenance_vehicle():
+def add_maintenance_vehicle() -> bool | None:
     running = True
     
     while running:

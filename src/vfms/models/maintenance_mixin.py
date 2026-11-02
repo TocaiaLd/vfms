@@ -9,8 +9,8 @@ class MaintenanceMixin:
         type        : EnumMaintenance,
         price       : float,
         description : str,
-        date        = None,
-    ):
+        date        : datetime.datetime | str | None = None,
+    ) -> tuple[str, EnumMaintenance, float, str, str, str]:
         plate = getattr(self, 'plate', "")
         
         if not isinstance(type, EnumMaintenance):

@@ -12,7 +12,7 @@ class Trip:
         destiny         : str,
         distance        : float,
         status          : EnumTrip,
-    ):
+    ) -> None:
         self.driver_cpf     = driver_cpf
         self.vehicle_plate  = vehicle_plate
         self.origin         = origin
@@ -22,11 +22,11 @@ class Trip:
 
 
     @property
-    def status(self):
+    def status(self) -> EnumTrip:
         return self._status
 
     @status.setter
-    def status(self, value):
+    def status(self, value: EnumTrip | str) -> None:
         new_value = value
         
         if not isinstance(new_value, EnumTrip):
@@ -39,8 +39,8 @@ class Trip:
         
         self._status = new_value
 
-    def set_date_init(self):
+    def set_date_init(self) -> None:
         self.date_init= datetime.now()
 
-    def set_date_end(self):
+    def set_date_end(self) -> None:
         self.date_end = datetime.now()

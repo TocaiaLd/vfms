@@ -10,8 +10,9 @@ VEHICLE_TYPES = ("car", "motorcycle", "truck")
 MAINTENANCE_TYPES = ("preventive", "corrective")
 
 
+# Raised when the settings file contains invalid configurations.
 class SettingsValidationError(ValueError):
-    """Raised when the settings file contains invalid configurations."""
+    pass
 
 
 def _validate_object(value: Any, path: str) -> Mapping:
@@ -61,7 +62,7 @@ def _validate_number(
 
 
 def validate_settings(config: dict) -> dict:
-    """Validate the structure and values of settings.json."""
+    # Validate the structure and values of settings.json.
 
     config = _validate_object(config, "settings")
 
@@ -203,8 +204,8 @@ def validate_settings(config: dict) -> dict:
 
 
 
+# Convert vehicle names to the keys used in settings.json.
 def normalize_vehicle_type(vehicle_type: str | object) -> str:
-    """Convert vehicle names to the keys used in settings.json."""
 
     if not isinstance(vehicle_type, str):
         vehicle_type = type(vehicle_type).__name__

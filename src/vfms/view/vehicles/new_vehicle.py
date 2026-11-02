@@ -1,3 +1,5 @@
+from typing import Any
+
 # External libs
 import questionary as q
 
@@ -8,7 +10,7 @@ from vfms.utilities.clear_screen import clear_screen
 from vfms.depedencies import MasterController
 from vfms.enums.vehicle_status import VehicleStatus
 
-def motorcycle_asks() -> dict:
+def motorcycle_asks() -> dict[str, Any]:
     cc = q.text("cc: ").ask() 
     
     d = {
@@ -18,7 +20,7 @@ def motorcycle_asks() -> dict:
 
     return d
 
-def truck_asks() -> dict:
+def truck_asks() -> dict[str, Any]:
     max_weight = q.text("Max weight: ").ask() 
     
     d = {
@@ -27,7 +29,7 @@ def truck_asks() -> dict:
 
     return d
 
-def car_asks() -> dict:
+def car_asks() -> dict[str, Any]:
     ports = q.text("Number of ports: ").ask() 
     
     d = {
@@ -36,7 +38,7 @@ def car_asks() -> dict:
 
     return d
 
-def vehicle_asks() -> dict:
+def vehicle_asks() -> dict[str, Any]:
     plate               = q.text("Plate: ").ask()
     model               = q.text("Model: ").ask()
     brand               = q.text("Brand: ").ask()
@@ -80,7 +82,7 @@ def vehicle_asks() -> dict:
     # Returns a dict with the general attributes of a Vehicle class
     return request
 
-def page_create_vehicle() -> bool:
+def page_create_vehicle() -> bool | None:
     running = True
 
     while running:

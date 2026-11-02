@@ -5,7 +5,7 @@ import questionary as q
 from vfms.utilities.clear_screen import clear_screen
 from vfms.depedencies import MasterController
 
-def show_trips():
+def show_trips() -> None:
     response = MasterController.TRIP_CONTROLLER.value.show_trips()
 
     print(response)

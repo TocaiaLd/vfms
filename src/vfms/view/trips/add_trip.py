@@ -1,3 +1,5 @@
+from typing import Any
+
 # external libs
 import questionary as q
 
@@ -17,7 +19,7 @@ def show_drivers() -> None:
 
     print(response)
 
-def show_vehicles(vehicle_controller, type) -> str:
+def show_vehicles(vehicle_controller: Any, type: str) -> None:
     response = None
    
     if type == "cars":
@@ -29,7 +31,7 @@ def show_vehicles(vehicle_controller, type) -> str:
 
     print(response)
 
-def loop_driver() -> str | False:
+def loop_driver() -> str | bool | None:
     loop = True
 
     while loop:
@@ -51,7 +53,11 @@ def loop_driver() -> str | False:
 
     return loop
 
-def loop_vehicle(vehicle_controller, driver_cpf, type) -> str | False:    
+def loop_vehicle(
+    vehicle_controller: Any,
+    driver_cpf: str,
+    type: str,
+) -> str | bool | None:
     loop = True
 
     while loop:
@@ -88,7 +94,7 @@ def loop_vehicle(vehicle_controller, driver_cpf, type) -> str | False:
     
     return loop
 
-def add_trip():
+def add_trip() -> bool | None:
     running = True
 
     while running:

@@ -5,11 +5,11 @@ class RefuelController:
     def __init__(
         self : RefuelController,
         repo : RefuelRepo
-    ):
+    ) -> None:
         self.repo = repo
     
     def save_refuel(
         self    : RefuelController, 
-        refuel  : tuple
-    ):
+        refuel  : tuple[object, ...]
+    ) -> None:
         return self.repo.save_refuel(refuel)

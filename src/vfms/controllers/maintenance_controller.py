@@ -1,3 +1,5 @@
+from typing import Any
+
 from datetime import datetime
 from tabulate import tabulate
 
@@ -7,7 +9,7 @@ class MaintenanceController():
     def __init__(
         self : MaintenanceController,
         repo : MaintenanceRepo,
-    ):
+    ) -> None:
         self.repo = repo
 
     def save_maintenance(
@@ -29,7 +31,7 @@ class MaintenanceController():
 
         return response
 
-    def get_maintenance_by_id(self, maintenance_id):
+    def get_maintenance_by_id(self, maintenance_id: str) -> list[tuple[Any, ...]] | bool:
         maintenance = self.repo.get_maintenance_by_id(maintenance_id)
         
         if maintenance:
@@ -37,7 +39,7 @@ class MaintenanceController():
         
         return False
 
-    def finish_maintenance(self, maintenance_id):
+    def finish_maintenance(self, maintenance_id: str) -> str:
         maintenance = self.get_maintenance_by_id(maintenance_id)
         
         if maintenance:

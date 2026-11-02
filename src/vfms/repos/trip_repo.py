@@ -1,3 +1,5 @@
+from typing import Any
+
 # standard libs
 from vfms.enums.enum_trip import EnumTrip
 from vfms.enums.driver_status import DriverStatus
@@ -12,7 +14,7 @@ class TripRepo():
     def __init__(
         self    : TripRepo, 
         repo    : Repo
-    ):
+    ) -> None:
         self.repo = repo
     
     def save_trip(
@@ -43,7 +45,7 @@ class TripRepo():
         self    : TripRepo, 
         trip    : Trip,
         trip_id : str,   
-    ):
+    ) -> str:
         int_trip_id = int(trip_id)
         
         from vfms.depedencies import settings
@@ -83,7 +85,7 @@ class TripRepo():
 
         return "trip finished."
 
-    def get_trip_by_id(self, trip_id) -> tuple | False:
+    def get_trip_by_id(self, trip_id: str) -> list[tuple[Any, ...]] | bool:
         self.repo._cursor.execute("SELECT * FROM trips WHERE trip_id = ?", (trip_id,))
         trip = self.repo._cursor.fetchall()
 
@@ -92,7 +94,7 @@ class TripRepo():
         
         return False
 
-    def read_trips(self) -> list:
+    def read_trips(self) -> list[tuple[Any, ...]]:
         self.repo._cursor.execute("SELECT * FROM trips")
         trips = self.repo._cursor.fetchall()
 

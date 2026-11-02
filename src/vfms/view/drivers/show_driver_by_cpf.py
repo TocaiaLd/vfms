@@ -5,7 +5,7 @@ from tabulate import tabulate
 # Project imports
 from vfms.depedencies import MasterController
 
-def page_show_driver_by_cpf():
+def page_show_driver_by_cpf() -> None:
     search_cpf = q.text("Digit the cpf:").ask()
     
     response = MasterController.DRIVER_CONTROLLER.value.show_driver_by_cpf(search_cpf)

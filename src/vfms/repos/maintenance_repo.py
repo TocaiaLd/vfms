@@ -1,3 +1,5 @@
+from typing import Any
+
 from datetime import datetime
 from vfms.enums.vehicle_status import VehicleStatus
 from vfms.repos.repo import Repo
@@ -6,12 +8,12 @@ class MaintenanceRepo:
     def __init__(
         self    : MaintenanceRepo,
         repo    : Repo
-    ):
+    ) -> None:
         self.repo = repo
 
     def save_maintenance(
         self        : MaintenanceRepo,
-        maintenance : tuple
+        maintenance : tuple[Any, ...]
     ) -> str:
 
         types = ["cars", "trucks", "motorcycles"]
@@ -30,13 +32,13 @@ class MaintenanceRepo:
 
         return "Maintenance saved."
 
-    def read_maintenances(self) -> list:
+    def read_maintenances(self) -> list[tuple[Any, ...]]:
         self.repo._cursor.execute("SELECT * FROM maintenances")
         trips = self.repo._cursor.fetchall()
 
         return trips
 
-    def get_maintenance_by_id(self, maintenance_id) -> tuple | False:
+    def get_maintenance_by_id(self, maintenance_id: str) -> list[tuple[Any, ...]] | bool:
         self.repo._cursor.execute("SELECT * FROM maintenances WHERE id = ?", (maintenance_id,))
         maintenance = self.repo._cursor.fetchall()
 
@@ -47,9 +49,9 @@ class MaintenanceRepo:
 
     def finish_maintenance(
         self            : MaintenanceRepo, 
-        vehicle_plate   : tuple,
+        vehicle_plate   : str,
         maintenance_id  : str, 
-    ):
+    ) -> str:
         int_maintenance_id = int(maintenance_id)
 
         types = ["cars", "trucks", "motorcycles"]

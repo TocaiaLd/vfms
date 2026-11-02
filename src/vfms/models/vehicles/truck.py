@@ -16,19 +16,19 @@ class Truck(Vehicle):
         max_fuel            : float,
         fuel                : float,
         max_weight          : float,
-        license             = VehicleLicense.D,
-    ):
+        license             : VehicleLicense = VehicleLicense.D,
+    ) -> None:
         super().__init__(plate, model, brand, year, mileage, average_consumption, status, max_fuel, fuel)
         self.max_weight = max_weight
         self.license = license
 
     # Max weight encapsulation
     @property
-    def max_weight(self):
+    def max_weight(self) -> float:
         return self._max_weight
 
     @max_weight.setter
-    def max_weight(self, value):
+    def max_weight(self, value: int | float | str) -> None:
         new_value = value
 
         if not isinstance(new_value, float):
@@ -39,7 +39,7 @@ class Truck(Vehicle):
         
         self._max_weight= new_value
 
-    def to_dict(self) -> dict:
+    def to_dict(self) -> dict[str, dict[str, str | int | float]]:
         d = super().to_dict()
         
         for plate, data in d.items():

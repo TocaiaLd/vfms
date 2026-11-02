@@ -5,7 +5,7 @@ from vfms.view.maintenances.show_maintenances import show_maintenances
 from vfms.view.maintenances.finish_maintenance import finish_maintenance
 from vfms.view.maintenances.add_maintenance import add_maintenance_vehicle
 
-def menu_maintenances():
+def menu_maintenances() -> bool | None:
     running = True
 
     while running:

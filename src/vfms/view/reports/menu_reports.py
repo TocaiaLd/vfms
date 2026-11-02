@@ -3,7 +3,7 @@ import questionary as q
 
 from vfms.view.reports.reports import page_reports
 
-def menu_reports():
+def menu_reports() -> None:
     input = q.select(
         message = "|----- Reports Menu -----|",
         choices = [

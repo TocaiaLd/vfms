@@ -1,3 +1,5 @@
+from typing import Any
+
 # Project dependencies
 from vfms.models.vehicles.truck import Truck
 from vfms.repos.repo import Repo
@@ -6,7 +8,7 @@ class TruckRepo():
     def __init__(
         self    : TruckRepo, 
         repo    : Repo
-    ):
+    ) -> None:
         self.repo = repo
 
     def save_truck(
@@ -24,7 +26,7 @@ class TruckRepo():
 
         return f"Already exists a Vehicle with the {vehicle_obj.plate} plate"
     
-    def show_trucks(self) -> list:
+    def show_trucks(self) -> list[tuple[Any, ...]]:
         self.repo._cursor.execute(f"SELECT * from trucks")
         list_vehicles = self.repo._cursor.fetchall()
 
@@ -51,7 +53,7 @@ WHERE plate = ?;
 
         return f"Does not exists a vehicle with this plate"
 
-    def delete_truck(self, plate) -> str:
+    def delete_truck(self, plate: str) -> str:
         self.repo._cursor.execute("DELETE * FROM maintenances WHERE plate = ?", (plate,))
         self.repo._cursor.execute("DELETE * FROM trips WHERE plate = ?", (plate,))
         self.repo._cursor.execute("DELETE * FROM refuels WHERE plate = ?", (plate,))
@@ -60,13 +62,13 @@ WHERE plate = ?;
 
         return f"The truck with plate {plate} was deleted."
 
-    def get_by_plate(self, plate) -> dict:
+    def get_by_plate(self, plate: str) -> tuple[Any, ...] | None:
         self.repo._cursor.execute(f"SELECT * from trucks WHERE plate = ?", (plate,))
         truck = self.repo._cursor.fetchone()
 
         return truck
 
-    def vehicle_exists(self, search_plate) -> bool:
+    def vehicle_exists(self, search_plate: str) -> bool:
         self.repo._cursor.execute("SELECT * FROM trucks WHERE plate = ?", (search_plate,))
         search_result = self.repo._cursor.fetchone()
 
@@ -75,7 +77,7 @@ WHERE plate = ?;
 
         return True
 
-    def vehicle_is_available(self, search_plate) -> bool:
+    def vehicle_is_available(self, search_plate: str) -> bool:
         self.repo._cursor.execute("SELECT * FROM trucks WHERE plate = ? AND status = ?", (search_plate, "AVAILABLE"))
         search_result = self.repo._cursor.fetchone()
 

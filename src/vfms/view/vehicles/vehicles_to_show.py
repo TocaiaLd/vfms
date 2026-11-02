@@ -8,7 +8,7 @@ from vfms.utilities.clear_screen import clear_screen
 # Project imports
 from vfms.depedencies import MasterController
 
-def menu_vehicles_to_show():
+def menu_vehicles_to_show() -> bool | None:
     running = True
     
     while running:

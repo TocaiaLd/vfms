@@ -5,7 +5,7 @@ import questionary as q
 from vfms.utilities.clear_screen import clear_screen
 from vfms.depedencies import MasterController
 
-def page_show_drivers():
+def page_show_drivers() -> None:
     response = MasterController.DRIVER_CONTROLLER.value.show_drivers()
 
     print(response)

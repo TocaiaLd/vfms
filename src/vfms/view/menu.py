@@ -10,7 +10,7 @@ from vfms.view.trips.menu_trips import menu_trips
 from vfms.view.drivers.menu_drivers import menu_drivers
 from vfms.view.vehicles.menu_vehicles import menu_vehicles
 
-def menu():    
+def menu() -> None:
     running = True
 
     while running: 

@@ -1,10 +1,12 @@
+from typing import Any
+
 # External libs
 import questionary as q
 from tabulate import tabulate
 
 from vfms.view.trips.add_trip import get_vehicles
 
-def page_vehicle_status_report():
+def page_vehicle_status_report() -> tuple[list[str], list[list[Any]]]:
     vehicles = get_vehicles()
 
     if not vehicles:
@@ -19,7 +21,7 @@ def page_vehicle_status_report():
 
     return collumns, data
 
-def page_reports():
+def page_reports() -> None:
     i = q.select(
         "Choose a report type:",
         choices = [

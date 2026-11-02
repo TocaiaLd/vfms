@@ -10,7 +10,7 @@ VehicleLicense
 # Project imports
 from vfms.depedencies import MasterController
 
-def update_driver():
+def update_driver() -> None:
     loop_update = True
 
     while loop_update:

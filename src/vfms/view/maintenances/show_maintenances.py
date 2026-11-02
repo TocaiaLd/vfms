@@ -5,7 +5,7 @@ import questionary as q
 from vfms.utilities.clear_screen import clear_screen
 from vfms.depedencies import MasterController
 
-def show_maintenances():
+def show_maintenances() -> None:
     response = MasterController.MAINTENANCE_CONTROLLER.value.show_maintenances()
 
     print(response)

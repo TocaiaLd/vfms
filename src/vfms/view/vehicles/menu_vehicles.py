@@ -11,7 +11,7 @@ from vfms.view.vehicles.update_vehicle import update_vehicle
 from vfms.view.vehicles.delete_vehicle import delete_vehicle
 from vfms.view.vehicles.refuel_vehicle import refuel_vehicle
 
-def menu_vehicles():
+def menu_vehicles() -> bool | None:
     running = True
     
     while running:

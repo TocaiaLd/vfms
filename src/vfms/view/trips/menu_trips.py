@@ -5,7 +5,7 @@ from vfms.view.trips.show_trips import show_trips
 from vfms.view.trips.finish_trip import finish_trip
 from vfms.view.trips.add_trip import add_trip
 
-def menu_trips():
+def menu_trips() -> bool | None:
     running = True
 
     while running:

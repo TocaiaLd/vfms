@@ -1,3 +1,5 @@
+from collections.abc import Iterator
+
 from vfms.enums.driver_status import DriverStatus
 from vfms.models.trip import Trip
 from vfms.enums.vehicle_license import VehicleLicense
@@ -8,11 +10,11 @@ class Driver(Person):
     def __init__(
         self            : Driver,
         name            : str,
-        cpf             : int,
+        cpf             : str | int,
         license         : VehicleLicense,
         xp              : int,
         status          : DriverStatus,
-    ):
+    ) -> None:
         super().__init__(name, cpf)
         
         self.license                        = license
@@ -20,11 +22,11 @@ class Driver(Person):
         self.status                         = status
 
     @property
-    def license(self):
+    def license(self) -> VehicleLicense:
         return self._license
 
     @license.setter
-    def license(self, value):
+    def license(self, value: VehicleLicense | str) -> None:
         new_value = value
         
         if not isinstance(new_value, VehicleLicense):
@@ -44,11 +46,11 @@ class Driver(Person):
         self._license = new_value
 
     @property
-    def xp(self):
+    def xp(self) -> int:
         return self._xp 
 
     @xp.setter
-    def xp(self, value):
+    def xp(self, value: int | str) -> None:
         if not isinstance(value, int):
             try:
                 n_value = float(value)
@@ -69,11 +71,11 @@ class Driver(Person):
         self._xp = value
 
     @property
-    def status(self):
+    def status(self) -> DriverStatus:
         return self._status
 
     @status.setter
-    def status(self, value):
+    def status(self, value: DriverStatus | str) -> None:
         new_value = value
         
         if not isinstance(new_value, DriverStatus):
@@ -109,5 +111,5 @@ trip_history: {self.trip_history}"""
         return self.xp < other.xp
 
     # Special method to iterate the driver trips
-    def __iter__(self) -> list[Trip]:
+    def __iter__(self) -> Iterator[Trip]:
         return iter(self.trip_history)

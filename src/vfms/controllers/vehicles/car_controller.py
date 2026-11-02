@@ -1,9 +1,12 @@
+from typing import Any
+
 # External libs
 from tabulate import tabulate
 
 # Project dependencies
 from vfms.models.vehicles.vehicle import Vehicle
 from vfms.enums.vehicle_license import VehicleLicense
+from vfms.enums.enum_maintenance import EnumMaintenance
 from vfms.repos.vehicles.car_repo import CarRepo
 from vfms.models.vehicles.car import Car
 
@@ -11,10 +14,10 @@ class CarController:
     def __init__(
         self    : CarController, 
         repo    : CarRepo
-    ):
+    ) -> None:
         self.repo = repo
 
-    def create_car(self, request) -> str:
+    def create_car(self, request: dict[str, Any]) -> str:
         car = Car(
             plate               = request["plate"],
             model               = request["model"],  
@@ -45,7 +48,7 @@ class CarController:
         
         return response
     
-    def get_by_plate(self, plate) -> Car | False:
+    def get_by_plate(self, plate: str) -> Car | bool:
         vehicle = self.repo.get_by_plate(plate)
         
         if vehicle:
@@ -67,11 +70,11 @@ class CarController:
         
         return False
 
-    def update_car(self, car_obj):
+    def update_car(self, car_obj: Car) -> str:
         response = self.repo.update_car(car_obj)
         return response
 
-    def delete_car(self, plate) -> str:
+    def delete_car(self, plate: str) -> str:
         car = self.get_by_plate(plate)
 
         if not car:
@@ -83,7 +86,12 @@ class CarController:
         
         return "The car must be AVAILABLE or INACTIVE to delete"
 
-    def refuel_car(self, plate_to_refuel, liters, price_per_liter) -> tuple:
+    def refuel_car(
+        self,
+        plate_to_refuel: str,
+        liters: float,
+        price_per_liter: float,
+    ) -> tuple[str, tuple[object, ...] | None] | str:
         car_obj = self.get_by_plate(plate_to_refuel)
         
         if not car_obj:
@@ -93,16 +101,22 @@ class CarController:
 
         return (self.update_car(car_obj), refuel)
 
-    def vehicle_exists(self, search_plate) -> bool:
+    def vehicle_exists(self, search_plate: str) -> bool:
         response = self.repo.vehicle_exists(search_plate)
         return response
 
-    def vehicle_is_available(self, search_plate) -> bool:
+    def vehicle_is_available(self, search_plate: str) -> bool:
         response = self.repo.vehicle_is_available(search_plate)
         return response
 
-    def add_maintenance(self, plate_to_add_maintenance, type_maintenance, price, description) -> tuple:
-        vehicle_obj : Vehicle = self.get_by_plate(plate_to_add_maintenance)
+    def add_maintenance(
+        self,
+        plate_to_add_maintenance: str,
+        type_maintenance: EnumMaintenance,
+        price: float,
+        description: str,
+    ) -> tuple[str, EnumMaintenance, float, str, str, str] | str:
+        vehicle_obj: Car | bool = self.get_by_plate(plate_to_add_maintenance)
 
         if not vehicle_obj:
             return "The plate is incorrect"

@@ -2,7 +2,7 @@ from traceback import print_tb
 import sqlite3
 
 class Repo():
-    def __init__(self):        
+    def __init__(self) -> None:
         self._con   = sqlite3.connect("db/sqlite3.db")
         self._cursor    = self._con.cursor()
 
@@ -18,7 +18,7 @@ class Repo():
         self.create_maintenances_table()
         self._con.commit()
 
-    def create_cars_table(self):
+    def create_cars_table(self) -> None:
         self._cursor.execute("""
 CREATE TABLE IF NOT EXISTS cars (
     plate TEXT NOT NULL PRIMARY KEY,
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS cars (
 )
 """)
 
-    def create_trucks_table(self):
+    def create_trucks_table(self) -> None:
         self._cursor.execute("""
 CREATE TABLE IF NOT EXISTS trucks (
     plate TEXT NOT NULL PRIMARY KEY,
@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS trucks (
 )
 """)
 
-    def create_motorcycles_table(self):
+    def create_motorcycles_table(self) -> None:
         self._cursor.execute("""
 CREATE TABLE IF NOT EXISTS motorcycles (
     plate TEXT NOT NULL PRIMARY KEY,
@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS motorcycles (
 )
 """)
 
-    def create_drivers_table(self):
+    def create_drivers_table(self) -> None:
         self._cursor.execute("""
 CREATE TABLE IF NOT EXISTS drivers (
     name TEXT NOT NULL,
@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS drivers (
 )
 """)
 
-    def create_trips_table(self):
+    def create_trips_table(self) -> None:
         self._cursor.execute("""
 CREATE TABLE IF NOT EXISTS trips (
     trip_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -97,7 +97,7 @@ CREATE TABLE IF NOT EXISTS trips (
 )
 """)
 
-    def create_vehicles_table(self):
+    def create_vehicles_table(self) -> None:
         self._cursor.execute("""
 CREATE TABLE IF NOT EXISTS vehicles (
     plate TEXT NOT NULL PRIMARY KEY,
@@ -113,7 +113,7 @@ CREATE TABLE IF NOT EXISTS vehicles (
 )
 """)
 
-    def create_vehicles_table_triggers(self):
+    def create_vehicles_table_triggers(self) -> None:
         list_of_vehicles = ["cars", "trucks", "motorcycles"]
 
         for type_vehicle in list_of_vehicles:        
@@ -143,7 +143,7 @@ CREATE TABLE IF NOT EXISTS vehicles (
                 WHERE plate = OLD.plate;
             END;""")
 
-    def create_maintenances_table(self):
+    def create_maintenances_table(self) -> None:
         self._cursor.execute("""
 CREATE TABLE IF NOT EXISTS maintenances (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -157,7 +157,7 @@ CREATE TABLE IF NOT EXISTS maintenances (
 )
 """)
 
-    def create_refuels_table(self):
+    def create_refuels_table(self) -> None:
         self._cursor.execute("""
 CREATE TABLE IF NOT EXISTS refuels (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
