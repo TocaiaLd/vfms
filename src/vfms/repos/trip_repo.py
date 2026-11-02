@@ -3,6 +3,7 @@ from vfms.enums.enum_trip import EnumTrip
 from vfms.enums.driver_status import DriverStatus
 from vfms.enums.vehicle_status import VehicleStatus
 
+
 # Projects imports
 from vfms.repos.repo import Repo
 from vfms.models.trip import Trip
@@ -44,6 +45,9 @@ class TripRepo():
         trip_id : str,   
     ):
         int_trip_id = int(trip_id)
+        
+        from vfms.depedencies import settings
+        preventive_interval = settings["maintenance"]["preventive_interval_km"]
 
         types = ["cars", "trucks", "motorcycles"]
 
@@ -54,6 +58,21 @@ class TripRepo():
             if result:
                 self.repo._cursor.execute(f"UPDATE {n} SET status = ?, mileage = mileage + ? WHERE plate = ?;", (VehicleStatus.AVAILABLE.name, trip.distance, trip.vehicle_plate))
                 self.repo._con.commit()
+                
+                # Get the previous and current mileage
+                mileage_old = result[0][4]
+                mileage_current = mileage_old + trip.distance
+
+                # Check if the vehicle crossed a preventive maintenance interval
+                if mileage_current // preventive_interval > mileage_old // preventive_interval:
+
+                    self.repo._cursor.execute(
+                        f"UPDATE {n} SET status = ? WHERE plate = ?;",
+                        (VehicleStatus.MAINTENANCE.name, trip.vehicle_plate)
+                    )
+
+                    self.repo._con.commit()
+
                 break
             
         self.repo._cursor.execute("UPDATE drivers SET status = ? WHERE cpf = ?;", (DriverStatus.AVAILABLE.name, trip.driver_cpf))

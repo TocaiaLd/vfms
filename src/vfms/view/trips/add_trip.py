@@ -3,6 +3,8 @@ import questionary as q
 
 # utilities
 from vfms.utilities.clear_screen import clear_screen
+from vfms.depedencies import settings
+from vfms.config.settings_validations import is_license_compatible
 
 # project imports
 from vfms.enums.enum_trip import EnumTrip
@@ -65,6 +67,14 @@ def loop_vehicle(vehicle_controller, driver_cpf, type) -> str | False:
             if vehicle_available:
                 vehicle_obj = vehicle_controller.get_by_plate(vehicle_to_add_trip)
                 driver_obj  = MasterController.DRIVER_CONTROLLER.value.get_by_cpf(driver_cpf)
+
+                if not is_license_compatible(settings, type, driver_obj.license):
+                    q.text(
+                        "The driver's license does not meet the configured requirements."
+                    ).ask()
+
+                    loop = False
+                    continue
 
                 if vehicle_obj.license.value in driver_obj.license.value:
                     return vehicle_to_add_trip

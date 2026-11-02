@@ -3,6 +3,8 @@ from vfms.enums.enum_maintenance import EnumMaintenance
 import questionary as q
 
 # Utilities
+from vfms.depedencies import settings
+from vfms.config.settings_validations import get_maintenance_cost
 from vfms.utilities.clear_screen import clear_screen
 
 # Project imports
@@ -83,6 +85,14 @@ def add_maintenance_vehicle():
 
                     ]
                 ).ask()
+
+                configured_cost = get_maintenance_cost(
+                    settings,
+                    input,
+                    type_maintenance
+                )
+
+                print(f"Configured reference cost: R$ {configured_cost:.2f}")
 
                 price = q.text("How much it will cost?").ask()
                 price = float(price)
