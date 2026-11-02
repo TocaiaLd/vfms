@@ -1,0 +1,40 @@
+{
+  "maintenance": {
+    "preventive_interval_km": 10000,
+    "costs_by_type": {
+      "preventive": {
+        "car": 250.00,
+        "motorcycle": 120.00,
+        "truck": 750.00
+      },
+      "corrective": {
+        "car": 650.00,
+        "motorcycle": 300.00,
+        "truck": 1800.00
+      }
+    }
+  },
+  "fuel": {
+    "acceptable_consumption_km_per_l": {
+      "car": {
+        "min": 8.0,
+        "max": 18.0
+      },
+      "motorcycle": {
+        "min": 20.0,
+        "max": 45.0
+      },
+      "truck": {
+        "min": 2.0,
+        "max": 8.0
+      }
+    }
+  },
+  "driver_license": {
+    "minimum_category_by_vehicle_type": {
+      "motorcycle": "A",
+      "car": "B",
+      "truck": "D"
+    }
+  }
+}

@@ -1,5 +1,12 @@
 # standart libs
 from enum import Enum
+import json
+from pathlib import Path
+
+SETTINGS_PATH = Path(__file__).resolve().parent / "config" / "settings.json"
+
+with open(SETTINGS_PATH, "r", encoding="utf-8") as file:
+    settings = json.load(file)
 
 # Repo connection (SQLITE3)
 from vfms.repos.repo import Repo
