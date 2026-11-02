@@ -44,6 +44,10 @@ def menu_vehicles():
                     value   = add_maintenance_vehicle
                 ),
                 q.Choice(
+                    title   = "Update a vehicle", 
+                    value   = update_vehicle
+                ),
+                q.Choice(
                     title   = "Back to main menu", 
                     value   = False
                 ), 

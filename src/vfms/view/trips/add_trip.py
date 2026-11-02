@@ -5,6 +5,7 @@ import questionary as q
 from vfms.utilities.clear_screen import clear_screen
 
 # project imports
+from vfms.enums.enum_trip import EnumTrip
 from vfms.models.users.driver import Driver
 from vfms.models.vehicles.vehicle import Vehicle
 from vfms.depedencies import MasterController
@@ -18,11 +19,11 @@ def show_vehicles(vehicle_controller, type) -> str:
     response = None
    
     if type == "cars":
-        response = vehicle_controller = MasterController.CAR_CONTROLLER.value.show_cars()
+        response = MasterController.CAR_CONTROLLER.value.show_cars()
     elif type == "trucks":
-        response = vehicle_controller = MasterController.TRUCK_CONTROLLER.value.show_trucks()
+        response = MasterController.TRUCK_CONTROLLER.value.show_trucks()
     elif type == "motorcycles":
-        response = vehicle_controller = MasterController.MOTORCYCLE_CONTROLLER.value.show_motorcycles()
+        response = MasterController.MOTORCYCLE_CONTROLLER.value.show_motorcycles()
 
     print(response)
 
@@ -36,7 +37,7 @@ def loop_driver() -> str | False:
 
         if not driver_exists:
             loop = q.confirm("This driver does not exists. Do you want to select another driver?").ask()
-        elif driver_exists:
+        else:
             driver_available = MasterController.DRIVER_CONTROLLER.value.driver_is_available(driver_to_add_trip)
 
             if driver_available:
@@ -131,7 +132,8 @@ def add_trip():
                     "vehicle_plate"   : plate,
                     "origin"          : origin,
                     "destiny"         : destiny,
-                    "distance"        : distance
+                    "distance"        : distance,
+                    "status"          : EnumTrip.IN_PROGRESS
                 }
 
                 response = MasterController.TRIP_CONTROLLER.value.new_trip(dict_trip)

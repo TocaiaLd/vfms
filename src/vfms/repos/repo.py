@@ -16,10 +16,6 @@ class Repo():
         self.create_refuels_table()
         self.create_trips_table()
         self.create_maintenances_table()
-
-        self._cursor.execute("SELECT * FROM maintenances")
-        maintenances = self._cursor.fetchall()
-
         self._con.commit()
 
     def create_cars_table(self):
@@ -93,6 +89,9 @@ CREATE TABLE IF NOT EXISTS trips (
     origin TEXT NOT NULL,
     destiny TEXT NOT NULL,
     distance REAL,
+    status TEXT NOT NULL,
+    date_init TEXT NOT NULL,
+    date_end TEXT NOT NULL,
     FOREIGN KEY (driver_cpf) REFERENCES drivers (cpf)
     FOREIGN KEY (vehicle_plate) REFERENCES vehicles (plate)
 )

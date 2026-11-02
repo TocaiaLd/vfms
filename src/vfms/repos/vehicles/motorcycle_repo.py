@@ -13,7 +13,7 @@ class MotorcycleRepo():
         self            : MotorcycleRepo, 
         vehicle_obj     : Motorcycle,
     ) -> str:
-        self.repo._cursor.execute("SELECT * FROM motorcyles WHERE plate = ?", (vehicle_obj.plate,))
+        self.repo._cursor.execute("SELECT * FROM motorcycles WHERE plate = ?", (vehicle_obj.plate,))
         search_result = self.repo._cursor.fetchone()
         
         if not search_result:

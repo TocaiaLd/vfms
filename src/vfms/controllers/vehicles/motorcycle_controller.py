@@ -100,6 +100,6 @@ class MotorcycleController:
         if not vehicle_obj:
             return "The plate is incorrect"
         
-        maintenance = vehicle_obj.new_maintenance(plate_to_add_maintenance, type_maintenance, price, description)
+        maintenance = vehicle_obj.new_maintenance(type_maintenance, price, description)
 
         return maintenance

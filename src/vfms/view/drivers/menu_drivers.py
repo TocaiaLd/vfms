@@ -1,6 +1,7 @@
 # External libs
 import questionary as q
 
+from vfms.utilities.clear_screen import clear_screen
 from vfms.view.drivers.update_driver import update_driver
 from vfms.view.drivers.delete_driver import delete_driver
 from vfms.view.drivers.show_drivers import page_show_drivers
@@ -41,9 +42,11 @@ def menu_drivers():
             ]
         ).ask()
 
+        clear_screen()
+
         if not input:
             running = False
-            return False
+            return True
 
         input()    
 
