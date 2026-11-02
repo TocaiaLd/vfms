@@ -25,6 +25,10 @@ Learn how to use OOP and create a functional program.
 
 ## UML
 
+### Domain Models and Enums
+
+The diagrams flow from top to bottom. Long method signatures are abbreviated with `...` to keep class boxes narrow.
+
 ```mermaid
 classDiagram
 	direction TB
@@ -79,7 +83,7 @@ classDiagram
 		-_status: VehicleStatus
 		-_max_fuel: float
 		-_fuel: float
-		+__init__(plate, model, brand, year, mileage, average_consumption, status, max_fuel, fuel)
+		+__init__(...)
 		+plate()
 		+plate(p)
 		+mileage()
@@ -104,7 +108,7 @@ classDiagram
 		+ports: int
 		+license: VehicleLicense
 		-_ports: int
-		+__init__(plate, model, brand, year, mileage, average_consumption, status, max_fuel, fuel, ports, license)
+		+__init__(...)
 		+ports()
 		+ports(value)
 		+to_dict()
@@ -115,7 +119,7 @@ classDiagram
 		+cc: int
 		+license: VehicleLicense
 		-_cc: int
-		+__init__(plate, model, brand, year, mileage, average_consumption, status, max_fuel, fuel, cc, license)
+		+__init__(...)
 		+cc()
 		+cc(value)
 		+to_dict()
@@ -126,7 +130,7 @@ classDiagram
 		+max_weight: float
 		+license: VehicleLicense
 		-_max_weight: float
-		+__init__(plate, model, brand, year, mileage, average_consumption, status, max_fuel, fuel, max_weight, license)
+		+__init__(...)
 		+max_weight()
 		+max_weight(value)
 		+to_dict()
@@ -159,7 +163,7 @@ classDiagram
 		+description: str
 		+date_init: str
 		+date_end: str
-		+new_maintenance(type, price, description, date)
+		+new_maintenance(...)
 	}
 	class VehicleStatus {
 		<<enumeration>>
@@ -210,6 +214,13 @@ classDiagram
 	Trip ..> Driver : driver_cpf
 	Trip ..> Vehicle : vehicle_plate
 	MaintenanceMixin ..> EnumMaintenance
+```
+
+### Controllers
+
+```mermaid
+classDiagram
+	direction TB
 
 	class DriverController {
 		+repo: DriverRepo
@@ -255,7 +266,7 @@ classDiagram
 		+refuel_car(plate_to_refuel, liters, price_per_liter)
 		+vehicle_exists(search_plate)
 		+vehicle_is_available(search_plate)
-		+add_maintenance(plate_to_add_maintenance, type_maintenance, price, description)
+		+add_maintenance(...)
 	}
 	class MotorcycleController {
 		+repo: MotorcycleRepo
@@ -268,7 +279,7 @@ classDiagram
 		+refuel_motorcycle(plate_to_refuel, liters, price_per_liter)
 		+vehicle_exists(search_plate)
 		+vehicle_is_available(search_plate)
-		+add_maintenance(plate_to_add_maintenance, type_maintenance, price, description)
+		+add_maintenance(...)
 	}
 	class TruckController {
 		+repo: TruckRepo
@@ -281,8 +292,32 @@ classDiagram
 		+refuel_truck(plate_to_refuel, liters, price_per_liter)
 		+vehicle_exists(search_plate)
 		+vehicle_is_available(search_plate)
-		+add_maintenance(plate_to_add_maintenance, type_maintenance, price, description)
+		+add_maintenance(...)
 	}
+	class MasterController {
+		<<registry>>
+		+CAR_CONTROLLER
+		+TRUCK_CONTROLLER
+		+MOTORCYCLE_CONTROLLER
+		+DRIVER_CONTROLLER
+		+REFUEL_CONTROLLER
+		+TRIP_CONTROLLER
+		+MAINTENANCE_CONTROLLER
+	}
+	MasterController ..> DriverController
+	MasterController ..> TripController
+	MasterController ..> MaintenanceController
+	MasterController ..> RefuelController
+	MasterController ..> CarController
+	MasterController ..> MotorcycleController
+	MasterController ..> TruckController
+```
+
+### Repositories
+
+```mermaid
+classDiagram
+	direction TB
 	class DriverRepo {
 		+repo: Repo
 		+__init__(repo)
@@ -363,31 +398,6 @@ classDiagram
 		+create_maintenances_table()
 		+create_refuels_table()
 	}
-	class MasterController {
-		<<registry>>
-		+CAR_CONTROLLER
-		+TRUCK_CONTROLLER
-		+MOTORCYCLE_CONTROLLER
-		+DRIVER_CONTROLLER
-		+REFUEL_CONTROLLER
-		+TRIP_CONTROLLER
-		+MAINTENANCE_CONTROLLER
-	}
-	class SettingsValidationError {
-	}
-
-	DriverController --> DriverRepo
-	TripController --> TripRepo
-	MaintenanceController --> MaintenanceRepo
-	RefuelController --> RefuelRepo
-	CarController --> CarRepo
-	MotorcycleController --> MotorcycleRepo
-	TruckController --> TruckRepo
-	DriverController ..> Driver
-	TripController ..> Trip
-	CarController ..> Car
-	MotorcycleController ..> Motorcycle
-	TruckController ..> Truck
 	DriverRepo --> Repo
 	TripRepo --> Repo
 	MaintenanceRepo --> Repo
@@ -395,15 +405,16 @@ classDiagram
 	CarRepo --> Repo
 	MotorcycleRepo --> Repo
 	TruckRepo --> Repo
-	DriverRepo ..> Driver
-	TripRepo ..> Trip
-	MasterController ..> DriverController
-	MasterController ..> TripController
-	MasterController ..> MaintenanceController
-	MasterController ..> RefuelController
-	MasterController ..> CarController
-	MasterController ..> MotorcycleController
-	MasterController ..> TruckController
+```
+
+### Configuration
+
+```mermaid
+classDiagram
+    direction TB
+    ValueError <|-- SettingsValidationError
+    class SettingsValidationError {
+    }
 ```
 
 ## File Structure
