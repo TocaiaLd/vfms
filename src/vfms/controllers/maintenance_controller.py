@@ -15,7 +15,7 @@ class MaintenanceController():
 
     def save_maintenance(
         self        : MaintenanceController,
-        maintenance : tuple
+        maintenance : tuple[Any, ...],
     ) -> str:    
         return self.repo.save_maintenance(maintenance)
 

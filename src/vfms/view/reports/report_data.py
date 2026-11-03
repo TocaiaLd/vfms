@@ -1,10 +1,13 @@
-"""Report calculations and shared repository access."""
+# Report calculations and shared repository access.
 
 from collections import Counter, defaultdict
+from collections.abc import Callable
 from statistics import fmean
 from typing import Any, Iterable
 
 from vfms.config.settings_validations import is_consumption_acceptable
+
+ReportRenderer = Callable[[str, list[str], list[list[Any]]], None]
 
 
 def build_maintenance_report(maintenances: Iterable[tuple[Any, ...]], vehicle_types: dict[str, str]) -> dict[str, Any]:

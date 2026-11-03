@@ -11,14 +11,15 @@ from vfms.config.settings_validations import is_license_compatible
 # project imports
 from vfms.enums.enum_trip import EnumTrip
 from vfms.depedencies import MasterController
+from vfms.models.users.driver import Driver
 
 def show_drivers() -> None:
     response = MasterController.DRIVER_CONTROLLER.value.show_drivers()
 
     print(response)
 
-def show_vehicles(vehicle_controller: Any, type: str) -> None:
-    print(getattr(vehicle_controller, f"show_{type}")())
+def show_vehicles(vehicle_controller: Any, vehicle_type: str) -> None:
+    print(getattr(vehicle_controller, f"show_{vehicle_type}")())
 
 def loop_driver() -> str | bool | None:
     loop = True
@@ -49,13 +50,13 @@ def loop_driver() -> str | bool | None:
 def loop_vehicle(
     vehicle_controller: Any,
     driver_cpf: str,
-    type: str,
+    vehicle_type: str,
 ) -> str | bool | None:
     loop = True
 
     while loop:
-        show_vehicles(vehicle_controller, type)
-        vehicle_to_add_trip = q.text(f"Write the plate of the {type} that you want to add a trip: ").ask()
+        show_vehicles(vehicle_controller, vehicle_type)
+        vehicle_to_add_trip = q.text(f"Write the plate of the {vehicle_type} that you want to add a trip: ").ask()
         vehicle_exists = vehicle_controller.vehicle_exists(vehicle_to_add_trip)
 
         if not vehicle_exists:
@@ -64,10 +65,15 @@ def loop_vehicle(
             vehicle_available = vehicle_controller.vehicle_is_available(vehicle_to_add_trip)
 
             if vehicle_available:
-                vehicle_obj = vehicle_controller.get_by_plate(vehicle_to_add_trip)
                 driver_obj  = MasterController.DRIVER_CONTROLLER.value.get_by_cpf(driver_cpf)
 
-                if not is_license_compatible(settings, type, driver_obj.license):
+                if not isinstance(driver_obj, Driver):
+                    q.text("The selected driver could not be loaded.").ask()
+                    loop = False
+                    continue
+
+                # Check the driver's license against the selected vehicle category.
+                if not is_license_compatible(settings, vehicle_type, driver_obj.license):
                     q.text(
                         "The driver's license does not meet the configured requirements."
                     ).ask()
@@ -87,7 +93,7 @@ def add_trip() -> bool | None:
     running = True
 
     while running:
-        input = q.select(
+        selection = q.select(
             "Choose a vehicle type to add a trip:",
             choices = [
                 q.Choice(
@@ -109,23 +115,23 @@ def add_trip() -> bool | None:
             ]
         ).ask()
         
-        vehicle_controller = None
+        vehicle_controller: Any = None
 
-        if input == "cars":
+        if selection == "cars":
             vehicle_controller = MasterController.CAR_CONTROLLER.value
-        elif input == "trucks":
+        elif selection == "trucks":
             vehicle_controller = MasterController.TRUCK_CONTROLLER.value
-        elif input == "motorcycles":
+        elif selection == "motorcycles":
             vehicle_controller = MasterController.MOTORCYCLE_CONTROLLER.value
 
-        if not input:
+        if not selection:
             running = False
             return not running
 
         cpf = loop_driver()
         
         if cpf:
-            plate = loop_vehicle(vehicle_controller, cpf, input)
+            plate = loop_vehicle(vehicle_controller, cpf, selection)
             
             if plate:
                 origin       = q.text("Write the origin").ask()

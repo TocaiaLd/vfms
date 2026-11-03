@@ -33,7 +33,7 @@ class RefuelMixin:
 
         if n_liters <= 0:
             print("[Erro] Não é possível abastecer uma quantidade menor ou igual a zero.")
-            return
+            return None
 
         self.fuel = fuel + n_liters
         total_cost= n_liters * n_price_per_liter

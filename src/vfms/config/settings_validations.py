@@ -1,7 +1,7 @@
 
 from collections.abc import Mapping
 from math import isfinite
-from typing import Any
+from typing import Any, Protocol
 
 from vfms.enums.vehicle_license import VehicleLicense
 
@@ -15,7 +15,12 @@ class SettingsValidationError(ValueError):
     pass
 
 
-def _validate_object(value: Any, path: str) -> Mapping:
+class VehicleWithConsumption(Protocol):
+    @property
+    def average_consumption(self) -> int | float: ...
+
+
+def _validate_object(value: Any, path: str) -> Mapping[str, Any]:
     if not isinstance(value, Mapping):
         raise SettingsValidationError(
             f"'{path}' must be a JSON object."
@@ -24,7 +29,7 @@ def _validate_object(value: Any, path: str) -> Mapping:
     return value
 
 
-def _get_required(data: Mapping, key: str, path: str) -> Any:
+def _get_required(data: Mapping[str, Any], key: str, path: str) -> Any:
     if key not in data:
         raise SettingsValidationError(
             f"Missing configuration: '{path}.{key}'."
@@ -61,10 +66,10 @@ def _validate_number(
     return value
 
 
-def validate_settings(config: dict) -> dict:
+def validate_settings(config: dict[str, Any]) -> dict[str, Any]:
     # Validate the structure and values of settings.json.
 
-    config = _validate_object(config, "settings")
+    _validate_object(config, "settings")
 
     # Maintenance configurations
     maintenance = _validate_object(
@@ -228,20 +233,20 @@ def normalize_vehicle_type(vehicle_type: object) -> str:
 
 
 def get_maintenance_cost(
-    config: dict,
+    config: Mapping[str, Any],
     vehicle_type: str,
-    maintenance_type: str | object
+    maintenance_type: object,
 ) -> float:
 
     vehicle_type = normalize_vehicle_type(vehicle_type)
     maintenance_type = getattr(maintenance_type, "value", maintenance_type)
 
-    return config["maintenance"]["costs_by_type"][maintenance_type][vehicle_type]
+    return float(config["maintenance"]["costs_by_type"][maintenance_type][vehicle_type])
 
 
 def is_consumption_acceptable(
-    config: dict,
-    vehicle: object
+    config: Mapping[str, Any],
+    vehicle: VehicleWithConsumption,
 ) -> bool:
 
     vehicle_type = normalize_vehicle_type(vehicle)
@@ -260,7 +265,7 @@ def is_consumption_acceptable(
 
 
 def is_license_compatible(
-    config: dict,
+    config: Mapping[str, Any],
     vehicle_type: str,
     driver_license: object
 ) -> bool:

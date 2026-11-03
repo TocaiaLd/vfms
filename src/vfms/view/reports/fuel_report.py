@@ -1,9 +1,11 @@
 from typing import Any
 
-from vfms.view.reports.report_data import build_fuel_efficiency_report, get_vehicles_by_type, show_report
+from vfms.view.reports.report_data import ReportRenderer, build_fuel_efficiency_report, get_vehicles_by_type, show_report
 
 
-def page_fuel_report(controllers: tuple[Any, ...], render=show_report) -> None:
+def page_fuel_report(
+    controllers: tuple[Any, ...], render: ReportRenderer = show_report
+) -> None:
     from vfms.depedencies import settings
     vehicles_by_type = get_vehicles_by_type(controllers)
     vehicles = [(kind, vehicle) for kind, items in vehicles_by_type.items() for vehicle in items]

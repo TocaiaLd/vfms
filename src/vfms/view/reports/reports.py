@@ -1,4 +1,4 @@
-"""Reports submenu and backwards-compatible report entry points."""
+# Reports submenu and backwards-compatible report entry points.
 
 from typing import Any
 
